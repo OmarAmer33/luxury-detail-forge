@@ -77,11 +77,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Top Elite Auto — Premium Detailing, Ceramic Coating & PPF · Springfield NJ" },
       { name: "description", content: "Springfield, NJ's premium auto detailing shop. Ceramic coating, paint protection film, wraps and showroom-grade detailing. We don't do average." },
       { name: "author", content: "Top Elite Auto" },
-      { property: "og:title", content: "Top Elite Auto — Premium Detailing · Springfield NJ" },
-      { property: "og:description", content: "Ceramic coating, PPF, wraps and elite detailing in Springfield, NJ." },
+      { property: "og:title", content: "Top Elite Auto — Premium Detailing, Ceramic Coating & PPF · Springfield NJ" },
+      { property: "og:description", content: "Springfield, NJ's premium auto detailing shop. Ceramic coating, paint protection film, wraps and showroom-grade detailing. We don't do average." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Top Elite Auto — Premium Detailing, Ceramic Coating & PPF · Springfield NJ" },
+      { name: "twitter:description", content: "Springfield, NJ's premium auto detailing shop. Ceramic coating, paint protection film, wraps and showroom-grade detailing. We don't do average." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e0ab1b52-2805-48cf-80b9-510d665eabd9/id-preview-3bf7e938--1f172757-97e6-47a0-82b8-6b4008559e2e.lovable.app-1778168121871.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e0ab1b52-2805-48cf-80b9-510d665eabd9/id-preview-3bf7e938--1f172757-97e6-47a0-82b8-6b4008559e2e.lovable.app-1778168121871.png" },
     ],
     links: [
       {
