@@ -1,26 +1,202 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, ShieldCheck, Sparkles, Layers, Wrench, Star } from "lucide-react";
+import { CtaSection } from "@/components/site/CtaSection";
+import heroCar from "@/assets/hero-car.jpg";
+import ceramic from "@/assets/ceramic.jpg";
+import ppf from "@/assets/ppf.jpg";
+import wraps from "@/assets/wraps.jpg";
+import detailing from "@/assets/detailing.jpg";
+import showroom from "@/assets/showroom.jpg";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Top Elite Auto — Premium Detailing · Springfield NJ" },
+      { name: "description", content: "Ceramic coating, paint protection, wraps and elite detailing in Springfield, NJ. Showroom-grade results, every vehicle." },
+    ],
+  }),
+  component: Home,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+const services = [
+  { to: "/ceramic-coating", label: "Ceramic Coating", img: ceramic, blurb: "Years of gloss and protection — bonded at the molecular level.", Icon: Sparkles },
+  { to: "/paint-protection", label: "Paint Protection (PPF)", img: ppf, blurb: "Self-healing film that absorbs the road so your paint doesn't.", Icon: ShieldCheck },
+  { to: "/car-wraps", label: "Car Wraps", img: wraps, blurb: "Color, finish, presence. Wrap it, change it, own it.", Icon: Layers },
+  { to: "/detailing", label: "In-Shop Detailing", img: detailing, blurb: "Hand wash, paint correction, interior reset. Showroom every time.", Icon: Wrench },
+];
 
-function Index() {
-  return <PlaceholderIndex />;
+function Home() {
+  return (
+    <>
+      {/* Hero */}
+      <section className="relative isolate min-h-[100svh] overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <img
+            src={heroCar}
+            alt="Black exotic sports car in luxury showroom at night"
+            className="h-full w-full object-cover"
+            fetchPriority="high"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/40 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/30 to-transparent" />
+        </div>
+
+        <div className="container-luxe flex min-h-[100svh] flex-col justify-center pb-20 pt-32">
+          <span className="eyebrow">Top Elite Auto · Springfield NJ</span>
+          <h1 className="mt-8 max-w-5xl text-6xl md:text-8xl">
+            We don't do <span className="text-[var(--color-gold)]">average</span>.
+            <br />We don't <span className="italic font-light">cut corners</span>.
+          </h1>
+          <p className="mt-8 max-w-xl text-lg text-muted-foreground">
+            Premium ceramic coating, paint protection, wraps and detailing —
+            executed at a national level, right here in Springfield, New Jersey.
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <Link
+              to="/book"
+              className="group inline-flex items-center gap-3 bg-[var(--color-gold)] px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-primary-foreground)] transition-all hover:bg-[var(--color-gold-soft)]"
+            >
+              Book Your Appointment
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              to="/vip-showroom"
+              className="inline-flex items-center gap-3 border border-border px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-foreground transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+            >
+              Step Inside the Showroom
+            </Link>
+          </div>
+
+          <div className="mt-16 grid max-w-3xl grid-cols-2 gap-10 border-t border-border pt-8 sm:grid-cols-4">
+            {[
+              ["10+", "Years experience"],
+              ["1,200+", "Vehicles protected"],
+              ["5★", "On Google & Yelp"],
+              ["Mon–Sat", "9am – 6pm"],
+            ].map(([k, v]) => (
+              <div key={v}>
+                <div className="text-2xl font-black text-[var(--color-gold)]">{k}</div>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Manifesto */}
+      <section className="container-luxe grid gap-16 py-28 md:grid-cols-[1fr_1.4fr]">
+        <div>
+          <span className="eyebrow">The Standard</span>
+          <h2 className="mt-5 text-4xl md:text-5xl">Built for people who notice the details.</h2>
+        </div>
+        <div className="space-y-6 text-lg leading-relaxed text-muted-foreground">
+          <p>
+            Your car isn't just transportation. It's a statement, an investment,
+            and — if you're being honest — something you care about more than
+            most people in your life.
+          </p>
+          <p>
+            We get it. That's why every vehicle that rolls into our shop gets
+            the same standard: <span className="text-foreground">obsessive prep, premium materials, zero shortcuts.</span>
+          </p>
+          <p className="text-foreground">
+            We don't settle for "good enough." Neither should you.
+          </p>
+        </div>
+      </section>
+
+      {/* Services grid */}
+      <section className="border-t border-border bg-[var(--color-onyx)] py-24">
+        <div className="container-luxe">
+          <div className="flex items-end justify-between gap-8 flex-wrap">
+            <div>
+              <span className="eyebrow">Services</span>
+              <h2 className="mt-5 text-4xl md:text-5xl">Four ways to <span className="text-[var(--color-gold)]">elevate</span>.</h2>
+            </div>
+            <Link to="/book" className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)] hover:text-foreground inline-flex items-center gap-2">
+              Get a quote <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          <div className="mt-14 grid gap-6 md:grid-cols-2">
+            {services.map(({ to, label, img, blurb, Icon }) => (
+              <Link
+                key={to}
+                to={to}
+                className="group relative overflow-hidden border border-border bg-background"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img src={img} alt={label} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+                </div>
+                <div className="p-8">
+                  <div className="flex items-center gap-3 text-[var(--color-gold)]">
+                    <Icon size={18} />
+                    <span className="text-[11px] font-bold uppercase tracking-[0.25em]">Service</span>
+                  </div>
+                  <h3 className="mt-4 text-2xl font-bold">{label}</h3>
+                  <p className="mt-3 text-sm text-muted-foreground">{blurb}</p>
+                  <div className="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-foreground transition-colors group-hover:text-[var(--color-gold)]">
+                    Explore <ArrowRight size={14} />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Showroom feature */}
+      <section className="relative isolate overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <img src={showroom} alt="" loading="lazy" className="h-full w-full object-cover opacity-40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
+        </div>
+        <div className="container-luxe py-32">
+          <span className="eyebrow">VIP Showroom</span>
+          <h2 className="mt-5 max-w-3xl text-5xl md:text-6xl">A private space for your collection.</h2>
+          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+            Climate-controlled, secure, and designed to display your vehicles
+            the way they deserve to be seen. By appointment only.
+          </p>
+          <Link
+            to="/vip-showroom"
+            className="mt-10 inline-flex items-center gap-3 border border-[var(--color-gold)] px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)] hover:text-[var(--color-primary-foreground)]"
+          >
+            View the Showroom <ArrowRight size={14} />
+          </Link>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="container-luxe py-28">
+        <span className="eyebrow">Reviews</span>
+        <h2 className="mt-5 text-4xl md:text-5xl">Owners don't <span className="text-[var(--color-gold)]">whisper</span>.</h2>
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
+          {[
+            ["Marcus T.", "Porsche 911 GT3", "Best ceramic coating job I've had on any car. Period. The prep work alone is something other shops skip."],
+            ["Alessandra R.", "Range Rover Autobiography", "They treat the car like it's theirs. Showed me every step. No upsells, no nonsense."],
+            ["David K.", "BMW M5 Competition", "Wrapped in satin black. Flawless edges, perfect alignment. Looks factory."],
+          ].map(([name, car, quote]) => (
+            <div key={name} className="border border-border bg-[var(--color-onyx)] p-8">
+              <div className="flex gap-1 text-[var(--color-gold)]">
+                {[0,1,2,3,4].map(i => <Star key={i} size={14} fill="currentColor" />)}
+              </div>
+              <p className="mt-5 text-base leading-relaxed text-foreground/90">"{quote}"</p>
+              <div className="mt-6 border-t border-border pt-4">
+                <div className="text-sm font-bold">{name}</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{car}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <Link to="/reviews" className="mt-10 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)] hover:text-foreground">
+          Read all reviews <ArrowRight size={14} />
+        </Link>
+      </section>
+
+      <CtaSection />
+    </>
+  );
 }
