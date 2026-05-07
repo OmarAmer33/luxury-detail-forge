@@ -1,0 +1,45 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { ServicePage } from "@/components/site/ServicePage";
+import img from "@/assets/ceramic.jpg";
+
+export const Route = createFileRoute("/ceramic-coating")({
+  head: () => ({
+    meta: [
+      { title: "Ceramic Coating · Top Elite Auto · Springfield NJ" },
+      { name: "description", content: "Premium ceramic coatings in Springfield, NJ. Long-term gloss, hydrophobic protection, and chemical resistance — installed properly the first time." },
+      { property: "og:title", content: "Ceramic Coating · Top Elite Auto" },
+      { property: "og:description", content: "Premium ceramic coatings installed by hand in Springfield, NJ." },
+      { property: "og:image", content: img },
+    ],
+  }),
+  component: () => (
+    <ServicePage
+      eyebrow="Ceramic Coating"
+      title="A finish that earns second looks."
+      subtitle="Multi-year ceramic protection bonded to your paint. Deeper gloss, easier washes, and serious defense against the things that ruin a finish."
+      image={img}
+      intro="A ceramic coating is only as good as the prep underneath it. We decontaminate, machine-polish, and inspect under multiple light sources before a single drop of coating goes on. The result is a finish that looks better than the day the car left the factory — and stays that way."
+      features={[
+        { title: "5–9 Year Protection", body: "Professional-grade coatings rated for years of UV, chemical and contamination resistance." },
+        { title: "Hydrophobic Surface", body: "Water sheets off. Bug guts, sap and bird droppings rinse away instead of etching in." },
+        { title: "Show-Car Gloss", body: "A deeper, slicker, mirror-like finish you can feel with your fingertips." },
+      ]}
+      includes={[
+        "Foam pre-wash and decontamination",
+        "Iron and tar fallout removal",
+        "Clay bar treatment",
+        "Multi-stage paint correction",
+        "Panel-wipe and coating prep",
+        "Premium ceramic coating application",
+        "Wheel face and trim coating add-ons available",
+        "Aftercare kit and wash instructions",
+      ]}
+      process={[
+        { step: "01", title: "Inspect", body: "Walkaround under multiple lighting conditions to map every defect." },
+        { step: "02", title: "Correct", body: "Machine polish to remove swirls, scratches and oxidation." },
+        { step: "03", title: "Coat", body: "Apply ceramic in a controlled environment, panel by panel." },
+        { step: "04", title: "Cure", body: "Vehicle stays with us until the coating is fully cured and inspected." },
+      ]}
+    />
+  ),
+});

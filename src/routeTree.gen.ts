@@ -9,8 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VipShowroomRouteImport } from './routes/vip-showroom'
+import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as PaintProtectionRouteImport } from './routes/paint-protection'
+import { Route as DetailingRouteImport } from './routes/detailing'
+import { Route as CeramicCoatingRouteImport } from './routes/ceramic-coating'
+import { Route as CarWrapsRouteImport } from './routes/car-wraps'
+import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VipShowroomRoute = VipShowroomRouteImport.update({
+  id: '/vip-showroom',
+  path: '/vip-showroom',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaintProtectionRoute = PaintProtectionRouteImport.update({
+  id: '/paint-protection',
+  path: '/paint-protection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DetailingRoute = DetailingRouteImport.update({
+  id: '/detailing',
+  path: '/detailing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CeramicCoatingRoute = CeramicCoatingRouteImport.update({
+  id: '/ceramic-coating',
+  path: '/ceramic-coating',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CarWrapsRoute = CarWrapsRouteImport.update({
+  id: '/car-wraps',
+  path: '/car-wraps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookRoute = BookRouteImport.update({
+  id: '/book',
+  path: '/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +61,130 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/book': typeof BookRoute
+  '/car-wraps': typeof CarWrapsRoute
+  '/ceramic-coating': typeof CeramicCoatingRoute
+  '/detailing': typeof DetailingRoute
+  '/paint-protection': typeof PaintProtectionRoute
+  '/reviews': typeof ReviewsRoute
+  '/vip-showroom': typeof VipShowroomRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/book': typeof BookRoute
+  '/car-wraps': typeof CarWrapsRoute
+  '/ceramic-coating': typeof CeramicCoatingRoute
+  '/detailing': typeof DetailingRoute
+  '/paint-protection': typeof PaintProtectionRoute
+  '/reviews': typeof ReviewsRoute
+  '/vip-showroom': typeof VipShowroomRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/book': typeof BookRoute
+  '/car-wraps': typeof CarWrapsRoute
+  '/ceramic-coating': typeof CeramicCoatingRoute
+  '/detailing': typeof DetailingRoute
+  '/paint-protection': typeof PaintProtectionRoute
+  '/reviews': typeof ReviewsRoute
+  '/vip-showroom': typeof VipShowroomRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/book'
+    | '/car-wraps'
+    | '/ceramic-coating'
+    | '/detailing'
+    | '/paint-protection'
+    | '/reviews'
+    | '/vip-showroom'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/book'
+    | '/car-wraps'
+    | '/ceramic-coating'
+    | '/detailing'
+    | '/paint-protection'
+    | '/reviews'
+    | '/vip-showroom'
+  id:
+    | '__root__'
+    | '/'
+    | '/book'
+    | '/car-wraps'
+    | '/ceramic-coating'
+    | '/detailing'
+    | '/paint-protection'
+    | '/reviews'
+    | '/vip-showroom'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BookRoute: typeof BookRoute
+  CarWrapsRoute: typeof CarWrapsRoute
+  CeramicCoatingRoute: typeof CeramicCoatingRoute
+  DetailingRoute: typeof DetailingRoute
+  PaintProtectionRoute: typeof PaintProtectionRoute
+  ReviewsRoute: typeof ReviewsRoute
+  VipShowroomRoute: typeof VipShowroomRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/vip-showroom': {
+      id: '/vip-showroom'
+      path: '/vip-showroom'
+      fullPath: '/vip-showroom'
+      preLoaderRoute: typeof VipShowroomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paint-protection': {
+      id: '/paint-protection'
+      path: '/paint-protection'
+      fullPath: '/paint-protection'
+      preLoaderRoute: typeof PaintProtectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/detailing': {
+      id: '/detailing'
+      path: '/detailing'
+      fullPath: '/detailing'
+      preLoaderRoute: typeof DetailingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ceramic-coating': {
+      id: '/ceramic-coating'
+      path: '/ceramic-coating'
+      fullPath: '/ceramic-coating'
+      preLoaderRoute: typeof CeramicCoatingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/car-wraps': {
+      id: '/car-wraps'
+      path: '/car-wraps'
+      fullPath: '/car-wraps'
+      preLoaderRoute: typeof CarWrapsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book': {
+      id: '/book'
+      path: '/book'
+      fullPath: '/book'
+      preLoaderRoute: typeof BookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +197,14 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BookRoute: BookRoute,
+  CarWrapsRoute: CarWrapsRoute,
+  CeramicCoatingRoute: CeramicCoatingRoute,
+  DetailingRoute: DetailingRoute,
+  PaintProtectionRoute: PaintProtectionRoute,
+  ReviewsRoute: ReviewsRoute,
+  VipShowroomRoute: VipShowroomRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
