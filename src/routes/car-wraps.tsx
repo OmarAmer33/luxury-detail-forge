@@ -39,6 +39,12 @@ export const Route = createFileRoute("/car-wraps")({
         { step: "03", title: "Wrap", body: "Hand-installed in a controlled, dust-free environment." },
         { step: "04", title: "Finish", body: "Edges sealed, knifeless cuts inspected, post-heat applied." },
       ]}
+      pricing={{
+        tiers: [
+          { name: "Vinyl Wrap", price: "Quote-based", note: "Varies by coverage area, vehicle and material" },
+        ],
+        footnote: "Book a consult — we'll walk through finishes and quote on the spot.",
+      }}
     />
   ),
 });

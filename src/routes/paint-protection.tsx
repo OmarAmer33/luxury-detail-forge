@@ -39,6 +39,12 @@ export const Route = createFileRoute("/paint-protection")({
         { step: "03", title: "Install", body: "Hand-installed in a controlled, dust-free environment." },
         { step: "04", title: "Inspect", body: "Final inspection, cure period and care instructions." },
       ]}
+      pricing={{
+        tiers: [
+          { name: "Paint Protection Film", price: "Quote-based", note: "Varies by coverage area, vehicle and material" },
+        ],
+        footnote: "Book a consult — we'll walk through coverage options and quote on the spot.",
+      }}
     />
   ),
 });

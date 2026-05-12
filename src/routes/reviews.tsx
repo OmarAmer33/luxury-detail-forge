@@ -17,13 +17,13 @@ export const Route = createFileRoute("/reviews")({
   component: Reviews,
 });
 
+const PLACEHOLDER = "[ Quote from Google review · pending content pass ]";
+
 const reviews = [
-  { name: "Marcus T.", car: "Porsche 911 GT3", quote: "Best ceramic coating job I've had on any car. Period. The prep work alone is something other shops skip — these guys obsess over it." },
-  { name: "Alessandra R.", car: "Range Rover Autobiography", quote: "They treat the car like it's theirs. Walked me through every step. No upsells, no nonsense, just craftsmanship." },
-  { name: "David K.", car: "BMW M5 Competition", quote: "Wrapped in satin black. Flawless edges, perfect alignment. Genuinely looks like it came from the factory that way." },
-  { name: "Priya S.", car: "Tesla Model S Plaid", quote: "Full front PPF and ceramic. Not a single bubble, edge or flaw. Worth every dollar to know my paint is safe." },
-  { name: "Jonathan V.", car: "Mercedes G63", quote: "Picked it up looking better than the day I bought it. Interior was pristine, paint was glass." },
-  { name: "Carla M.", car: "Audi RS6 Avant", quote: "Honest pricing, no upsells, and they actually answer the phone. Rare combo. Will be back." },
+  { name: "Sarah Mejia", quote: PLACEHOLDER },
+  { name: "Racsaida Morel", quote: PLACEHOLDER },
+  { name: "Diana Franco", quote: PLACEHOLDER },
+  { name: "Vincent Gonzalez", quote: PLACEHOLDER },
 ];
 
 function Reviews() {
@@ -55,10 +55,10 @@ function Reviews() {
               <div className="flex gap-1 text-[var(--color-gold)]">
                 {[0,1,2,3,4].map(i => <Star key={i} size={14} fill="currentColor" />)}
               </div>
-              <p className="mt-5 text-base leading-relaxed text-foreground/90">"{r.quote}"</p>
+              <p className="mt-5 text-base leading-relaxed text-foreground/90">{r.quote}</p>
               <div className="mt-6 border-t border-border pt-4">
                 <div className="text-sm font-bold">{r.name}</div>
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{r.car}</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Google review</div>
               </div>
             </article>
           ))}
