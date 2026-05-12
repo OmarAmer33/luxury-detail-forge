@@ -37,7 +37,10 @@ export function Footer() {
           <h4 className="text-xs font-bold uppercase tracking-[0.25em] text-foreground gold-underline">Contact</h4>
           <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
             <li><a href="tel:9082933934" className="flex items-center gap-3 hover:text-[var(--color-gold)]"><Phone size={16} className="text-[var(--color-gold)]" />908.293.3934</a></li>
-            <li><a href="mailto:info@topeliteauto.com" className="flex items-center gap-3 hover:text-[var(--color-gold)]"><Mail size={16} className="text-[var(--color-gold)]" />info@topeliteauto.com</a></li>
+            <li>
+              <a href="mailto:info@topeliteauto.com" className="flex items-center gap-3 hover:text-[var(--color-gold)]"><Mail size={16} className="text-[var(--color-gold)]" />info@topeliteauto.com</a>
+              <span className="ml-7 mt-1 block text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">(TBD — pending confirmation)</span>
+            </li>
           </ul>
           <div className="mt-6 flex gap-3">
             {[
