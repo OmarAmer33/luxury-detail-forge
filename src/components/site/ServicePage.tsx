@@ -73,6 +73,29 @@ export function ServicePage(props: ServicePageProps) {
         </ul>
       </section>
 
+      {props.pricing && (
+        <section className="border-t border-border py-24">
+          <div className="container-luxe">
+            <span className="eyebrow">Pricing</span>
+            <h2 className="mt-5 text-4xl md:text-5xl">Starting at.</h2>
+            <div className="mt-12 grid gap-px bg-border border border-border">
+              {props.pricing.tiers.map((t) => (
+                <div key={t.name} className="grid grid-cols-[1fr_auto] items-baseline gap-6 bg-background p-6 md:p-8">
+                  <div>
+                    <div className="text-lg font-bold">{t.name}</div>
+                    {t.note && <div className="mt-1 text-xs uppercase tracking-[0.2em] text-muted-foreground">{t.note}</div>}
+                  </div>
+                  <div className="text-xl font-black text-[var(--color-gold)] md:text-2xl whitespace-nowrap">{t.price}</div>
+                </div>
+              ))}
+            </div>
+            {props.pricing.footnote && (
+              <p className="mt-6 text-xs uppercase tracking-[0.2em] text-muted-foreground">{props.pricing.footnote}</p>
+            )}
+          </div>
+        </section>
+      )}
+
       <section className="border-t border-border bg-[var(--color-onyx)] py-24">
         <div className="container-luxe">
           <span className="eyebrow">Process</span>
