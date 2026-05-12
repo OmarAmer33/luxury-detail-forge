@@ -1,23 +1,20 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, MapPin, Phone, Mail, Clock } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 export function Footer() {
   return (
     <footer className="border-t border-border bg-[var(--color-onyx)]">
       <div className="container-luxe grid gap-12 py-16 md:grid-cols-4">
         <div className="md:col-span-1">
-          <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center border border-[var(--color-gold)] font-black text-[var(--color-gold)]">
-              TE
-            </span>
-            <div>
-              <div className="text-sm font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
-                Top Elite Auto
-              </div>
-              <div className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                Springfield, NJ
-              </div>
-            </div>
+          <img
+            src={logo}
+            alt="Top Elite Auto"
+            className="h-16 w-auto"
+            style={{ filter: "invert(1) hue-rotate(180deg)" }}
+          />
+          <div className="mt-3 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            Springfield, NJ
           </div>
           <p className="mt-6 text-sm text-muted-foreground">
             Premium ceramic coating, paint protection, wraps and detailing.

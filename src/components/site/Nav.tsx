@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const links = [
   { to: "/", label: "Home" },
@@ -32,18 +33,13 @@ export function Nav() {
       }`}
     >
       <div className="container-luxe flex h-20 items-center justify-between">
-        <Link to="/" className="group flex items-center gap-3" onClick={() => setOpen(false)}>
-          <span className="flex h-9 w-9 items-center justify-center border border-[var(--color-gold)] text-[var(--color-gold)] font-black text-sm tracking-tighter">
-            TE
-          </span>
-          <div className="leading-none">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[var(--color-gold)]">
-              Top Elite
-            </div>
-            <div className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-              Auto · Springfield NJ
-            </div>
-          </div>
+        <Link to="/" className="group flex items-center" onClick={() => setOpen(false)} aria-label="Top Elite Auto — home">
+          <img
+            src={logo}
+            alt="Top Elite Auto"
+            className="h-12 w-auto md:h-14"
+            style={{ filter: "invert(1) hue-rotate(180deg)" }}
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
