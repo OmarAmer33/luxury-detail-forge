@@ -162,7 +162,7 @@ function Home() {
                 )}
                 <div className={`relative overflow-hidden ${wide ? "aspect-[21/9]" : "aspect-[16/10]"}`}>
                   <img src={img} alt={label} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                 </div>
                 <div className="p-8">
                   <div className="flex items-center gap-3 text-[var(--color-gold)]">
