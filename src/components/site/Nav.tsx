@@ -38,7 +38,6 @@ export function Nav() {
             src={logo}
             alt="Top Elite Auto"
             className="h-12 w-auto md:h-14"
-            style={{ filter: "invert(1) hue-rotate(180deg)" }}
           />
         </Link>
 
