@@ -59,7 +59,7 @@ function VIP() {
         </div>
       </section>
 
-      <section className="border-y border-border bg-[var(--color-onyx)] py-24">
+      <section className="border-y border-border surface-dark py-24">
         <div className="container-luxe grid gap-16 md:grid-cols-2">
           <div>
             <span className="eyebrow">What's included</span>
@@ -88,12 +88,12 @@ function VIP() {
         <span className="eyebrow">Pricing</span>
         <h2 className="mt-5 text-4xl md:text-5xl">Starting at.</h2>
         <div className="mt-12 grid gap-6 md:grid-cols-2">
-          <div className="border border-border bg-[var(--color-onyx)] p-8">
+          <div className="border border-border surface-dark p-8">
             <div className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">Cars</div>
             <div className="mt-4 text-5xl font-black text-[var(--color-gold)]">$515</div>
             <div className="mt-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">Starting · ~4 hours</div>
           </div>
-          <div className="border border-border bg-[var(--color-onyx)] p-8">
+          <div className="border border-border surface-dark p-8">
             <div className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">SUVs &amp; Trucks</div>
             <div className="mt-4 text-5xl font-black text-[var(--color-gold)]">$665</div>
             <div className="mt-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">Starting · ~4 hours</div>

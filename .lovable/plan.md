@@ -1,82 +1,105 @@
-## Top Elite Auto — v2 (final, ready to build)
+# v3 — Color System Update (Light + Red)
 
-### 1. VIP Showroom page — full rewrite (`src/routes/vip-showroom.tsx`)
-Top-tier ~4-hour multi-stage premium detail (not storage).
-- Hero: eyebrow "VIP Detail · Top Tier", title "The full reset.", subtitle on the 4-hour multi-stage premium detail.
-- Replace membership/perks with **service inclusions**: full multi-stage decon, hand wash, clay bar, iron remover, deep interior (vacuum + steam + leather conditioning + vent detail), engine bay clean, light paint correction, premium sealant, tire & wheel detail.
-- Pricing: **$515 starting (Cars) / $665 starting (SUVs & Trucks)**, ~4 hours.
-- CTA: **"Reserve a VIP Slot"** → `/book`.
+Pure design token swap. No copy, structure, route, or layout changes.
 
-### 2. Real reviewer names + clear placeholder copy
-Placeholder text everywhere: **`[ Quote from Google review · pending content pass ]`**.
-- **Home** (3): Sarah Mejia, Racsaida Morel, Diana Franco. Drop the vehicle line entirely.
-- **`reviews.tsx`** (4): Sarah Mejia, Racsaida Morel, Diana Franco, Vincent Gonzalez. Same pattern.
+## 1. Token rewrite — `src/styles.css`
 
-### 3. Home stats row → three stats
-- `5.0★` Google Rated
-- `Springfield, NJ` Est. 2018
-- `Mon–Sat` 9am – 6pm
+Flip `:root` to a light-mode palette and rename gold → red, onyx → section-dark. Remove the `dark` class from `<html>` in `__root.tsx` so the light tokens apply by default.
 
-(Grid → `sm:grid-cols-3`.)
+New token values:
 
-### 4. "Starting at" pricing on every service page
-Extend `ServicePageProps` with optional `pricing?: { tiers: { name: string; price: string; note?: string }[]; footnote?: string }`. Render between Includes and Process.
+```
+--background:        #FFFFFF
+--foreground:        #0A0A0A
+--section-dark:      #0A0A0A   (was --onyx)
+--section-dark-fg:   #FFFFFF
+--card:              #FFFFFF
+--popover:           #FFFFFF
+--primary:           #B91C1C   (was gold)
+--primary-foreground:#FFFFFF
+--red:               #B91C1C   (replaces --gold)
+--red-soft:          #DC2626   (replaces --gold-soft)
+--secondary:         #F5F5F5
+--muted:             #F5F5F5
+--muted-foreground:  #6B6B6B
+--accent:            #B91C1C
+--accent-foreground: #FFFFFF
+--border:            #E5E5E5
+--border-dark:       #2A2A2A
+--input:             #E5E5E5
+--ring:              #B91C1C
+--star-gold:         #FCB424
+```
 
-- **In-Shop Detailing** — 3-tier (Car / SUV-Pickup / 3-Row-XL):
-  - Elite Wash — **$115 / $115 / $140**
-  - Maintenance Detail — $180 / $210 / $240
-  - Interior Detail — $205 / $230 / $255
-  - Exterior Detail — $205 / $230 / $255
-  - Full Detail — $330 / $380 / $430
-- **Ceramic Coating**: 2-Year starting $850 · 5-Year starting $950 · Motorcycle $300
-- **VIP Showroom**: $515 (Cars) / $665 (SUVs & Trucks) starting
-- **PPF** & **Wraps**: *"Quote-based — varies by coverage area, vehicle and material."* + Book CTA.
+Temporarily alias `--color-gold` → `--color-red` and `--color-onyx` → `--color-section-dark` so component classes keep working during the rename. Rename `.gold-underline` → `.red-underline` and keep the old class as an alias mid-rename.
 
-### 5. Window Tint — inline composition on detailing route
-**Not** a `ServicePage` prop. Wrap `<ServicePage>` in a fragment on `detailing.tsx` and render the Window Tint section after it.
+## 2. Component renames (mechanical)
 
-- Front Windshield Only — $150
-- Standard Sedan / Coupe — $290
-- Standard SUV — $415
-- Ceramic Coupe — $560 (windshield $660)
-- Ceramic Sedan — $575 (windshield $760)
-- Ceramic SUV (with windshield) — $815
-- Box Truck 5% Ceramic — $400
+In every file using the tokens:
 
-### 6. Home services grid — 5 cards, VIP full-width on bottom row
-Order: Ceramic Coating, Paint Protection (PPF), Car Wraps, In-Shop Detailing, VIP Showroom.
-Layout (`md:grid-cols-2 lg:grid-cols-3`):
-- Ceramic / PPF / Wraps / In-Shop Detailing render as standard cards.
-- **VIP Showroom card uses `md:col-span-2 lg:col-span-2`** so it takes the full row at md (avoids an empty cell) and visually dominates at lg. Carries a gold **"Top Tier"** badge.
-- Headline: "**Five** ways to elevate."
-- Remove the standalone VIP feature section (no double promotion).
+- `var(--color-gold)` → `var(--color-red)`
+- `var(--color-gold-soft)` → `var(--color-red-soft)`
+- `var(--color-onyx)` → `var(--color-section-dark)`
+- `gold-underline` → `red-underline`
 
-### 7. Booking form (`src/routes/book.tsx`)
-- Required **Vehicle Condition**: Excellent / Good / Fair / Heavy Use.
-- Required **Preferred Time**: 9 AM, 10, 11, 12, 1, 2, 3, 4 PM.
-  - *Known gap (not solved here):* late slots can run past close. Derek confirms manually; GHL workflow handles in Phase 3.
-- Optional **How did you hear about us**: Google, Instagram, Referral, Drove By, Returning Customer, Other.
-- **Block Sundays** via Zod refinement (`new Date(value).getDay() !== 0`) with message "We're closed Sundays — please pick another day." Helper text under the date field: "Closed Sundays."
+Semantics carry over: gold → red everywhere (eyebrows, CTAs, pricing numbers, accents); onyx → black accent bands.
 
-### 8. "We also do" — home page band
-Compact section between Manifesto and Services. Inline pills, no links.
-> Paintless Dent Removal · Powder Coating · Headlight Restoration · Ozone Treatment · Engine Bay Detail · Leather Conditioning
+## 3. Light default + intentional dark accent rhythm
 
-(Chrome Delete intentionally omitted — pending client confirmation.)
+`bg-background` becomes white (now the dominant page color). `bg-[var(--color-section-dark)]` becomes the intentional black accent bands.
 
-### 9. Email marked TBD
-In `Footer.tsx` and `book.tsx` aside, append small muted tag next to `info@topeliteauto.com`: **"(TBD — pending confirmation)"**.
+Current usage already alternates well — keep existing onyx blocks as the dark accents (ServicePage features + process bands, CtaSection band, etc.). No structural changes.
 
-### Files touched
-- `src/routes/index.tsx`
-- `src/routes/vip-showroom.tsx`
-- `src/routes/reviews.tsx`
-- `src/routes/detailing.tsx`
-- `src/routes/ceramic-coating.tsx`
-- `src/routes/paint-protection.tsx`
-- `src/routes/car-wraps.tsx`
-- `src/routes/book.tsx`
-- `src/components/site/ServicePage.tsx` (only the `pricing` prop)
-- `src/components/site/Footer.tsx`
+**Dark-section text + border audit (required):**
 
-No new dependencies. No schema changes.
+Grep for `text-foreground`, `text-foreground/90`, and `border-border` inside any block whose container or ancestor uses `bg-[var(--color-onyx)]` / `bg-[var(--color-section-dark)]`. Override each:
+
+- text → `text-white` (or `text-[var(--color-section-dark-fg)]`)
+- border → `border-[var(--color-border-dark)]` or inline `border-[#2A2A2A]`
+
+Highest-risk files:
+- `ServicePage.tsx` — "Engineered to last" features band + "How we work" process band
+- `CtaSection.tsx` — full dark band before footer
+- `Footer.tsx` — entire dark surface
+- `vip-showroom.tsx` — includes list and any dark-section content
+- Audit `index.tsx`, `reviews.tsx`, `detailing.tsx` for any section-scoped overrides too
+
+## 4. PageHero — keep hero text white over imagery
+
+`src/components/site/PageHero.tsx` renders eyebrow / title / subtitle over a dark-image background. With the global `--foreground` flipping to near-black, inherited text would become unreadable on hero imagery.
+
+Fix: explicitly force white on hero text regardless of global foreground.
+
+- Title `<h1>` → add `text-white`
+- Subtitle `<p>` → change `text-muted-foreground` to `text-white/80` (preserve the muted hierarchy without depending on the new light muted token)
+- Eyebrow → already uses `text-[var(--color-red)]` after rename; verify the `::before` line still reads on dark imagery (red on dark hero is fine)
+
+This single fix covers every service page hero (ceramic-coating, paint-protection, car-wraps, detailing, vip-showroom).
+
+## 5. Footer
+
+Footer stays dark. Force `bg-[var(--color-section-dark)]` and `text-white` (and white/70 for muted lines) explicitly — don't rely on global foreground.
+
+## 6. Nav
+
+Scrolled nav becomes white-blurred automatically via `bg-background/85`. Logo filter `invert(1) hue-rotate(180deg)` was designed for white-on-black; on the white nav it would render the logo black. **Remove the filter in `Nav.tsx`** so the native red car silhouette shows on white. **Keep the filter in `Footer.tsx`** so the logo stays light on the dark footer.
+
+## 7. VIP "Top Tier" badge
+
+In `index.tsx`, swap badge to red bg + white text.
+
+## 8. Reviews stars
+
+Star icons currently use `text-[var(--color-gold)]`. After step 2 they'd turn red. Change those star icons specifically to `text-[var(--color-star-gold)]` (#FCB424) to keep convention.
+
+## 9. Cleanup
+
+After visual verification, remove the temporary `--color-gold`, `--color-onyx`, and `.gold-underline` aliases from `styles.css`.
+
+## Files touched
+
+`src/styles.css`, `src/routes/__root.tsx`, `src/components/site/Nav.tsx`, `Footer.tsx`, `CtaSection.tsx`, `ServicePage.tsx`, `PageHero.tsx`, `src/routes/index.tsx`, `vip-showroom.tsx`, `detailing.tsx`, `reviews.tsx`, `book.tsx`, `ceramic-coating.tsx`, `paint-protection.tsx`, `car-wraps.tsx`.
+
+## Out of scope
+
+Typography, copy, layout, routes, pricing data, form fields, components, real reviewer names, placeholders.

@@ -40,7 +40,7 @@ function Reviews() {
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6 border-b border-border pb-8">
           <div>
             <div className="text-6xl font-black text-[var(--color-gold)]">5.0</div>
-            <div className="mt-2 flex items-center gap-1 text-[var(--color-gold)]">
+            <div className="mt-2 flex items-center gap-1 text-[var(--color-star-gold)]">
               {[0,1,2,3,4].map(i => <Star key={i} size={16} fill="currentColor" />)}
             </div>
           </div>
@@ -51,8 +51,8 @@ function Reviews() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {reviews.map((r) => (
-            <article key={r.name} className="border border-border bg-[var(--color-onyx)] p-8">
-              <div className="flex gap-1 text-[var(--color-gold)]">
+            <article key={r.name} className="border border-border surface-dark p-8">
+              <div className="flex gap-1 text-[var(--color-star-gold)]">
                 {[0,1,2,3,4].map(i => <Star key={i} size={14} fill="currentColor" />)}
               </div>
               <p className="mt-5 text-base leading-relaxed text-foreground/90">{r.quote}</p>

@@ -103,7 +103,7 @@ function Book() {
       />
 
       <section className="container-luxe grid gap-16 py-24 lg:grid-cols-[1.6fr_1fr]">
-        <div className="border border-border bg-[var(--color-onyx)] p-8 md:p-12">
+        <div className="border border-border surface-dark p-8 md:p-12">
           {status === "success" ? (
             <div className="flex flex-col items-start gap-4">
               <div className="flex h-12 w-12 items-center justify-center bg-[var(--color-gold)] text-[var(--color-primary-foreground)]">
