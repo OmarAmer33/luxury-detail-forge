@@ -38,6 +38,7 @@ export function Nav() {
             src={logo}
             alt="Top Elite Auto"
             className="h-12 w-auto md:h-14"
+            style={scrolled ? undefined : { filter: "invert(1) hue-rotate(180deg)" }}
           />
         </Link>
 
@@ -47,7 +48,9 @@ export function Nav() {
               key={l.to}
               to={l.to}
               activeOptions={{ exact: l.to === "/" }}
-              className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/80 transition-colors hover:text-[var(--color-gold)] data-[status=active]:text-[var(--color-gold)]"
+              className={`text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:text-[var(--color-red)] data-[status=active]:text-[var(--color-red)] ${
+                scrolled ? "text-foreground/80" : "text-white/85"
+              }`}
             >
               {l.label}
             </Link>
@@ -57,19 +60,21 @@ export function Nav() {
         <div className="flex items-center gap-3">
           <a
             href="tel:9082933934"
-            className="hidden text-xs font-semibold uppercase tracking-[0.18em] text-foreground/80 hover:text-[var(--color-gold)] md:inline"
+            className={`hidden text-xs font-semibold uppercase tracking-[0.18em] hover:text-[var(--color-red)] md:inline ${
+              scrolled ? "text-foreground/80" : "text-white/85"
+            }`}
           >
             908.293.3934
           </a>
           <Link
             to="/book"
-            className="hidden bg-[var(--color-gold)] px-5 py-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-primary-foreground)] transition-all hover:bg-[var(--color-gold-soft)] sm:inline-block"
+            className="hidden bg-[var(--color-red)] px-5 py-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-primary-foreground)] transition-all hover:bg-[var(--color-red-soft)] sm:inline-block"
           >
             Book Now
           </Link>
           <button
             aria-label="Menu"
-            className="lg:hidden text-foreground"
+            className={`lg:hidden ${scrolled ? "text-foreground" : "text-white"}`}
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X size={24} /> : <Menu size={24} />}
