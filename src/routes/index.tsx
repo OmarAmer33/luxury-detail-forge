@@ -192,7 +192,7 @@ function Home() {
             "Diana Franco",
           ].map((name) => (
             <div key={name} className="border border-border surface-dark p-8">
-              <div className="flex gap-1 text-[var(--color-gold)]">
+              <div className="flex gap-1 text-[var(--color-star-gold)]">
                 {[0,1,2,3,4].map(i => <Star key={i} size={14} fill="currentColor" />)}
               </div>
               <p className="mt-5 text-base leading-relaxed text-foreground/90">[ Quote from Google review · pending content pass ]</p>
