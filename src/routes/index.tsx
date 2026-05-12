@@ -19,10 +19,20 @@ export const Route = createFileRoute("/")({
 });
 
 const services = [
-  { to: "/ceramic-coating", label: "Ceramic Coating", img: ceramic, blurb: "Years of gloss and protection — bonded at the molecular level.", Icon: Sparkles },
-  { to: "/paint-protection", label: "Paint Protection (PPF)", img: ppf, blurb: "Self-healing film that absorbs the road so your paint doesn't.", Icon: ShieldCheck },
-  { to: "/car-wraps", label: "Car Wraps", img: wraps, blurb: "Color, finish, presence. Wrap it, change it, own it.", Icon: Layers },
-  { to: "/detailing", label: "In-Shop Detailing", img: detailing, blurb: "Hand wash, paint correction, interior reset. Showroom every time.", Icon: Wrench },
+  { to: "/ceramic-coating", label: "Ceramic Coating", img: ceramic, blurb: "Years of gloss and protection — bonded at the molecular level.", Icon: Sparkles, wide: false, badge: undefined as string | undefined },
+  { to: "/paint-protection", label: "Paint Protection (PPF)", img: ppf, blurb: "Self-healing film that absorbs the road so your paint doesn't.", Icon: ShieldCheck, wide: false, badge: undefined },
+  { to: "/car-wraps", label: "Car Wraps", img: wraps, blurb: "Color, finish, presence. Wrap it, change it, own it.", Icon: Layers, wide: false, badge: undefined },
+  { to: "/detailing", label: "In-Shop Detailing", img: detailing, blurb: "Hand wash, paint correction, interior reset. Showroom every time.", Icon: Wrench, wide: false, badge: undefined },
+  { to: "/vip-showroom", label: "VIP Detail", img: showroom, blurb: "Our top-tier 4-hour multi-stage detail. The full reset, inside and out.", Icon: Sparkles, wide: true, badge: "Top Tier" },
+];
+
+const alsoWeDo = [
+  "Paintless Dent Removal",
+  "Powder Coating",
+  "Headlight Restoration",
+  "Ozone Treatment",
+  "Engine Bay Detail",
+  "Leather Conditioning",
 ];
 
 function Home() {
@@ -68,11 +78,10 @@ function Home() {
             </Link>
           </div>
 
-          <div className="mt-16 grid max-w-3xl grid-cols-2 gap-10 border-t border-border pt-8 sm:grid-cols-4">
+          <div className="mt-16 grid max-w-3xl grid-cols-1 gap-10 border-t border-border pt-8 sm:grid-cols-3">
             {[
-              ["10+", "Years experience"],
-              ["1,200+", "Vehicles protected"],
-              ["5★", "On Google & Yelp"],
+              ["5.0★", "Google Rated"],
+              ["Springfield, NJ", "Est. 2018"],
               ["Mon–Sat", "9am – 6pm"],
             ].map(([k, v]) => (
               <div key={v}>
