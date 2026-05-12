@@ -39,25 +39,25 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate min-h-[100svh] overflow-hidden">
+      <section className="surface-dark relative isolate min-h-[100svh] overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <img
             src={heroCar}
             alt="Black exotic sports car in luxury showroom at night"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover opacity-70"
             fetchPriority="high"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/40 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent" />
         </div>
 
         <div className="container-luxe flex min-h-[100svh] flex-col justify-center pb-20 pt-32">
           <span className="eyebrow">Top Elite Auto · Springfield NJ</span>
-          <h1 className="mt-8 max-w-5xl text-6xl md:text-8xl">
-            We don't do <span className="text-[var(--color-gold)]">average</span>.
+          <h1 className="mt-8 max-w-5xl text-6xl md:text-8xl text-white">
+            We don't do <span className="text-[var(--color-red)]">average</span>.
             <br />We don't <span className="italic font-light">cut corners</span>.
           </h1>
-          <p className="mt-8 max-w-xl text-lg text-muted-foreground">
+          <p className="mt-8 max-w-xl text-lg text-white/80">
             Premium ceramic coating, paint protection, wraps and detailing —
             executed at a national level, right here in Springfield, New Jersey.
           </p>
@@ -65,28 +65,28 @@ function Home() {
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
               to="/book"
-              className="group inline-flex items-center gap-3 bg-[var(--color-gold)] px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-primary-foreground)] transition-all hover:bg-[var(--color-gold-soft)]"
+              className="group inline-flex items-center gap-3 bg-[var(--color-red)] px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-primary-foreground)] transition-all hover:bg-[var(--color-red-soft)]"
             >
               Book Your Appointment
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               to="/vip-showroom"
-              className="inline-flex items-center gap-3 border border-border px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-foreground transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+              className="inline-flex items-center gap-3 border border-white/30 px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-white transition-colors hover:border-[var(--color-red)] hover:text-[var(--color-red)]"
             >
               Step Inside the Showroom
             </Link>
           </div>
 
-          <div className="mt-16 grid max-w-3xl grid-cols-1 gap-10 border-t border-border pt-8 sm:grid-cols-3">
+          <div className="mt-16 grid max-w-3xl grid-cols-1 gap-10 border-t border-white/15 pt-8 sm:grid-cols-3">
             {[
               ["5.0★", "Google Rated"],
               ["Springfield, NJ", "Est. 2018"],
               ["Mon–Sat", "9am – 6pm"],
             ].map(([k, v]) => (
               <div key={v}>
-                <div className="text-2xl font-black text-[var(--color-gold)]">{k}</div>
-                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{v}</div>
+                <div className="text-2xl font-black text-[var(--color-red)]">{k}</div>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70">{v}</div>
               </div>
             ))}
           </div>
