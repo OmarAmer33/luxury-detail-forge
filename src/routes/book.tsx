@@ -22,8 +22,17 @@ const schema = z.object({
   phone: z.string().trim().min(7, "Phone is required").max(30),
   email: z.string().trim().email("Valid email required").max(255),
   vehicle: z.string().trim().min(2, "Vehicle info required").max(120),
+  condition: z.string().min(1, "Pick a condition"),
   service: z.string().min(1, "Pick a service"),
-  date: z.string().min(1, "Pick a date"),
+  date: z
+    .string()
+    .min(1, "Pick a date")
+    .refine((v) => {
+      const d = new Date(v + "T12:00:00");
+      return !isNaN(d.getTime()) && d.getDay() !== 0;
+    }, "We're closed Sundays — please pick another day."),
+  time: z.string().min(1, "Pick a time"),
+  hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
 });
 
@@ -33,8 +42,18 @@ const services = [
   "Vinyl Wrap",
   "Full Detail",
   "Paint Correction",
-  "VIP Showroom Inquiry",
+  "VIP Detail (Top Tier)",
+  "Window Tint",
   "Not sure — recommend something",
+];
+
+const conditions = ["Excellent", "Good", "Fair", "Heavy Use"];
+const times = [
+  "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+  "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM",
+];
+const hearAboutOptions = [
+  "Google", "Instagram", "Referral", "Drove By", "Returning Customer", "Other",
 ];
 
 function Book() {
@@ -130,6 +149,14 @@ function Book() {
                 {errors.vehicle && <p className="mt-1 text-xs text-destructive">{errors.vehicle}</p>}
               </div>
               <div>
+                <label className={labelClass} htmlFor="condition">Vehicle condition</label>
+                <select id="condition" name="condition" defaultValue="" className={fieldClass}>
+                  <option value="" disabled>Select condition</option>
+                  {conditions.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+                {errors.condition && <p className="mt-1 text-xs text-destructive">{errors.condition}</p>}
+              </div>
+              <div>
                 <label className={labelClass} htmlFor="service">Service of interest</label>
                 <select id="service" name="service" defaultValue="" className={fieldClass}>
                   <option value="" disabled>Select a service</option>
@@ -139,8 +166,24 @@ function Book() {
               </div>
               <div>
                 <label className={labelClass} htmlFor="date">Preferred date</label>
-                <input id="date" name="date" type="date" className={fieldClass} />
+                <input id="date" name="date" type="date" min={new Date().toISOString().slice(0,10)} className={fieldClass} />
+                <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">Closed Sundays.</p>
                 {errors.date && <p className="mt-1 text-xs text-destructive">{errors.date}</p>}
+              </div>
+              <div>
+                <label className={labelClass} htmlFor="time">Preferred time</label>
+                <select id="time" name="time" defaultValue="" className={fieldClass}>
+                  <option value="" disabled>Select a time</option>
+                  {times.map((t) => <option key={t} value={t}>{t}</option>)}
+                </select>
+                {errors.time && <p className="mt-1 text-xs text-destructive">{errors.time}</p>}
+              </div>
+              <div className="md:col-span-2">
+                <label className={labelClass} htmlFor="hearAbout">How did you hear about us?</label>
+                <select id="hearAbout" name="hearAbout" defaultValue="" className={fieldClass}>
+                  <option value="">Optional</option>
+                  {hearAboutOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+                </select>
               </div>
               <div className="md:col-span-2">
                 <label className={labelClass} htmlFor="notes">Notes</label>
@@ -180,6 +223,7 @@ function Book() {
               <div>
                 <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Email</div>
                 <a href="mailto:info@topeliteauto.com" className="text-foreground hover:text-[var(--color-gold)]">info@topeliteauto.com</a>
+                <div className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">(TBD — pending confirmation)</div>
               </div>
             </li>
             <li className="flex gap-4">

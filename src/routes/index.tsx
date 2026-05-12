@@ -19,10 +19,20 @@ export const Route = createFileRoute("/")({
 });
 
 const services = [
-  { to: "/ceramic-coating", label: "Ceramic Coating", img: ceramic, blurb: "Years of gloss and protection — bonded at the molecular level.", Icon: Sparkles },
-  { to: "/paint-protection", label: "Paint Protection (PPF)", img: ppf, blurb: "Self-healing film that absorbs the road so your paint doesn't.", Icon: ShieldCheck },
-  { to: "/car-wraps", label: "Car Wraps", img: wraps, blurb: "Color, finish, presence. Wrap it, change it, own it.", Icon: Layers },
-  { to: "/detailing", label: "In-Shop Detailing", img: detailing, blurb: "Hand wash, paint correction, interior reset. Showroom every time.", Icon: Wrench },
+  { to: "/ceramic-coating", label: "Ceramic Coating", img: ceramic, blurb: "Years of gloss and protection — bonded at the molecular level.", Icon: Sparkles, wide: false, badge: undefined as string | undefined },
+  { to: "/paint-protection", label: "Paint Protection (PPF)", img: ppf, blurb: "Self-healing film that absorbs the road so your paint doesn't.", Icon: ShieldCheck, wide: false, badge: undefined },
+  { to: "/car-wraps", label: "Car Wraps", img: wraps, blurb: "Color, finish, presence. Wrap it, change it, own it.", Icon: Layers, wide: false, badge: undefined },
+  { to: "/detailing", label: "In-Shop Detailing", img: detailing, blurb: "Hand wash, paint correction, interior reset. Showroom every time.", Icon: Wrench, wide: false, badge: undefined },
+  { to: "/vip-showroom", label: "VIP Detail", img: showroom, blurb: "Our top-tier 4-hour multi-stage detail. The full reset, inside and out.", Icon: Sparkles, wide: true, badge: "Top Tier" },
+];
+
+const alsoWeDo = [
+  "Paintless Dent Removal",
+  "Powder Coating",
+  "Headlight Restoration",
+  "Ozone Treatment",
+  "Engine Bay Detail",
+  "Leather Conditioning",
 ];
 
 function Home() {
@@ -68,11 +78,10 @@ function Home() {
             </Link>
           </div>
 
-          <div className="mt-16 grid max-w-3xl grid-cols-2 gap-10 border-t border-border pt-8 sm:grid-cols-4">
+          <div className="mt-16 grid max-w-3xl grid-cols-1 gap-10 border-t border-border pt-8 sm:grid-cols-3">
             {[
-              ["10+", "Years experience"],
-              ["1,200+", "Vehicles protected"],
-              ["5★", "On Google & Yelp"],
+              ["5.0★", "Google Rated"],
+              ["Springfield, NJ", "Est. 2018"],
               ["Mon–Sat", "9am – 6pm"],
             ].map(([k, v]) => (
               <div key={v}>
@@ -106,27 +115,52 @@ function Home() {
         </div>
       </section>
 
+      {/* We also do */}
+      <section className="border-y border-border bg-[var(--color-onyx)] py-14">
+        <div className="container-luxe flex flex-wrap items-center gap-x-10 gap-y-6">
+          <div>
+            <span className="eyebrow">We also do</span>
+            <div className="mt-2 text-lg font-bold">Beyond the five.</div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {alsoWeDo.map((s) => (
+              <span
+                key={s}
+                className="border border-border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground/80"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Services grid */}
-      <section className="border-t border-border bg-[var(--color-onyx)] py-24">
+      <section className="border-t border-border py-24">
         <div className="container-luxe">
           <div className="flex items-end justify-between gap-8 flex-wrap">
             <div>
               <span className="eyebrow">Services</span>
-              <h2 className="mt-5 text-4xl md:text-5xl">Four ways to <span className="text-[var(--color-gold)]">elevate</span>.</h2>
+              <h2 className="mt-5 text-4xl md:text-5xl">Five ways to <span className="text-[var(--color-gold)]">elevate</span>.</h2>
             </div>
             <Link to="/book" className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)] hover:text-foreground inline-flex items-center gap-2">
               Get a quote <ArrowRight size={14} />
             </Link>
           </div>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2">
-            {services.map(({ to, label, img, blurb, Icon }) => (
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {services.map(({ to, label, img, blurb, Icon, wide, badge }) => (
               <Link
                 key={to}
                 to={to}
-                className="group relative overflow-hidden border border-border bg-background"
+                className={`group relative overflow-hidden border border-border bg-[var(--color-onyx)] ${wide ? "md:col-span-2 lg:col-span-2" : ""}`}
               >
-                <div className="relative aspect-[16/10] overflow-hidden">
+                {badge && (
+                  <span className="absolute right-4 top-4 z-10 bg-[var(--color-gold)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-primary-foreground)]">
+                    {badge}
+                  </span>
+                )}
+                <div className={`relative overflow-hidden ${wide ? "aspect-[21/9]" : "aspect-[16/10]"}`}>
                   <img src={img} alt={label} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
                 </div>
@@ -147,46 +181,24 @@ function Home() {
         </div>
       </section>
 
-      {/* Showroom feature */}
-      <section className="relative isolate overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <img src={showroom} alt="" loading="lazy" className="h-full w-full object-cover opacity-40" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
-        </div>
-        <div className="container-luxe py-32">
-          <span className="eyebrow">VIP Showroom</span>
-          <h2 className="mt-5 max-w-3xl text-5xl md:text-6xl">A private space for your collection.</h2>
-          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            Climate-controlled, secure, and designed to display your vehicles
-            the way they deserve to be seen. By appointment only.
-          </p>
-          <Link
-            to="/vip-showroom"
-            className="mt-10 inline-flex items-center gap-3 border border-[var(--color-gold)] px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)] hover:text-[var(--color-primary-foreground)]"
-          >
-            View the Showroom <ArrowRight size={14} />
-          </Link>
-        </div>
-      </section>
-
       {/* Testimonials */}
       <section className="container-luxe py-28">
-        <span className="eyebrow">Reviews</span>
+        <span className="eyebrow">Reviews · Sourced from our Google Business Profile</span>
         <h2 className="mt-5 text-4xl md:text-5xl">Owners don't <span className="text-[var(--color-gold)]">whisper</span>.</h2>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {[
-            ["Marcus T.", "Porsche 911 GT3", "Best ceramic coating job I've had on any car. Period. The prep work alone is something other shops skip."],
-            ["Alessandra R.", "Range Rover Autobiography", "They treat the car like it's theirs. Showed me every step. No upsells, no nonsense."],
-            ["David K.", "BMW M5 Competition", "Wrapped in satin black. Flawless edges, perfect alignment. Looks factory."],
-          ].map(([name, car, quote]) => (
+            "Sarah Mejia",
+            "Racsaida Morel",
+            "Diana Franco",
+          ].map((name) => (
             <div key={name} className="border border-border bg-[var(--color-onyx)] p-8">
               <div className="flex gap-1 text-[var(--color-gold)]">
                 {[0,1,2,3,4].map(i => <Star key={i} size={14} fill="currentColor" />)}
               </div>
-              <p className="mt-5 text-base leading-relaxed text-foreground/90">"{quote}"</p>
+              <p className="mt-5 text-base leading-relaxed text-foreground/90">[ Quote from Google review · pending content pass ]</p>
               <div className="mt-6 border-t border-border pt-4">
                 <div className="text-sm font-bold">{name}</div>
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{car}</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Google review</div>
               </div>
             </div>
           ))}

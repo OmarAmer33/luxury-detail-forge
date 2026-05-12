@@ -40,6 +40,14 @@ export const Route = createFileRoute("/ceramic-coating")({
         { step: "03", title: "Coat", body: "Apply ceramic in a controlled environment, panel by panel." },
         { step: "04", title: "Cure", body: "Vehicle stays with us until the coating is fully cured and inspected." },
       ]}
+      pricing={{
+        tiers: [
+          { name: "2-Year Ceramic", price: "$850", note: "Starting" },
+          { name: "5-Year Ceramic", price: "$950", note: "Starting" },
+          { name: "Motorcycle Ceramic", price: "$300", note: "Starting" },
+        ],
+        footnote: "Final pricing depends on paint condition and correction needed.",
+      }}
     />
   ),
 });
