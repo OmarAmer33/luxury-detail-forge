@@ -3,6 +3,12 @@ import { Check, ArrowRight } from "lucide-react";
 import { CtaSection } from "./CtaSection";
 import { PageHero } from "./PageHero";
 
+export interface PricingTier {
+  name: string;
+  price: string;
+  note?: string;
+}
+
 export interface ServicePageProps {
   eyebrow: string;
   title: string;
@@ -12,6 +18,7 @@ export interface ServicePageProps {
   features: { title: string; body: string }[];
   includes: string[];
   process: { step: string; title: string; body: string }[];
+  pricing?: { tiers: PricingTier[]; footnote?: string };
 }
 
 export function ServicePage(props: ServicePageProps) {
