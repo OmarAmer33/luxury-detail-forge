@@ -4,7 +4,7 @@ import logo from "@/assets/logo.png";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-[var(--color-onyx)]">
+    <footer className="surface-dark border-t border-border">
       <div className="container-luxe grid gap-12 py-16 md:grid-cols-4">
         <div className="md:col-span-1">
           <img

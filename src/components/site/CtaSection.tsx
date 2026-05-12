@@ -11,7 +11,7 @@ export function CtaSection({
   body?: string;
 }) {
   return (
-    <section className="relative overflow-hidden border-y border-border bg-[var(--color-onyx)] py-24">
+    <section className="surface-dark relative overflow-hidden border-y border-border py-24">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.07]"
