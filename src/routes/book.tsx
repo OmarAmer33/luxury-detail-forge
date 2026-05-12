@@ -22,8 +22,17 @@ const schema = z.object({
   phone: z.string().trim().min(7, "Phone is required").max(30),
   email: z.string().trim().email("Valid email required").max(255),
   vehicle: z.string().trim().min(2, "Vehicle info required").max(120),
+  condition: z.string().min(1, "Pick a condition"),
   service: z.string().min(1, "Pick a service"),
-  date: z.string().min(1, "Pick a date"),
+  date: z
+    .string()
+    .min(1, "Pick a date")
+    .refine((v) => {
+      const d = new Date(v + "T12:00:00");
+      return !isNaN(d.getTime()) && d.getDay() !== 0;
+    }, "We're closed Sundays — please pick another day."),
+  time: z.string().min(1, "Pick a time"),
+  hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
 });
 
@@ -33,8 +42,18 @@ const services = [
   "Vinyl Wrap",
   "Full Detail",
   "Paint Correction",
-  "VIP Showroom Inquiry",
+  "VIP Detail (Top Tier)",
+  "Window Tint",
   "Not sure — recommend something",
+];
+
+const conditions = ["Excellent", "Good", "Fair", "Heavy Use"];
+const times = [
+  "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+  "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM",
+];
+const hearAboutOptions = [
+  "Google", "Instagram", "Referral", "Drove By", "Returning Customer", "Other",
 ];
 
 function Book() {
