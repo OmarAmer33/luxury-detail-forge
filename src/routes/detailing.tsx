@@ -67,7 +67,7 @@ function Detailing() {
         }}
       />
 
-      <section className="border-t border-border bg-[var(--color-onyx)] py-24">
+      <section className="border-t border-border surface-dark py-24">
         <div className="container-luxe">
           <span className="eyebrow">Window Tint</span>
           <h2 className="mt-5 text-4xl md:text-5xl">Tint, done right.</h2>
@@ -78,7 +78,7 @@ function Detailing() {
           </p>
           <div className="mt-12 grid gap-px border border-border bg-border">
             {tintRows.map((t) => (
-              <div key={t.name} className="grid grid-cols-[1fr_auto] items-baseline gap-6 bg-[var(--color-onyx)] p-6 md:p-8">
+              <div key={t.name} className="grid grid-cols-[1fr_auto] items-baseline gap-6 surface-dark p-6 md:p-8">
                 <div className="text-lg font-bold">{t.name}</div>
                 <div className="text-lg font-black text-[var(--color-gold)] md:text-xl whitespace-nowrap">{t.price}</div>
               </div>

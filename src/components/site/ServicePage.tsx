@@ -38,13 +38,13 @@ export function ServicePage(props: ServicePageProps) {
         <p className="text-lg leading-relaxed text-muted-foreground">{props.intro}</p>
       </section>
 
-      <section className="border-y border-border bg-[var(--color-onyx)] py-24">
+      <section className="border-y border-border surface-dark py-24">
         <div className="container-luxe">
           <span className="eyebrow">Why it matters</span>
           <h2 className="mt-5 text-4xl md:text-5xl">Engineered to last.</h2>
           <div className="mt-14 grid gap-px bg-border md:grid-cols-3">
             {props.features.map((f) => (
-              <div key={f.title} className="bg-[var(--color-onyx)] p-8">
+              <div key={f.title} className="surface-dark p-8">
                 <div className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)]">
                   {f.title}
                 </div>
@@ -96,7 +96,7 @@ export function ServicePage(props: ServicePageProps) {
         </section>
       )}
 
-      <section className="border-t border-border bg-[var(--color-onyx)] py-24">
+      <section className="border-t border-border surface-dark py-24">
         <div className="container-luxe">
           <span className="eyebrow">Process</span>
           <h2 className="mt-5 text-4xl md:text-5xl">How we work.</h2>

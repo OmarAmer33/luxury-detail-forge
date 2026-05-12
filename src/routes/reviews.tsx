@@ -51,7 +51,7 @@ function Reviews() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {reviews.map((r) => (
-            <article key={r.name} className="border border-border bg-[var(--color-onyx)] p-8">
+            <article key={r.name} className="border border-border surface-dark p-8">
               <div className="flex gap-1 text-[var(--color-gold)]">
                 {[0,1,2,3,4].map(i => <Star key={i} size={14} fill="currentColor" />)}
               </div>

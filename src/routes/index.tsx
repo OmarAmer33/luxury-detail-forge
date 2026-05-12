@@ -116,7 +116,7 @@ function Home() {
       </section>
 
       {/* We also do */}
-      <section className="border-y border-border bg-[var(--color-onyx)] py-14">
+      <section className="border-y border-border surface-dark py-14">
         <div className="container-luxe flex flex-wrap items-center gap-x-10 gap-y-6">
           <div>
             <span className="eyebrow">We also do</span>
@@ -153,7 +153,7 @@ function Home() {
               <Link
                 key={to}
                 to={to}
-                className={`group relative overflow-hidden border border-border bg-[var(--color-onyx)] ${wide ? "md:col-span-2 lg:col-span-2" : ""}`}
+                className={`group relative overflow-hidden border border-border surface-dark ${wide ? "md:col-span-2 lg:col-span-2" : ""}`}
               >
                 {badge && (
                   <span className="absolute right-4 top-4 z-10 bg-[var(--color-gold)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-primary-foreground)]">
@@ -191,7 +191,7 @@ function Home() {
             "Racsaida Morel",
             "Diana Franco",
           ].map((name) => (
-            <div key={name} className="border border-border bg-[var(--color-onyx)] p-8">
+            <div key={name} className="border border-border surface-dark p-8">
               <div className="flex gap-1 text-[var(--color-gold)]">
                 {[0,1,2,3,4].map(i => <Star key={i} size={14} fill="currentColor" />)}
               </div>
