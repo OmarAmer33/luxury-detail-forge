@@ -31,7 +31,6 @@ export const Route = createFileRoute("/car-wraps")({
         "Commercial fleet and branding wraps",
         "Pre-wrap paint correction available",
         "Wrap removal and surface restoration",
-        "Care kit and finish-specific wash instructions",
       ]}
       process={[
         { step: "01", title: "Design", body: "Pick films in person, see them under shop and outdoor lighting." },
