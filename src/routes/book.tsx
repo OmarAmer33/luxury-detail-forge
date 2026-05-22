@@ -34,6 +34,7 @@ const schema = z.object({
   time: z.string().min(1, "Pick a time"),
   hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
+  website: z.string().max(0).optional(),
 });
 
 const services = [
@@ -76,12 +77,16 @@ function Book() {
     }
     setStatus("submitting");
     try {
-      // Placeholder — replace with GoHighLevel embed/endpoint
-      await fetch("/api/booking", {
+      const res = await fetch("/api/public/send-booking-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),
-      }).catch(() => {});
+      });
+      const json = (await res.json().catch(() => ({}))) as { success?: boolean };
+      if (!res.ok || !json.success) {
+        setStatus("error");
+        return;
+      }
       setStatus("success");
       (e.target as HTMLFormElement).reset();
     } catch {
@@ -123,6 +128,15 @@ function Book() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="grid gap-6 md:grid-cols-2">
+              {/* Honeypot — hidden from real users, bots fill it */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+              />
               <div className="md:col-span-2">
                 <span className="eyebrow">Booking Request</span>
                 <h2 className="mt-4 text-3xl">Your appointment, locked in.</h2>

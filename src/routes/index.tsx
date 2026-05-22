@@ -186,18 +186,14 @@ function Home() {
         <span className="eyebrow">Reviews · Sourced from our Google Business Profile</span>
         <h2 className="mt-5 text-4xl md:text-5xl">Owners don't <span className="text-[var(--color-gold)]">whisper</span>.</h2>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {[
-            "Sarah Mejia",
-            "Racsaida Morel",
-            "Diana Franco",
-          ].map((name) => (
-            <div key={name} className="border border-border surface-dark p-8">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="border border-border surface-dark p-8">
               <div className="flex gap-1 text-[var(--color-star-gold)]">
-                {[0,1,2,3,4].map(i => <Star key={i} size={14} fill="currentColor" />)}
+                {[0,1,2,3,4].map(j => <Star key={j} size={14} fill="currentColor" />)}
               </div>
               <p className="mt-5 text-base leading-relaxed text-foreground/90">[ Quote from Google review · pending content pass ]</p>
               <div className="mt-6 border-t border-border pt-4">
-                <div className="text-sm font-bold">{name}</div>
+                <div className="text-sm font-bold">[ Reviewer name · pending content pull · Oct 2025 forward only ]</div>
                 <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Google review</div>
               </div>
             </div>

@@ -57,7 +57,7 @@ function Detailing() {
         ]}
         pricing={{
           tiers: [
-            { name: "Elite Wash", price: "$115 / $115 / $140", note: "Car / SUV-Pickup / 3-Row-XL" },
+            { name: "Elite Wash", price: "$99 / $115 / $140", note: "Car / SUV-Pickup / 3-Row-XL" },
             { name: "Maintenance Detail", price: "$180 / $210 / $240", note: "Car / SUV-Pickup / 3-Row-XL" },
             { name: "Interior Detail", price: "$205 / $230 / $255", note: "Car / SUV-Pickup / 3-Row-XL" },
             { name: "Exterior Detail", price: "$205 / $230 / $255", note: "Car / SUV-Pickup / 3-Row-XL" },

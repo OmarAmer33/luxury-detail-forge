@@ -19,11 +19,13 @@ export const Route = createFileRoute("/reviews")({
 
 const PLACEHOLDER = "[ Quote from Google review · pending content pass ]";
 
+const NAME_PLACEHOLDER = "[ Reviewer name · pending content pull · Oct 2025 forward only ]";
+
 const reviews = [
-  { name: "Sarah Mejia", quote: PLACEHOLDER },
-  { name: "Racsaida Morel", quote: PLACEHOLDER },
-  { name: "Diana Franco", quote: PLACEHOLDER },
-  { name: "Vincent Gonzalez", quote: PLACEHOLDER },
+  { name: NAME_PLACEHOLDER, quote: PLACEHOLDER },
+  { name: NAME_PLACEHOLDER, quote: PLACEHOLDER },
+  { name: NAME_PLACEHOLDER, quote: PLACEHOLDER },
+  { name: NAME_PLACEHOLDER, quote: PLACEHOLDER },
 ];
 
 function Reviews() {
@@ -50,8 +52,8 @@ function Reviews() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {reviews.map((r) => (
-            <article key={r.name} className="border border-border surface-dark p-8">
+          {reviews.map((r, i) => (
+            <article key={i} className="border border-border surface-dark p-8">
               <div className="flex gap-1 text-[var(--color-star-gold)]">
                 {[0,1,2,3,4].map(i => <Star key={i} size={14} fill="currentColor" />)}
               </div>

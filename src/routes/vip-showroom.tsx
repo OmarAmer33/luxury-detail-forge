@@ -8,9 +8,9 @@ export const Route = createFileRoute("/vip-showroom")({
   head: () => ({
     meta: [
       { title: "VIP Detail · Top Elite Auto · Springfield NJ" },
-      { name: "description", content: "Our top-tier ~4-hour multi-stage premium detail. Full decon, hand wash, deep interior, engine bay, light correction and premium sealant. Starting at $515." },
+      { name: "description", content: "Our top-tier ~4-hour multi-stage premium detail. Full decon, hand wash, deep interior, engine bay, light correction and premium sealant. Starting at $600." },
       { property: "og:title", content: "VIP Detail · Top Tier · Top Elite Auto" },
-      { property: "og:description", content: "Top-tier multi-stage premium detail in Springfield, NJ. Starting at $515." },
+      { property: "og:description", content: "Top-tier multi-stage premium detail in Springfield, NJ. Starting at $600." },
       { property: "og:image", content: showroom },
     ],
   }),
@@ -90,12 +90,12 @@ function VIP() {
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <div className="border border-border surface-dark p-8">
             <div className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">Cars</div>
-            <div className="mt-4 text-5xl font-black text-[var(--color-gold)]">$515</div>
+            <div className="mt-4 text-5xl font-black text-[var(--color-gold)]">$600</div>
             <div className="mt-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">Starting · ~4 hours</div>
           </div>
           <div className="border border-border surface-dark p-8">
             <div className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">SUVs &amp; Trucks</div>
-            <div className="mt-4 text-5xl font-black text-[var(--color-gold)]">$665</div>
+            <div className="mt-4 text-5xl font-black text-[var(--color-gold)]">$750</div>
             <div className="mt-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">Starting · ~4 hours</div>
           </div>
         </div>

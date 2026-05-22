@@ -16,9 +16,9 @@ export const Route = createFileRoute("/paint-protection")({
     <ServicePage
       eyebrow="Paint Protection Film"
       title="An invisible shield against the road."
-      subtitle="PPF takes the rock chips, road rash and abrasions so your paint never has to. Self-healing, optically clear, and installed with surgical precision."
+      subtitle="PPF takes the rock chips, road rash and abrasions so your paint never has to. Self-healing, optically clear, and hand-cut for a flawless fit."
       image={img}
-      intro="Your car is going to meet pebbles, salt, brake dust and bumper-to-bumper traffic. The only question is whether your paint takes the hit or a film does. We install premium PPF with seamless edges and minimal seams — coverage you can see only when you're looking for it."
+      intro="Your car is going to meet pebbles, salt, brake dust and bumper-to-bumper traffic. The only question is whether your paint takes the hit or a film does. We install premium PPF hand-cut as standard — flawless fit, no templates, no computer-cut patterns. Coverage you can see only when you're looking for it."
       features={[
         { title: "Self-Healing Top Layer", body: "Light scratches and swirl marks disappear with heat from the sun or a warm wash." },
         { title: "Optically Clear", body: "Premium films with zero orange peel and a finish that disappears into the paint." },
@@ -27,9 +27,8 @@ export const Route = createFileRoute("/paint-protection")({
       includes={[
         "Partial front, full front, or full vehicle coverage",
         "Wrapped edges where possible — no exposed lines",
-        "Headlight and fog light protection",
         "Door cup, sill and rocker panel options",
-        "Computer-cut patterns from latest vehicle templates",
+        "Hand-cut as standard — flawless fit, no templates, no computer-cut patterns",
         "Custom hand-cuts for exotics and modified vehicles",
         "Post-install inspection and cure period",
       ]}

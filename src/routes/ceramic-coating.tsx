@@ -32,7 +32,6 @@ export const Route = createFileRoute("/ceramic-coating")({
         "Panel-wipe and coating prep",
         "Premium ceramic coating application",
         "Wheel face and trim coating add-ons available",
-        "Aftercare kit and wash instructions",
       ]}
       process={[
         { step: "01", title: "Inspect", body: "Walkaround under multiple lighting conditions to map every defect." },
@@ -42,9 +41,9 @@ export const Route = createFileRoute("/ceramic-coating")({
       ]}
       pricing={{
         tiers: [
-          { name: "2-Year Ceramic", price: "$850", note: "Starting" },
-          { name: "5-Year Ceramic", price: "$950", note: "Starting" },
-          { name: "Motorcycle Ceramic", price: "$300", note: "Starting" },
+          { name: "2-Year Ceramic", price: "$950", note: "Starting" },
+          { name: "5-Year Ceramic", price: "$1,000", note: "Starting" },
+          { name: "Motorcycle Ceramic", price: "$350", note: "Starting" },
         ],
         footnote: "Final pricing depends on paint condition and correction needed.",
       }}
