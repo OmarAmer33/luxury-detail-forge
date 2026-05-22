@@ -128,6 +128,15 @@ function Book() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="grid gap-6 md:grid-cols-2">
+              {/* Honeypot — hidden from real users, bots fill it */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+              />
               <div className="md:col-span-2">
                 <span className="eyebrow">Booking Request</span>
                 <h2 className="mt-4 text-3xl">Your appointment, locked in.</h2>
