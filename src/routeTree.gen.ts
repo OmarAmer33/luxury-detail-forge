@@ -17,6 +17,7 @@ import { Route as CeramicCoatingRouteImport } from './routes/ceramic-coating'
 import { Route as CarWrapsRouteImport } from './routes/car-wraps'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicSendBookingEmailRouteImport } from './routes/api/public/send-booking-email'
 
 const VipShowroomRoute = VipShowroomRouteImport.update({
   id: '/vip-showroom',
@@ -58,6 +59,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSendBookingEmailRoute =
+  ApiPublicSendBookingEmailRouteImport.update({
+    id: '/api/public/send-booking-email',
+    path: '/api/public/send-booking-email',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/paint-protection': typeof PaintProtectionRoute
   '/reviews': typeof ReviewsRoute
   '/vip-showroom': typeof VipShowroomRoute
+  '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +86,7 @@ export interface FileRoutesByTo {
   '/paint-protection': typeof PaintProtectionRoute
   '/reviews': typeof ReviewsRoute
   '/vip-showroom': typeof VipShowroomRoute
+  '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +98,7 @@ export interface FileRoutesById {
   '/paint-protection': typeof PaintProtectionRoute
   '/reviews': typeof ReviewsRoute
   '/vip-showroom': typeof VipShowroomRoute
+  '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +111,7 @@ export interface FileRouteTypes {
     | '/paint-protection'
     | '/reviews'
     | '/vip-showroom'
+    | '/api/public/send-booking-email'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +122,7 @@ export interface FileRouteTypes {
     | '/paint-protection'
     | '/reviews'
     | '/vip-showroom'
+    | '/api/public/send-booking-email'
   id:
     | '__root__'
     | '/'
@@ -121,6 +133,7 @@ export interface FileRouteTypes {
     | '/paint-protection'
     | '/reviews'
     | '/vip-showroom'
+    | '/api/public/send-booking-email'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +145,7 @@ export interface RootRouteChildren {
   PaintProtectionRoute: typeof PaintProtectionRoute
   ReviewsRoute: typeof ReviewsRoute
   VipShowroomRoute: typeof VipShowroomRoute
+  ApiPublicSendBookingEmailRoute: typeof ApiPublicSendBookingEmailRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/send-booking-email': {
+      id: '/api/public/send-booking-email'
+      path: '/api/public/send-booking-email'
+      fullPath: '/api/public/send-booking-email'
+      preLoaderRoute: typeof ApiPublicSendBookingEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,7 +225,18 @@ const rootRouteChildren: RootRouteChildren = {
   PaintProtectionRoute: PaintProtectionRoute,
   ReviewsRoute: ReviewsRoute,
   VipShowroomRoute: VipShowroomRoute,
+  ApiPublicSendBookingEmailRoute: ApiPublicSendBookingEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -34,6 +34,7 @@ const schema = z.object({
   time: z.string().min(1, "Pick a time"),
   hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
+  website: z.string().max(0).optional(),
 });
 
 const services = [
@@ -76,12 +77,16 @@ function Book() {
     }
     setStatus("submitting");
     try {
-      // Placeholder — replace with GoHighLevel embed/endpoint
-      await fetch("/api/booking", {
+      const res = await fetch("/api/public/send-booking-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),
-      }).catch(() => {});
+      });
+      const json = (await res.json().catch(() => ({}))) as { success?: boolean };
+      if (!res.ok || !json.success) {
+        setStatus("error");
+        return;
+      }
       setStatus("success");
       (e.target as HTMLFormElement).reset();
     } catch {
