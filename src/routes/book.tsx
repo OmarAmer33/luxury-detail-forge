@@ -62,6 +62,7 @@ function Book() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    console.log("[book] submit fired");
     e.preventDefault();
     setErrors({});
     const fd = new FormData(e.currentTarget);
