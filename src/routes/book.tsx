@@ -63,24 +63,31 @@ function Book() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    console.log("[book] submit fired");
     e.preventDefault();
+    const form = e.currentTarget;
     setErrors({});
-    const fd = new FormData(e.currentTarget);
+    const fd = new FormData(form);
     const data = Object.fromEntries(fd.entries());
-    console.log("[book] data", data);
     const parsed = schema.safeParse(data);
-    console.log("[book] parsed", parsed);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
-        errs[issue.path[0] as string] = issue.message;
+        const key = issue.path[0] as string | undefined;
+        if (key && !errs[key]) errs[key] = issue.message;
       }
-      console.log("[book] errs", errs);
       setErrors(errs);
+      // Scroll the first invalid field into view and focus it so the user
+      // sees the validation message instead of perceiving a silent failure.
+      const firstKey = Object.keys(errs)[0];
+      if (firstKey) {
+        const el = form.querySelector<HTMLElement>(`[name="${firstKey}"]`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(() => el.focus({ preventScroll: true }), 250);
+        }
+      }
       return;
     }
-    console.log("[book] posting");
     setStatus("submitting");
     try {
       const res = await fetch("/api/public/send-booking-email", {
@@ -88,17 +95,14 @@ function Book() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),
       });
-      console.log("[book] status", res.status);
       const json = (await res.json().catch(() => ({}))) as { success?: boolean };
-      console.log("[book] json", json);
       if (!res.ok || !json.success) {
         setStatus("error");
         return;
       }
       setStatus("success");
-      (e.target as HTMLFormElement).reset();
-    } catch (err) {
-      console.log("[book] threw", err);
+      form.reset();
+    } catch {
       setStatus("error");
     }
   }
