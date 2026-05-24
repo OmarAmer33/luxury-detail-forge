@@ -28,6 +28,7 @@ const schema = z.object({
     .string()
     .min(1, "Pick a date")
     .refine((v) => {
+      if (!v) return true;
       const d = new Date(v + "T12:00:00");
       return !isNaN(d.getTime()) && d.getDay() !== 0;
     }, "We're closed Sundays — please pick another day."),
@@ -63,16 +64,28 @@ function Book() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
     setErrors({});
-    const fd = new FormData(e.currentTarget);
+    const fd = new FormData(form);
     const data = Object.fromEntries(fd.entries());
     const parsed = schema.safeParse(data);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
-        errs[issue.path[0] as string] = issue.message;
+        const key = issue.path[0] as string | undefined;
+        if (key && !errs[key]) errs[key] = issue.message;
       }
       setErrors(errs);
+      // Scroll the first invalid field into view and focus it so the user
+      // sees the validation message instead of perceiving a silent failure.
+      const firstKey = Object.keys(errs)[0];
+      if (firstKey) {
+        const el = form.querySelector<HTMLElement>(`[name="${firstKey}"]`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(() => el.focus({ preventScroll: true }), 250);
+        }
+      }
       return;
     }
     setStatus("submitting");
@@ -88,7 +101,7 @@ function Book() {
         return;
       }
       setStatus("success");
-      (e.target as HTMLFormElement).reset();
+      form.reset();
     } catch {
       setStatus("error");
     }
