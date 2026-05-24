@@ -28,6 +28,7 @@ const schema = z.object({
     .string()
     .min(1, "Pick a date")
     .refine((v) => {
+      if (!v) return true;
       const d = new Date(v + "T12:00:00");
       return !isNaN(d.getTime()) && d.getDay() !== 0;
     }, "We're closed Sundays — please pick another day."),
