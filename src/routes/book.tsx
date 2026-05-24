@@ -79,6 +79,7 @@ function Book() {
       setErrors(errs);
       return;
     }
+    console.log("[book] posting");
     setStatus("submitting");
     try {
       const res = await fetch("/api/public/send-booking-email", {
@@ -86,14 +87,17 @@ function Book() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),
       });
+      console.log("[book] status", res.status);
       const json = (await res.json().catch(() => ({}))) as { success?: boolean };
+      console.log("[book] json", json);
       if (!res.ok || !json.success) {
         setStatus("error");
         return;
       }
       setStatus("success");
       (e.target as HTMLFormElement).reset();
-    } catch {
+    } catch (err) {
+      console.log("[book] threw", err);
       setStatus("error");
     }
   }
