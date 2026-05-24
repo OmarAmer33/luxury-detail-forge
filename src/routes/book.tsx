@@ -67,12 +67,15 @@ function Book() {
     setErrors({});
     const fd = new FormData(e.currentTarget);
     const data = Object.fromEntries(fd.entries());
+    console.log("[book] data", data);
     const parsed = schema.safeParse(data);
+    console.log("[book] parsed", parsed);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
         errs[issue.path[0] as string] = issue.message;
       }
+      console.log("[book] errs", errs);
       setErrors(errs);
       return;
     }
