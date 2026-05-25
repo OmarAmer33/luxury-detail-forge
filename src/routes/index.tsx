@@ -13,6 +13,15 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Top Elite Auto — Premium Detailing · Springfield NJ" },
       { name: "description", content: "Ceramic coating, paint protection, wraps and elite detailing in Springfield, NJ. Showroom-grade results, every vehicle." },
+      { property: "og:title", content: "Top Elite Auto — Premium Detailing · Springfield NJ" },
+      { property: "og:description", content: "Ceramic coating, paint protection, wraps and elite detailing in Springfield, NJ. Showroom-grade results, every vehicle." },
+      { property: "og:url", content: "https://topeliteauto.com/" },
+      { property: "og:image", content: `https://topeliteauto.com${heroCar}` },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `https://topeliteauto.com${heroCar}` },
+    ],
+    links: [
+      { rel: "canonical", href: "https://topeliteauto.com/" },
     ],
   }),
   component: Home,
