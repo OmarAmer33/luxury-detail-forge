@@ -187,18 +187,36 @@ function Home() {
         <span className="eyebrow">Reviews · Sourced from our Google Business Profile</span>
         <h2 className="mt-5 text-4xl md:text-5xl">Owners don't <span className="text-[var(--color-gold)]">whisper</span>.</h2>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="border border-border surface-dark p-8">
-              <div className="flex gap-1 text-[var(--color-star-gold)]">
-                {[0,1,2,3,4].map(j => <Star key={j} size={14} fill="currentColor" />)}
-              </div>
-              <p className="mt-5 text-base leading-relaxed text-foreground/90">[ Quote from Google review · pending content pass ]</p>
-              <div className="mt-6 border-t border-border pt-4">
-                <div className="text-sm font-bold">[ Reviewer name · pending content pull · Oct 2025 forward only ]</div>
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Google review</div>
-              </div>
+          <div className="border border-border surface-dark p-8">
+            <div className="flex gap-1 text-[var(--color-star-gold)]">
+              {[0,1,2,3,4].map(j => <Star key={j} size={14} fill="currentColor" />)}
             </div>
-          ))}
+            <p className="mt-5 text-base leading-relaxed text-foreground/90">Top Elite is hands-down the best detailing shop I've ever used. My car looks absolutely flawless — the paint shines like new, the interior is spotless, and every little detail was handled with care. If you want your car treated like a luxury vehicle, even if it isn't one, Top Elite Auto is the place to go.</p>
+            <div className="mt-6 border-t border-border pt-4">
+              <div className="text-sm font-bold">Bryan Correia</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Google review · Local Guide</div>
+            </div>
+          </div>
+          <div className="border border-border surface-dark p-8">
+            <div className="flex gap-1 text-[var(--color-star-gold)]">
+              {[0,1,2,3,4].map(j => <Star key={j} size={14} fill="currentColor" />)}
+            </div>
+            <p className="mt-5 text-base leading-relaxed text-foreground/90">Derek and his team always come through! They keep all my cars spotless — professionalism and perfection every time. "Attention to detail" doesn't even begin to describe their work.</p>
+            <div className="mt-6 border-t border-border pt-4">
+              <div className="text-sm font-bold">Ardy Kalezic</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Google review</div>
+            </div>
+          </div>
+          <div className="border border-border surface-dark p-8">
+            <div className="flex gap-1 text-[var(--color-star-gold)]">
+              {[0,1,2,3,4].map(j => <Star key={j} size={14} fill="currentColor" />)}
+            </div>
+            <p className="mt-5 text-base leading-relaxed text-foreground/90">The results are simply stunning. The paint is deep and glossy, the interior smells fresh, and every crack, crevice, and wheel well was immaculate. You can see the extra time and care he puts into the process that makes this a 1 of 1 place to go to. Trust and believe me, you won't be disappointed.</p>
+            <div className="mt-6 border-t border-border pt-4">
+              <div className="text-sm font-bold">D'Angelo Daniel</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Google review</div>
+            </div>
+          </div>
         </div>
         <Link to="/reviews" className="mt-10 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)] hover:text-foreground">
           Read all reviews <ArrowRight size={14} />

@@ -17,15 +17,11 @@ export const Route = createFileRoute("/reviews")({
   component: Reviews,
 });
 
-const PLACEHOLDER = "[ Quote from Google review · pending content pass ]";
-
-const NAME_PLACEHOLDER = "[ Reviewer name · pending content pull · Oct 2025 forward only ]";
-
 const reviews = [
-  { name: NAME_PLACEHOLDER, quote: PLACEHOLDER },
-  { name: NAME_PLACEHOLDER, quote: PLACEHOLDER },
-  { name: NAME_PLACEHOLDER, quote: PLACEHOLDER },
-  { name: NAME_PLACEHOLDER, quote: PLACEHOLDER },
+  { name: "Bryan Correia", quote: "Top Elite is hands-down the best detailing shop I've ever used. My car looks absolutely flawless — the paint shines like new, the interior is spotless, and every little detail was handled with care. If you want your car treated like a luxury vehicle, even if it isn't one, Top Elite Auto is the place to go.", source: "Google review · Local Guide" },
+  { name: "Ardy Kalezic", quote: "Derek and his team always come through! They keep all my cars spotless — professionalism and perfection every time. \"Attention to detail\" doesn't even begin to describe their work.", source: "Google review" },
+  { name: "D'Angelo Daniel", quote: "The results are simply stunning. The paint is deep and glossy, the interior smells fresh, and every crack, crevice, and wheel well was immaculate. You can see the extra time and care he puts into the process that makes this a 1 of 1 place to go to. Trust and believe me, you won't be disappointed.", source: "Google review" },
+  { name: "Tim Sweidan", quote: "I brought my Mustang in for a paint enhancement and a 1-year ceramic coating, and I couldn't be happier with the results. The paint looks incredibly glossy and smooth — honestly better than when I bought the car. Attention to detail was top-notch, and the car was treated with real care from start to finish. If you're on the fence about getting your vehicle detailed or coated, this is 100% worth it.", source: "Google review" },
 ];
 
 function Reviews() {
@@ -60,7 +56,7 @@ function Reviews() {
               <p className="mt-5 text-base leading-relaxed text-foreground/90">{r.quote}</p>
               <div className="mt-6 border-t border-border pt-4">
                 <div className="text-sm font-bold">{r.name}</div>
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Google review</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{r.source}</div>
               </div>
             </article>
           ))}
