@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import logo from "@/assets/logo.png";
+import logoDark from "@/assets/logo-dark.png";
 
 const links = [
   { to: "/", label: "Home" },
@@ -36,10 +37,9 @@ export function Nav() {
       <div className="container-luxe flex h-20 items-center justify-between">
         <Link to="/" className="group flex items-center" onClick={() => setOpen(false)} aria-label="Top Elite Auto — home">
           <img
-            src={logo}
+            src={scrolled ? logo : logoDark}
             alt="Top Elite Auto"
             className="h-12 w-auto md:h-14"
-            style={scrolled ? undefined : { filter: "invert(1) hue-rotate(180deg)" }}
           />
         </Link>
 
