@@ -9,6 +9,7 @@ const links = [
   { to: "/paint-protection", label: "Paint Protection" },
   { to: "/car-wraps", label: "Car Wraps" },
   { to: "/detailing", label: "Detailing" },
+  { to: "/window-tint", label: "Window Tint" },
   { to: "/vip-showroom", label: "VIP Showroom" },
   { to: "/reviews", label: "Reviews" },
 ] as const;

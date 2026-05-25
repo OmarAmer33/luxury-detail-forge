@@ -43,6 +43,8 @@ const services = [
   "Paint Protection Film (PPF)",
   "Vinyl Wrap",
   "Full Detail",
+  "Interior Detail",
+  "Exterior Detail",
   "Paint Correction",
   "VIP Detail (Top Tier)",
   "Window Tint",

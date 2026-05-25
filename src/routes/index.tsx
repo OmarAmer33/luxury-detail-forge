@@ -23,7 +23,8 @@ const services = [
   { to: "/paint-protection", label: "Paint Protection (PPF)", img: ppf, blurb: "Self-healing film that absorbs the road so your paint doesn't.", Icon: ShieldCheck, wide: false, badge: undefined },
   { to: "/car-wraps", label: "Car Wraps", img: wraps, blurb: "Color, finish, presence. Wrap it, change it, own it.", Icon: Layers, wide: false, badge: undefined },
   { to: "/detailing", label: "In-Shop Detailing", img: detailing, blurb: "Hand wash, paint correction, interior reset. Showroom every time.", Icon: Wrench, wide: false, badge: undefined },
-  { to: "/vip-showroom", label: "VIP Detail", img: showroom, blurb: "Our top-tier 4-hour multi-stage detail. The full reset, inside and out.", Icon: Sparkles, wide: true, badge: "Top Tier" },
+  { to: "/window-tint", label: "Window Tint", img: detailing, blurb: "Standard, carbon and ceramic film. Flat pricing, lifetime warranty.", Icon: Layers, wide: false, badge: undefined },
+  { to: "/vip-showroom", label: "VIP Detail", img: showroom, blurb: "Our top-tier 4-hour multi-stage detail. The full reset, inside and out.", Icon: Sparkles, wide: false, badge: "Top Tier" },
 ];
 
 const alsoWeDo = [
@@ -141,7 +142,7 @@ function Home() {
           <div className="flex items-end justify-between gap-8 flex-wrap">
             <div>
               <span className="eyebrow">Services</span>
-              <h2 className="mt-5 text-4xl md:text-5xl">Five ways to <span className="text-[var(--color-gold)]">elevate</span>.</h2>
+              <h2 className="mt-5 text-4xl md:text-5xl">Six ways to <span className="text-[var(--color-gold)]">elevate</span>.</h2>
             </div>
             <Link to="/book" className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)] hover:text-foreground inline-flex items-center gap-2">
               Get a quote <ArrowRight size={14} />
