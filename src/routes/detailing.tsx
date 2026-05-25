@@ -25,7 +25,7 @@ function Detailing() {
       intro="Detailing is more than soap and a buffer. It's a process: lift contamination, correct defects, protect what's been restored. We work by hand, panel by panel, in a controlled environment — never an outdoor wash bay, never a rushed assembly line."
       features={[
         { title: "Paint Correction", body: "Single, two- and three-stage polishing to remove swirls, scratches and oxidation." },
-        { title: "Interior Reset", body: "Steam, extraction, leather conditioning and odor neutralization — like new." },
+        { title: "Interior Reset", body: "Steam, hot-water extraction and odor neutralization — interior comes back like new." },
         { title: "Engine & Wheel Detail", body: "Wheel faces, barrels, calipers and engine bay restored and protected." },
       ]}
       includes={[
