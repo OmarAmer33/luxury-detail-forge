@@ -43,7 +43,7 @@ export function Nav() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           {links.map((l) => (
             <Link
               key={l.to}
@@ -58,7 +58,7 @@ export function Nav() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4 lg:ml-10">
           <a
             href="tel:9082933934"
             className={`hidden text-xs font-semibold uppercase tracking-[0.18em] hover:text-[var(--color-red)] md:inline ${
