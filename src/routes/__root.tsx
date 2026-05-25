@@ -84,8 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "Top Elite Auto — Premium Detailing, Ceramic Coating & PPF · Springfield NJ" },
       { name: "twitter:description", content: "Springfield, NJ's premium auto detailing shop. Ceramic coating, paint protection film, wraps and showroom-grade detailing. We don't do average." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e0ab1b52-2805-48cf-80b9-510d665eabd9/id-preview-3bf7e938--1f172757-97e6-47a0-82b8-6b4008559e2e.lovable.app-1778168121871.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e0ab1b52-2805-48cf-80b9-510d665eabd9/id-preview-3bf7e938--1f172757-97e6-47a0-82b8-6b4008559e2e.lovable.app-1778168121871.png" },
+      { property: "og:site_name", content: "Top Elite Auto" },
     ],
     links: [
       {
