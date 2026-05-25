@@ -35,7 +35,7 @@ const schema = z.object({
   time: z.string().min(1, "Pick a time"),
   hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
-  website: z.string().max(0).optional(),
+  _hp_url_check: z.string().optional(),
 });
 
 const services = [
@@ -144,9 +144,11 @@ function Book() {
               {/* Honeypot — hidden from real users, bots fill it */}
               <input
                 type="text"
-                name="website"
+                name="_hp_url_check"
                 tabIndex={-1}
                 autoComplete="off"
+                data-lpignore="true"
+                data-1p-ignore
                 aria-hidden="true"
                 style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
               />

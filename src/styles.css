@@ -131,3 +131,11 @@
     color: #FFFFFF;
   }
 }
+
+/* Native <select> dropdown options inherit the parent's white text color on
+   the dark booking surface, rendering white-on-white. Force legible dark text
+   on white background for options inside the dark surface. */
+.surface-dark select option {
+  color: #0A0A0A;
+  background-color: #FFFFFF;
+}

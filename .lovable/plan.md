@@ -1,91 +1,36 @@
-## Findings so far (verified, not assumed)
+## Fix: Honeypot autofill failure + illegible dropdown options
 
-**Server side is healthy.** I bypassed the browser and called the endpoint directly:
+### Bug 1 — Honeypot field triggers browser autofill, silent submission failure
+Chrome/Safari autofill the hidden `name="website"` input. Client Zod (`.max(0)`) rejects it, `errs.website` is set with no renderer, `scrollIntoView` jumps to the off-screen hidden input → user sees a scroll and nothing else.
 
-- `POST /api/public/send-booking-email` with a valid payload → **HTTP 200 `{"success":true}`**.
-- `RESEND_API_KEY` is present in the runtime secret store.
-- No errors in the last hour of Cloudflare Worker logs for this route.
-- The route file is deployed and reachable.
+### Bug 2 — `<select>` options render white-on-white
+Options inherit `color: white` from the select on the dark form surface; OS-default option background is also white. Options are only visible on hover. Affects Vehicle Condition, Service, Preferred Time, How did you hear about us.
 
-So the failure is **not** Resend, not the secret, not DNS, not the route handler, not deployment of the worker.
+### Changes
 
-**Client side is where it dies.** I drove the preview headlessly at `/book` and:
+**1. `src/routes/book.tsx`**
+- Rename honeypot: `name="website"` → `name="_hp_url_check"` on the `<input>` and in the Zod schema key.
+- Add `data-lpignore="true"` and `data-1p-ignore` attributes (password-manager defense).
+- Relax client Zod: `_hp_url_check: z.string().optional()` (drop `.max(0)`). Server decides spam.
 
-1. Clicked **Send Request** on an empty form → **no field-level errors rendered, no network request fired** (`xhr,fetch` count = 0).
-2. Filled the Name field, clicked again → **still zero `xhr/fetch` requests, still no error UI**.
-3. No React hydration errors in the headless console (the one warning in your preview is from the Scribe browser extension on your machine — unrelated).
+**2. `src/routes/api/public/send-booking-email.ts`**
+- Rename schema field `website` → `_hp_url_check`, change to `z.string().optional().default("")` (drop `.max(0)` so the explicit honeypot check actually runs instead of failing at parse time).
+- Update honeypot check: `if (d._hp_url_check && d._hp_url_check.length > 0) return Response.json({ success: true });` — bots get a fake 200 indistinguishable from real submissions.
 
-That narrows it to one of two failure modes inside `handleSubmit` in `src/routes/book.tsx`:
-
-- **(A)** `handleSubmit` is not firing at all (submit event not bound, or the wrong element is intercepting), OR
-- **(B)** `handleSubmit` fires, `safeParse` fails, `setErrors({...})` is called, but the error UI isn't rendering (key mismatch between `issue.path[0]` and the field's `errors.<key>` lookup, or a render-state collision).
-
-I can't distinguish (A) vs (B) without logging — that's the diagnostic step.
-
-## Also worth checking: are you testing the right URL?
-
-You wrote `luxury-detail-forge.lovable.app/book`. The current published URL for this project is `top-elite-auto.lovable.app`. `luxury-detail-forge` may be a stale subdomain.
-
-Also: **frontend changes require clicking "Update" in the Publish dialog to go live.** The v4 worker (server route + secret) deploys immediately, but the v4 `book.tsx` (honeypot + new POST path) does NOT until you Update. If the live frontend is pre-v4, it's POSTing to `/api/booking` (which doesn't exist) — but that would still flip the button to "Sending…" first, then show the error banner. Since you say the button doesn't even change, the failure is at the validation step, not the fetch step.
-
-## Plan
-
-### Step 1 — Add diagnostic logging (temporary)
-
-In `src/routes/book.tsx` `handleSubmit`, add console.log statements at every branch:
-
-```ts
-async function handleSubmit(e) {
-  console.log("[book] submit fired");
-  e.preventDefault();
-  setErrors({});
-  const fd = new FormData(e.currentTarget);
-  const data = Object.fromEntries(fd.entries());
-  console.log("[book] form data", data);
-  const parsed = schema.safeParse(data);
-  console.log("[book] parsed", parsed);
-  if (!parsed.success) {
-    const errs = {};
-    for (const issue of parsed.error.issues) {
-      errs[issue.path[0]] = issue.message;
-    }
-    console.log("[book] errors", errs);
-    setErrors(errs);
-    return;
+**3. `src/styles.css`**
+- Add scoped rule so options are legible inside the booking form's dark surface:
+  ```css
+  .surface-dark select option {
+    color: #0A0A0A;
+    background-color: #FFFFFF;
   }
-  console.log("[book] posting…");
-  // …existing fetch…
-}
-```
+  ```
+- Verify in `book.tsx` that `.surface-dark` is the actual wrapping class (it is, per current source); if not, scope to whatever container class is in use.
 
-### Step 2 — Reproduce in the preview and read the console
+### Verification after build
+- Chrome (non-incognito) `/book`: fill form → submit → success state renders, POST returns 200.
+- Bot submission with `_hp_url_check` filled → server returns silent `{ success: true }`, no email sent.
+- All four selects: open dropdown in Chrome and Safari → options are dark text on white background, readable without hover. Note: macOS Safari may use OS-native dropdowns that ignore styling — accepted limitation.
 
-I'll drive the form headlessly and read `code--read_console_logs` to see exactly which log lines print. That tells us:
-
-- No `[book] submit fired` → submit event isn't binding (path A). Likely fix: form element shape, button type, or a stray nested `<form>` from a parent component.
-- `[book] submit fired` + `[book] errors {...}` → validation is failing and errors ARE being set; the render isn't surfacing them. Likely fix: a key mismatch between Zod `issue.path[0]` and the `errors.<key>` reads in JSX (e.g., honeypot `website` throwing an error that doesn't have a UI slot, swallowing visible feedback), or `setErrors` being called with the wrong shape.
-- `[book] posting…` but no network → the `fetch` call itself is throwing synchronously (unlikely in a dev preview).
-
-### Step 3 — Patch the actual bug
-
-Based on what step 2 prints, apply the minimum fix. Most likely candidates I'll prepare for:
-
-- **If validation is failing on the honeypot** (`z.string().max(0)` rejecting some hydrated value), relax it to `z.string().optional().refine(v => !v, "…")` and short-circuit BEFORE rendering errors so it never lands in `errors.website`.
-- **If `issue.path[0]` is `undefined`** for some issue (root error), filter those out before writing to `errs` so they don't clobber the map.
-- **If `handleSubmit` never fires**, audit the form for any wrapper from `__root.tsx` / Nav that might be hijacking submit, and verify the button isn't being rendered outside the form by a CSS grid escape.
-
-### Step 4 — Remove diagnostic logs
-
-Once the real bug is patched and a real submission goes through end-to-end (verified by a 200 response in the network panel AND a delivered email in Resend's "Sent" log), strip the `console.log` calls.
-
-### Step 5 — Confirm publish state
-
-Remind you to click **Publish → Update** so the patched `book.tsx` ships to the published URL (the worker patches are already live).
-
-## Out of scope
-
-No changes to the server route, the Resend payload shape, the email template, the schema beyond what step 3 requires, or any other page. No design changes. No new fields.
-
-## Files touched
-
-- `src/routes/book.tsx` (only) — diagnostic logs in step 1, real patch in step 3, logs removed in step 4.
+### Out of scope
+No other validation, UI, copy, or component changes.

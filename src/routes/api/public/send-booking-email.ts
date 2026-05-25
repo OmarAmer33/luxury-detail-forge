@@ -12,7 +12,7 @@ const schema = z.object({
   time: z.string().min(1).max(20),
   hearAbout: z.string().max(50).optional().default(""),
   notes: z.string().max(1000).optional().default(""),
-  website: z.string().max(0).optional().default(""),
+  _hp_url_check: z.string().optional().default(""),
 });
 
 function escapeHtml(s: string) {
@@ -45,7 +45,7 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
         const d = parsed.data;
 
         // Honeypot — silently succeed without sending
-        if (d.website && d.website.length > 0) {
+        if (d._hp_url_check && d._hp_url_check.length > 0) {
           return Response.json({ success: true });
         }
 
