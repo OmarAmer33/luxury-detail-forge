@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WindowTintRouteImport } from './routes/window-tint'
 import { Route as VipShowroomRouteImport } from './routes/vip-showroom'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as PaintProtectionRouteImport } from './routes/paint-protection'
@@ -19,6 +20,11 @@ import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicSendBookingEmailRouteImport } from './routes/api/public/send-booking-email'
 
+const WindowTintRoute = WindowTintRouteImport.update({
+  id: '/window-tint',
+  path: '/window-tint',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VipShowroomRoute = VipShowroomRouteImport.update({
   id: '/vip-showroom',
   path: '/vip-showroom',
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/paint-protection': typeof PaintProtectionRoute
   '/reviews': typeof ReviewsRoute
   '/vip-showroom': typeof VipShowroomRoute
+  '/window-tint': typeof WindowTintRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRoutesByTo {
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/paint-protection': typeof PaintProtectionRoute
   '/reviews': typeof ReviewsRoute
   '/vip-showroom': typeof VipShowroomRoute
+  '/window-tint': typeof WindowTintRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRoutesById {
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/paint-protection': typeof PaintProtectionRoute
   '/reviews': typeof ReviewsRoute
   '/vip-showroom': typeof VipShowroomRoute
+  '/window-tint': typeof WindowTintRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRouteTypes {
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/paint-protection'
     | '/reviews'
     | '/vip-showroom'
+    | '/window-tint'
     | '/api/public/send-booking-email'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/paint-protection'
     | '/reviews'
     | '/vip-showroom'
+    | '/window-tint'
     | '/api/public/send-booking-email'
   id:
     | '__root__'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/paint-protection'
     | '/reviews'
     | '/vip-showroom'
+    | '/window-tint'
     | '/api/public/send-booking-email'
   fileRoutesById: FileRoutesById
 }
@@ -145,11 +157,19 @@ export interface RootRouteChildren {
   PaintProtectionRoute: typeof PaintProtectionRoute
   ReviewsRoute: typeof ReviewsRoute
   VipShowroomRoute: typeof VipShowroomRoute
+  WindowTintRoute: typeof WindowTintRoute
   ApiPublicSendBookingEmailRoute: typeof ApiPublicSendBookingEmailRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/window-tint': {
+      id: '/window-tint'
+      path: '/window-tint'
+      fullPath: '/window-tint'
+      preLoaderRoute: typeof WindowTintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vip-showroom': {
       id: '/vip-showroom'
       path: '/vip-showroom'
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   PaintProtectionRoute: PaintProtectionRoute,
   ReviewsRoute: ReviewsRoute,
   VipShowroomRoute: VipShowroomRoute,
+  WindowTintRoute: WindowTintRoute,
   ApiPublicSendBookingEmailRoute: ApiPublicSendBookingEmailRoute,
 }
 export const routeTree = rootRouteImport
