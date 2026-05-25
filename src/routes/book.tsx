@@ -35,7 +35,7 @@ const schema = z.object({
   time: z.string().min(1, "Pick a time"),
   hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
-  website: z.string().max(0).optional(),
+  _hp_url_check: z.string().optional(),
 });
 
 const services = [
