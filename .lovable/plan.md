@@ -1,36 +1,45 @@
-## Fix: Honeypot autofill failure + illegible dropdown options
+## v5 — Post-launch content & structure edits
 
-### Bug 1 — Honeypot field triggers browser autofill, silent submission failure
-Chrome/Safari autofill the hidden `name="website"` input. Client Zod (`.max(0)`) rejects it, `errs.website` is set with no renderer, `scrollIntoView` jumps to the off-screen hidden input → user sees a scroll and nothing else.
+Five fixes across booking form, detailing page, new tint page, nav, and home grid. No design system changes.
 
-### Bug 2 — `<select>` options render white-on-white
-Options inherit `color: white` from the select on the dark form surface; OS-default option background is also white. Options are only visible on hover. Affects Vehicle Condition, Service, Preferred Time, How did you hear about us.
+### Fix 1 — Booking form service list
+**`src/routes/book.tsx`** — In `services` array, insert "Interior Detail" and "Exterior Detail" after "Full Detail" and before "Paint Correction". Final order: Ceramic Coating, PPF, Vinyl Wrap, Full Detail, Interior Detail, Exterior Detail, Paint Correction, VIP Detail (Top Tier), Window Tint, Not sure.
 
-### Changes
+### Fix 2 — Detailing wording
+**`src/routes/detailing.tsx`** — Find line with "leather cleaning and conditioning" (or similar combined phrasing) and change to just "leather cleaning". Leave the standalone leather-conditioning add-on intact.
 
-**1. `src/routes/book.tsx`**
-- Rename honeypot: `name="website"` → `name="_hp_url_check"` on the `<input>` and in the Zod schema key.
-- Add `data-lpignore="true"` and `data-1p-ignore` attributes (password-manager defense).
-- Relax client Zod: `_hp_url_check: z.string().optional()` (drop `.max(0)`). Server decides spam.
+### Fix 3 — New Window Tint page
+**`src/routes/window-tint.tsx`** (NEW) — TanStack route at `/window-tint` using `ServicePage` pattern.
 
-**2. `src/routes/api/public/send-booking-email.ts`**
-- Rename schema field `website` → `_hp_url_check`, change to `z.string().optional().default("")` (drop `.max(0)` so the explicit honeypot check actually runs instead of failing at parse time).
-- Update honeypot check: `if (d._hp_url_check && d._hp_url_check.length > 0) return Response.json({ success: true });` — bots get a fake 200 indistinguishable from real submissions.
+- Hero: eyebrow "Window Tint", title "Heat-rejecting tint, done right.", subtitle as specified, reuse an existing detailing/tint image asset.
+- Intro paragraph per spec.
+- Includes list (5 items) per spec.
+- `pricing` prop on `ServicePage` → Block 1 "Full Vehicle Tint": Standard $300, Carbon $375, Ceramic $500 (all "Starting").
+- Inline sections below `ServicePage` (same wrap-in-fragment pattern currently used on detailing page for tint):
+  - Block 2 "Windshield Tint": Standard $160, Carbon $190, Ceramic $250.
+  - Block 3 "Front Windows Only (2 windows)": Standard $100, Carbon $150, Ceramic $250 + clarification line "Two front side windows — for vehicles that come factory-tinted in the rear and need the fronts matched."
+- Process steps: Consult / Prep / Install / Cure (copy per spec).
+- CTA: "Book your tint" → `/book`.
+- `head()` metadata with route-specific title, description, og:title/description, og:image (hero image).
 
-**3. `src/styles.css`**
-- Add scoped rule so options are legible inside the booking form's dark surface:
-  ```css
-  .surface-dark select option {
-    color: #0A0A0A;
-    background-color: #FFFFFF;
-  }
-  ```
-- Verify in `book.tsx` that `.surface-dark` is the actual wrapping class (it is, per current source); if not, scope to whatever container class is in use.
+### Fix 4 — Remove tint section from detailing page
+**`src/routes/detailing.tsx`** — Delete the inline Window Tint section composed below `ServicePage`. Detailing page should contain only the five detail tiers (Elite Wash, Maintenance, Interior, Exterior, Full) plus add-ons.
 
-### Verification after build
-- Chrome (non-incognito) `/book`: fill form → submit → success state renders, POST returns 200.
-- Bot submission with `_hp_url_check` filled → server returns silent `{ success: true }`, no email sent.
-- All four selects: open dropdown in Chrome and Safari → options are dark text on white background, readable without hover. Note: macOS Safari may use OS-native dropdowns that ignore styling — accepted limitation.
+### Fix 5 — Nav + home grid
+**`src/components/site/Nav.tsx`** — Add `{ to: "/window-tint", label: "Window Tint" }` between Detailing and VIP Showroom in the `links` array. (Both desktop nav and mobile menu inherit from the same array — no other changes needed.)
+
+**`src/routes/index.tsx`** — Restructure services grid:
+- Add Window Tint card (6th card) linking to `/window-tint`.
+- Remove `md:col-span-2 lg:col-span-2` from VIP card — becomes standard width, keep gold "Top Tier" badge.
+- New order: Row 1 — Ceramic / PPF / Wraps; Row 2 — In-Shop Detailing / Window Tint / VIP Showroom.
+- Change heading "Five ways to elevate." → "Six ways to elevate."
 
 ### Out of scope
-No other validation, UI, copy, or component changes.
+Review content, social URLs, design tokens, form submission logic, server route, any other copy/pricing.
+
+### Files touched
+- `src/routes/book.tsx`
+- `src/routes/detailing.tsx`
+- `src/routes/window-tint.tsx` (new)
+- `src/components/site/Nav.tsx`
+- `src/routes/index.tsx`
