@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Music2, MapPin, Phone, Mail, Clock } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-dark.png";
 
 export function Footer() {
   return (
@@ -11,7 +11,6 @@ export function Footer() {
             src={logo}
             alt="Top Elite Auto"
             className="h-16 w-auto"
-            style={{ filter: "invert(1) hue-rotate(180deg)" }}
           />
           <div className="mt-3 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
             Springfield, NJ
