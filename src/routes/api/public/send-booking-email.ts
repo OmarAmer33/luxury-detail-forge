@@ -12,7 +12,7 @@ const schema = z.object({
   time: z.string().min(1).max(20),
   hearAbout: z.string().max(50).optional().default(""),
   notes: z.string().max(1000).optional().default(""),
-  website: z.string().max(0).optional().default(""),
+  _hp_url_check: z.string().optional().default(""),
 });
 
 function escapeHtml(s: string) {
