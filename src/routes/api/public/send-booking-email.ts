@@ -45,7 +45,7 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
         const d = parsed.data;
 
         // Honeypot — silently succeed without sending
-        if (d.website && d.website.length > 0) {
+        if (d._hp_url_check && d._hp_url_check.length > 0) {
           return Response.json({ success: true });
         }
 
