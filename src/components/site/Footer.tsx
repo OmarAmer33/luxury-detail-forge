@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Facebook, MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Instagram, Facebook, Music2, MapPin, Phone, Mail, Clock } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 export function Footer() {
@@ -41,15 +41,16 @@ export function Footer() {
           </ul>
           <div className="mt-6 flex gap-3">
             {[
-              { Icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-              { Icon: Facebook, href: "https://facebook.com", label: "Facebook" },
+              { Icon: Instagram, href: "https://www.instagram.com/topeliteauto", label: "Top Elite Auto on Instagram" },
+              { Icon: Facebook, href: "https://www.facebook.com/topeliteautollc/", label: "Top Elite Auto on Facebook" },
+              { Icon: Music2, href: "https://www.tiktok.com/@topeliteauto", label: "Top Elite Auto on TikTok" },
             ].map(({ Icon, href, label }) => (
-              <a key={label} href={href} aria-label={label} className="flex h-10 w-10 items-center justify-center border border-border text-foreground/70 transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]">
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="flex h-10 w-10 items-center justify-center border border-border text-foreground/70 transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]">
                 <Icon size={16} />
               </a>
             ))}
-            <a href="https://google.com/maps" aria-label="Google" className="flex h-10 w-10 items-center justify-center border border-border text-xs font-bold text-foreground/70 transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]">G</a>
-            <a href="https://yelp.com" aria-label="Yelp" className="flex h-10 w-10 items-center justify-center border border-border text-xs font-bold text-foreground/70 transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]">Y</a>
+            <a href="https://maps.app.goo.gl/Hh2Tgnzepbobuz6Z9" target="_blank" rel="noopener noreferrer" aria-label="Top Elite Auto on Google Maps" className="flex h-10 w-10 items-center justify-center border border-border text-xs font-bold text-foreground/70 transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]">G</a>
+            <a href="https://www.yelp.com/biz/top-elite-auto-springfield" target="_blank" rel="noopener noreferrer" aria-label="Top Elite Auto on Yelp" className="flex h-10 w-10 items-center justify-center border border-border text-xs font-bold text-foreground/70 transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]">Y</a>
           </div>
         </div>
 
