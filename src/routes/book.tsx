@@ -144,9 +144,11 @@ function Book() {
               {/* Honeypot — hidden from real users, bots fill it */}
               <input
                 type="text"
-                name="website"
+                name="_hp_url_check"
                 tabIndex={-1}
                 autoComplete="off"
+                data-lpignore="true"
+                data-1p-ignore
                 aria-hidden="true"
                 style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
               />
