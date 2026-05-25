@@ -1,27 +1,12 @@
-## v6-update — Reviews page: 4 → 6 reviews
+## Problem
 
-Small update to Fix 2 only. Fix 1 (home) and Fix 3 (footer) unchanged.
+The Nav (top-left header logo) uses the light-background logo and applies `filter: invert(1) hue-rotate(180deg)` when over a dark hero (not scrolled). That filter shifts the crimson red into an orange/coral, same issue we just fixed in the footer.
 
-### Change (`src/routes/reviews.tsx`)
+## Fix
 
-Expand the `reviews` array from 4 to 6 entries, reordered for variety:
+In `src/components/site/Nav.tsx`:
+- Import both assets: `logo` (light bg) and `logoDark` (dark bg, the file already copied to `src/assets/logo-dark.png`).
+- Swap the `<img src>` based on `scrolled`: use `logoDark` when not scrolled (transparent over dark hero), `logo` when scrolled (white background).
+- Remove the `filter: invert(1) hue-rotate(180deg)` style entirely.
 
-1. **Bryan Correia** — Local Guide, broad endorsement (existing)
-2. **Tim Sweidan** — Mustang, ceramic coating specific (existing)
-3. **Daniel Duran** — NEW: ceramic coating, multiple vehicles, retention
-4. **Ardy Kalezic** — Names Derek directly, repeat customer (existing)
-5. **D'Angelo Daniel** — BMW specific, visceral language (existing)
-6. **Melinda Zito** — NEW: pre-trade-in use case, different angle
-
-New entries:
-- **Daniel Duran**: *"Excellent job! I normally don't leave reviews, but this one is well deserved..."*
-- **Melinda Zito**: *"I wanted to have my car detailed before turning it in to make a new purchase..."*
-
-### Grid verification
-
-Current grid is `grid gap-6 md:grid-cols-2 lg:grid-cols-3` — already handles 6 cards cleanly:
-- `lg`: 3 columns × 2 rows
-- `md`: 2 columns × 3 rows  
-- `< md`: 1 column × 6 rows
-
-No structural or styling changes needed.
+Result: the crimson red in the header logo matches the rest of the site in both states.
