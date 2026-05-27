@@ -6,6 +6,7 @@ import ceramic from "@/assets/ceramic.jpg";
 import ppf from "@/assets/ppf.jpg";
 import wraps from "@/assets/wraps.jpg";
 import detailing from "@/assets/detailing.jpg";
+import windowTint from "@/assets/window-tint.jpg";
 import showroom from "@/assets/showroom.jpg";
 
 export const Route = createFileRoute("/")({
@@ -32,7 +33,7 @@ const services = [
   { to: "/paint-protection", label: "Paint Protection (PPF)", img: ppf, blurb: "Self-healing film that absorbs the road so your paint doesn't.", Icon: ShieldCheck, wide: false, badge: undefined },
   { to: "/car-wraps", label: "Car Wraps", img: wraps, blurb: "Color, finish, presence. Wrap it, change it, own it.", Icon: Layers, wide: false, badge: undefined },
   { to: "/detailing", label: "In-Shop Detailing", img: detailing, blurb: "Hand wash, paint correction, interior reset. Showroom every time.", Icon: Wrench, wide: false, badge: undefined },
-  { to: "/window-tint", label: "Window Tint", img: detailing, blurb: "Standard, carbon and ceramic film. Flat pricing, lifetime warranty.", Icon: Layers, wide: false, badge: undefined },
+  { to: "/window-tint", label: "Window Tint", img: windowTint, blurb: "Standard, carbon and ceramic film. Flat pricing, lifetime warranty.", Icon: Layers, wide: false, badge: undefined },
   { to: "/vip-showroom", label: "VIP Detail", img: showroom, blurb: "Our top-tier 4-hour multi-stage detail. The full reset, inside and out.", Icon: Sparkles, wide: false, badge: "Top Tier" },
 ];
 
