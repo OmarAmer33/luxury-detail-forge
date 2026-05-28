@@ -33,7 +33,7 @@ function Detailing() {
         "Wheel, tire and arch deep clean",
         "Iron and tar decontamination",
         "Clay bar treatment",
-        "Paint correction (1, 2, or 3-stage)",
+        
         "Interior vacuum, steam and extraction",
         "Leather cleaning",
         "Sealant or wax topcoat",
