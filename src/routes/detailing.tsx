@@ -22,7 +22,7 @@ function Detailing() {
       title="Reset the car. Restart the relationship."
       subtitle="From a refresh wash to a full multi-day correction and interior overhaul. We bring the car back to a state you forgot it could be in."
       image={img}
-      intro="Detailing is more than soap and a buffer. It's a process: lift contamination, correct defects, protect what's been restored. We work by hand, panel by panel, in a controlled environment — never an outdoor wash bay, never a rushed assembly line."
+      intro="Detailing is more than soap and a buffer. It's a process: lift contamination, correct defects, protect what's been restored. We work by hand, panel by panel, in a controlled environment — never a rushed assembly line."
       features={[
         { title: "Paint Correction", body: "Single, two- and three-stage polishing to remove swirls, scratches and oxidation." },
         { title: "Interior Reset", body: "Steam, hot-water extraction and odor neutralization — interior comes back like new." },
