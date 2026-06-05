@@ -69,6 +69,54 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const localBusinessJson = {
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  "@id": "https://topeliteauto.com/#business",
+  "name": "Top Elite Auto",
+  "image": "https://topeliteauto.com/src/assets/hero-car.jpg",
+  "url": "https://topeliteauto.com",
+  "telephone": "+1-908-293-3934",
+  "email": "info@topeliteauto.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "3 Dundar Rd",
+    "addressLocality": "Springfield",
+    "addressRegion": "NJ",
+    "postalCode": "07081",
+    "addressCountry": "US",
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "40.6976",
+    "longitude": "-74.3254",
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "09:00",
+      "closes": "18:00",
+    },
+  ],
+  "priceRange": "$$$",
+  "areaServed": {
+    "@type": "City",
+    "name": "Springfield",
+    "containedInPlace": {
+      "@type": "State",
+      "name": "New Jersey",
+    },
+  },
+  "sameAs": [
+    "https://www.instagram.com/topeliteauto",
+    "https://www.facebook.com/topeliteautollc/",
+    "https://www.tiktok.com/@topeliteauto",
+    "https://www.yelp.com/biz/top-elite-auto-springfield",
+    "https://maps.app.goo.gl/Hh2Tgnzepbobuz6Z9",
+  ],
+};
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -107,6 +155,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJson) }}
+        />
       </head>
       <body>
         {children}
