@@ -31,6 +31,7 @@ export const Route = createFileRoute("/detailing")({
       { property: "og:description", content: "Premium hand detailing and paint correction in Springfield, NJ." },
       { property: "og:image", content: img },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/detailing" }],
   }),
   component: Detailing,
 });

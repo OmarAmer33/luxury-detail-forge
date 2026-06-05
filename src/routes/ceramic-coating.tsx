@@ -29,6 +29,7 @@ export const Route = createFileRoute("/ceramic-coating")({
       { property: "og:description", content: "Premium ceramic coatings installed by hand in Springfield, NJ." },
       { property: "og:image", content: img },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/ceramic-coating" }],
   }),
   component: () => (
     <>

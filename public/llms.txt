@@ -1,0 +1,23 @@
+# Top Elite Auto
+
+> Premium auto detailing, ceramic coating, paint protection film (PPF), vinyl wraps and window tint in Springfield, NJ. Serving Union County and surrounding New Jersey towns.
+
+Top Elite Auto is a Springfield, NJ studio specializing in showroom-grade detailing and long-term paint protection. Services are performed in-shop by a small, hands-on team. Studio address: 3 Dundar Rd, Springfield, NJ 07081. Phone: +1 (908) 293-3934.
+
+## Pages
+
+- [Home](/): Overview of Top Elite Auto and our services in Springfield, NJ.
+- [Ceramic Coating](/ceramic-coating): Multi-year ceramic coatings (2-year from $950, 5-year from $1,000, motorcycle from $350).
+- [Paint Protection Film](/paint-protection): Self-healing PPF for full vehicles, partial fronts and high-impact zones.
+- [Car Wraps](/car-wraps): Color change, satin, matte and commercial vinyl wraps in premium 3M and Avery films.
+- [In-Shop Detailing](/detailing): Hand wash, paint correction, interior reset and full detailing packages from $99.
+- [Window Tint](/window-tint): Standard, carbon and ceramic window tint with flat pricing and lifetime material warranty.
+- [VIP Detail](/vip-showroom): Top-tier multi-stage premium detail. Starting at $600.
+- [Reviews](/reviews): Verified Google reviews from Top Elite Auto clients.
+- [FAQ](/faq): Common questions about ceramic coating, PPF, wraps, tint and detailing.
+- [Service Areas](/service-areas): Towns served across Union County and surrounding NJ.
+- [Book](/book): Request an appointment.
+
+## Optional
+
+- [Sitemap](/sitemap.xml): Full list of public pages.

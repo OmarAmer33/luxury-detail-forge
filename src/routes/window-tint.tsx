@@ -30,6 +30,7 @@ export const Route = createFileRoute("/window-tint")({
       { property: "og:description", content: "Heat-rejecting window tint installed by a certified pro in Springfield, NJ." },
       { property: "og:image", content: img },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/window-tint" }],
   }),
   component: WindowTint,
 });

@@ -13,6 +13,7 @@ export const Route = createFileRoute("/faq")({
       { property: "og:title", content: "FAQ — Top Elite Auto" },
       { property: "og:description", content: "Common questions about ceramic coating, PPF, wraps and detailing in Springfield, NJ." },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/faq" }],
   }),
   component: FAQ,
 });
