@@ -20,7 +20,6 @@ import { Route as CeramicCoatingRouteImport } from './routes/ceramic-coating'
 import { Route as CarWrapsRouteImport } from './routes/car-wraps'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SitemapXmlRouteImport } from './routes/sitemap.xml'
 import { Route as ApiPublicSendBookingEmailRouteImport } from './routes/api/public/send-booking-email'
 
 const WindowTintRoute = WindowTintRouteImport.update({
@@ -78,11 +77,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapXmlRoute = SitemapXmlRouteImport.update({
-  id: '/sitemap/xml',
-  path: '/sitemap/xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPublicSendBookingEmailRoute =
   ApiPublicSendBookingEmailRouteImport.update({
     id: '/api/public/send-booking-email',
@@ -102,7 +96,6 @@ export interface FileRoutesByFullPath {
   '/service-areas': typeof ServiceAreasRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
-  '/sitemap/xml': typeof SitemapXmlRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRoutesByTo {
@@ -117,7 +110,6 @@ export interface FileRoutesByTo {
   '/service-areas': typeof ServiceAreasRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
-  '/sitemap/xml': typeof SitemapXmlRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRoutesById {
@@ -133,7 +125,6 @@ export interface FileRoutesById {
   '/service-areas': typeof ServiceAreasRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
-  '/sitemap/xml': typeof SitemapXmlRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRouteTypes {
@@ -150,7 +141,6 @@ export interface FileRouteTypes {
     | '/service-areas'
     | '/vip-showroom'
     | '/window-tint'
-    | '/sitemap/xml'
     | '/api/public/send-booking-email'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -165,7 +155,6 @@ export interface FileRouteTypes {
     | '/service-areas'
     | '/vip-showroom'
     | '/window-tint'
-    | '/sitemap/xml'
     | '/api/public/send-booking-email'
   id:
     | '__root__'
@@ -180,7 +169,6 @@ export interface FileRouteTypes {
     | '/service-areas'
     | '/vip-showroom'
     | '/window-tint'
-    | '/sitemap/xml'
     | '/api/public/send-booking-email'
   fileRoutesById: FileRoutesById
 }
@@ -196,7 +184,6 @@ export interface RootRouteChildren {
   ServiceAreasRoute: typeof ServiceAreasRoute
   VipShowroomRoute: typeof VipShowroomRoute
   WindowTintRoute: typeof WindowTintRoute
-  SitemapXmlRoute: typeof SitemapXmlRoute
   ApiPublicSendBookingEmailRoute: typeof ApiPublicSendBookingEmailRoute
 }
 
@@ -279,13 +266,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap/xml': {
-      id: '/sitemap/xml'
-      path: '/sitemap/xml'
-      fullPath: '/sitemap/xml'
-      preLoaderRoute: typeof SitemapXmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/send-booking-email': {
       id: '/api/public/send-booking-email'
       path: '/api/public/send-booking-email'
@@ -308,7 +288,6 @@ const rootRouteChildren: RootRouteChildren = {
   ServiceAreasRoute: ServiceAreasRoute,
   VipShowroomRoute: VipShowroomRoute,
   WindowTintRoute: WindowTintRoute,
-  SitemapXmlRoute: SitemapXmlRoute,
   ApiPublicSendBookingEmailRoute: ApiPublicSendBookingEmailRoute,
 }
 export const routeTree = rootRouteImport
