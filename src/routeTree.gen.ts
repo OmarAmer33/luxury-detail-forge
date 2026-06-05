@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WindowTintRouteImport } from './routes/window-tint'
 import { Route as VipShowroomRouteImport } from './routes/vip-showroom'
+import { Route as ServiceAreasRouteImport } from './routes/service-areas'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as PaintProtectionRouteImport } from './routes/paint-protection'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DetailingRouteImport } from './routes/detailing'
 import { Route as CeramicCoatingRouteImport } from './routes/ceramic-coating'
 import { Route as CarWrapsRouteImport } from './routes/car-wraps'
@@ -30,6 +32,11 @@ const VipShowroomRoute = VipShowroomRouteImport.update({
   path: '/vip-showroom',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServiceAreasRoute = ServiceAreasRouteImport.update({
+  id: '/service-areas',
+  path: '/service-areas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewsRoute = ReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
@@ -38,6 +45,11 @@ const ReviewsRoute = ReviewsRouteImport.update({
 const PaintProtectionRoute = PaintProtectionRouteImport.update({
   id: '/paint-protection',
   path: '/paint-protection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DetailingRoute = DetailingRouteImport.update({
@@ -78,8 +90,10 @@ export interface FileRoutesByFullPath {
   '/car-wraps': typeof CarWrapsRoute
   '/ceramic-coating': typeof CeramicCoatingRoute
   '/detailing': typeof DetailingRoute
+  '/faq': typeof FaqRoute
   '/paint-protection': typeof PaintProtectionRoute
   '/reviews': typeof ReviewsRoute
+  '/service-areas': typeof ServiceAreasRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
@@ -90,8 +104,10 @@ export interface FileRoutesByTo {
   '/car-wraps': typeof CarWrapsRoute
   '/ceramic-coating': typeof CeramicCoatingRoute
   '/detailing': typeof DetailingRoute
+  '/faq': typeof FaqRoute
   '/paint-protection': typeof PaintProtectionRoute
   '/reviews': typeof ReviewsRoute
+  '/service-areas': typeof ServiceAreasRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
@@ -103,8 +119,10 @@ export interface FileRoutesById {
   '/car-wraps': typeof CarWrapsRoute
   '/ceramic-coating': typeof CeramicCoatingRoute
   '/detailing': typeof DetailingRoute
+  '/faq': typeof FaqRoute
   '/paint-protection': typeof PaintProtectionRoute
   '/reviews': typeof ReviewsRoute
+  '/service-areas': typeof ServiceAreasRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
@@ -117,8 +135,10 @@ export interface FileRouteTypes {
     | '/car-wraps'
     | '/ceramic-coating'
     | '/detailing'
+    | '/faq'
     | '/paint-protection'
     | '/reviews'
+    | '/service-areas'
     | '/vip-showroom'
     | '/window-tint'
     | '/api/public/send-booking-email'
@@ -129,8 +149,10 @@ export interface FileRouteTypes {
     | '/car-wraps'
     | '/ceramic-coating'
     | '/detailing'
+    | '/faq'
     | '/paint-protection'
     | '/reviews'
+    | '/service-areas'
     | '/vip-showroom'
     | '/window-tint'
     | '/api/public/send-booking-email'
@@ -141,8 +163,10 @@ export interface FileRouteTypes {
     | '/car-wraps'
     | '/ceramic-coating'
     | '/detailing'
+    | '/faq'
     | '/paint-protection'
     | '/reviews'
+    | '/service-areas'
     | '/vip-showroom'
     | '/window-tint'
     | '/api/public/send-booking-email'
@@ -154,8 +178,10 @@ export interface RootRouteChildren {
   CarWrapsRoute: typeof CarWrapsRoute
   CeramicCoatingRoute: typeof CeramicCoatingRoute
   DetailingRoute: typeof DetailingRoute
+  FaqRoute: typeof FaqRoute
   PaintProtectionRoute: typeof PaintProtectionRoute
   ReviewsRoute: typeof ReviewsRoute
+  ServiceAreasRoute: typeof ServiceAreasRoute
   VipShowroomRoute: typeof VipShowroomRoute
   WindowTintRoute: typeof WindowTintRoute
   ApiPublicSendBookingEmailRoute: typeof ApiPublicSendBookingEmailRoute
@@ -177,6 +203,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VipShowroomRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/service-areas': {
+      id: '/service-areas'
+      path: '/service-areas'
+      fullPath: '/service-areas'
+      preLoaderRoute: typeof ServiceAreasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reviews': {
       id: '/reviews'
       path: '/reviews'
@@ -189,6 +222,13 @@ declare module '@tanstack/react-router' {
       path: '/paint-protection'
       fullPath: '/paint-protection'
       preLoaderRoute: typeof PaintProtectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/detailing': {
@@ -242,8 +282,10 @@ const rootRouteChildren: RootRouteChildren = {
   CarWrapsRoute: CarWrapsRoute,
   CeramicCoatingRoute: CeramicCoatingRoute,
   DetailingRoute: DetailingRoute,
+  FaqRoute: FaqRoute,
   PaintProtectionRoute: PaintProtectionRoute,
   ReviewsRoute: ReviewsRoute,
+  ServiceAreasRoute: ServiceAreasRoute,
   VipShowroomRoute: VipShowroomRoute,
   WindowTintRoute: WindowTintRoute,
   ApiPublicSendBookingEmailRoute: ApiPublicSendBookingEmailRoute,

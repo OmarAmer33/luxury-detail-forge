@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CtaSection } from "@/components/site/CtaSection";
 import { PageHero } from "@/components/site/PageHero";
+import { JsonLd } from "@/components/site/JsonLd";
 import results from "@/assets/results.jpg";
 import { Star } from "lucide-react";
 
@@ -26,9 +27,31 @@ const reviews = [
   { name: "melinda zito", quote: "I wanted to have my car detailed before turning it in to make a new purchase. I did not want to be nickeled and dimed by the dealership on their offer. I believe I got back 10 fold of the cost to have the car made to look as close to right off the lot as possible. Derrick was so great. Very professional and thorough. Will be using him again when my new car needs a detailing.", source: "Google review" },
 ];
 
+const reviewsJson = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://topeliteauto.com/#business",
+  "name": "Top Elite Auto",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "6",
+    "bestRating": "5",
+    "worstRating": "1",
+  },
+  "review": reviews.slice(0, 3).map((r) => ({
+    "@type": "Review",
+    "author": { "@type": "Person", "name": r.name },
+    "reviewBody": r.quote,
+    "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+    "publisher": { "@type": "Organization", "name": "Google" },
+  })),
+};
+
 function Reviews() {
   return (
     <>
+      <JsonLd data={reviewsJson} />
       <PageHero
         eyebrow="Reviews & Results"
         title="Owners don't whisper about good work."

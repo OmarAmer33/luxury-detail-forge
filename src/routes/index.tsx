@@ -108,7 +108,7 @@ function Home() {
       <section className="container-luxe grid gap-16 py-28 md:grid-cols-[1fr_1.4fr]">
         <div>
           <span className="eyebrow">The Standard</span>
-          <h2 className="mt-5 text-4xl md:text-5xl">Built for people who notice the details.</h2>
+          <h2 className="mt-5 text-4xl md:text-5xl">Ceramic coating, paint protection film & auto detailing in Springfield, NJ.</h2>
         </div>
         <div className="space-y-6 text-lg leading-relaxed text-muted-foreground">
           <p>

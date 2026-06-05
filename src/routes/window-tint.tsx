@@ -1,7 +1,25 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ServicePage } from "@/components/site/ServicePage";
+import { JsonLd } from "@/components/site/JsonLd";
 import { CtaSection } from "@/components/site/CtaSection";
 import img from "@/assets/detailing.jpg";
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Window Tint",
+  "provider": { "@id": "https://topeliteauto.com/#business" },
+  "areaServed": { "@type": "City", "name": "Springfield, NJ" },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Window Tint Packages",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Standard Film — Full Vehicle" }, "price": "300", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Carbon Film — Full Vehicle" }, "price": "375", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Ceramic Film — Full Vehicle" }, "price": "500", "priceCurrency": "USD" },
+    ],
+  },
+};
 
 export const Route = createFileRoute("/window-tint")({
   head: () => ({
@@ -61,6 +79,7 @@ function PriceBlock({
 function WindowTint() {
   return (
     <>
+      <JsonLd data={serviceSchema} />
       <ServicePage
         eyebrow="Window Tint"
         title="Heat-rejecting tint, done right."
