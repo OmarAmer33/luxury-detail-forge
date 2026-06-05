@@ -13,6 +13,7 @@ const links = [
   { to: "/window-tint", label: "Window Tint" },
   { to: "/vip-showroom", label: "VIP Showroom" },
   { to: "/reviews", label: "Reviews" },
+  { to: "/faq", label: "FAQ" },
 ] as const;
 
 export function Nav() {
