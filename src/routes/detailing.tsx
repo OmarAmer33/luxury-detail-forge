@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ServicePage } from "@/components/site/ServicePage";
 import { JsonLd } from "@/components/site/JsonLd";
+import { ServiceSeo } from "@/components/site/ServiceSeo";
 import img from "@/assets/detailing.jpg";
+
+const faqs = [
+  { q: "How long does a detail take?", a: "A standard maintenance detail runs 2–3 hours. A full multi-stage detail can take a full day. We give you a clear timeline at booking." },
+  { q: "Do you offer interior-only detailing?", a: "Yes. The Interior Detail starts at $205 and covers vacuum, steam, hot-water extraction, leather conditioning and odor neutralization." },
+  { q: "Do you do paint correction?", a: "Yes — we offer single, two- and three-stage machine polishing to remove swirls, scratches and oxidation, included in higher-tier details and ceramic coating prep." },
+  { q: "Is there a size upcharge?", a: "Yes — pricing tiers by vehicle size (Car / SUV-Pickup / 3-Row-XL). All tiers are listed on the page so there are no surprises." },
+];
 
 const serviceSchema = {
   "@context": "https://schema.org",
@@ -40,6 +48,7 @@ function Detailing() {
   return (
     <>
       <JsonLd data={serviceSchema} />
+      <ServiceSeo name="In-Shop Detailing" slug="detailing" faqs={faqs} />
       <ServicePage
         eyebrow="In-Shop Detailing"
         title="Reset the car. Restart the relationship."

@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ServicePage } from "@/components/site/ServicePage";
 import { JsonLd } from "@/components/site/JsonLd";
+import { ServiceSeo } from "@/components/site/ServiceSeo";
 import img from "@/assets/ppf.jpg";
+
+const faqs = [
+  { q: "What is paint protection film (PPF)?", a: "PPF is a clear, self-healing urethane film applied to painted surfaces that absorbs rock chips, road rash and minor abrasions before they reach your paint." },
+  { q: "How long does PPF last?", a: "Premium PPF carries a 10-year manufacturer warranty against yellowing, cracking and delamination, and stays optically clear throughout that time." },
+  { q: "What coverage options do you offer?", a: "Partial front, full front, and full vehicle coverage — plus door cups, sills, and rocker panels. Every install is hand-cut for a flawless fit." },
+  { q: "How much does PPF cost?", a: "Pricing is quote-based and depends on coverage area, vehicle size, and film. Book a free consult and we'll walk through the options and quote on the spot." },
+];
 
 const serviceSchema = {
   "@context": "https://schema.org",
@@ -25,6 +33,7 @@ export const Route = createFileRoute("/paint-protection")({
   component: () => (
     <>
       <JsonLd data={serviceSchema} />
+      <ServiceSeo name="Paint Protection Film" slug="paint-protection" faqs={faqs} />
       <ServicePage
         eyebrow="Paint Protection Film"
         title="An invisible shield against the road."

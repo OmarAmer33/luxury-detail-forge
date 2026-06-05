@@ -20,6 +20,7 @@ import { Route as CeramicCoatingRouteImport } from './routes/ceramic-coating'
 import { Route as CarWrapsRouteImport } from './routes/car-wraps'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogChoosingCarWrapFinishesRouteImport } from './routes/blog.choosing-car-wrap-finishes'
 import { Route as ApiPublicSendBookingEmailRouteImport } from './routes/api/public/send-booking-email'
 
 const WindowTintRoute = WindowTintRouteImport.update({
@@ -77,6 +78,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogChoosingCarWrapFinishesRoute =
+  BlogChoosingCarWrapFinishesRouteImport.update({
+    id: '/blog/choosing-car-wrap-finishes',
+    path: '/blog/choosing-car-wrap-finishes',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicSendBookingEmailRoute =
   ApiPublicSendBookingEmailRouteImport.update({
     id: '/api/public/send-booking-email',
@@ -96,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/service-areas': typeof ServiceAreasRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
+  '/blog/choosing-car-wrap-finishes': typeof BlogChoosingCarWrapFinishesRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRoutesByTo {
@@ -110,6 +118,7 @@ export interface FileRoutesByTo {
   '/service-areas': typeof ServiceAreasRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
+  '/blog/choosing-car-wrap-finishes': typeof BlogChoosingCarWrapFinishesRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRoutesById {
@@ -125,6 +134,7 @@ export interface FileRoutesById {
   '/service-areas': typeof ServiceAreasRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
+  '/blog/choosing-car-wrap-finishes': typeof BlogChoosingCarWrapFinishesRoute
   '/api/public/send-booking-email': typeof ApiPublicSendBookingEmailRoute
 }
 export interface FileRouteTypes {
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/service-areas'
     | '/vip-showroom'
     | '/window-tint'
+    | '/blog/choosing-car-wrap-finishes'
     | '/api/public/send-booking-email'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/service-areas'
     | '/vip-showroom'
     | '/window-tint'
+    | '/blog/choosing-car-wrap-finishes'
     | '/api/public/send-booking-email'
   id:
     | '__root__'
@@ -169,6 +181,7 @@ export interface FileRouteTypes {
     | '/service-areas'
     | '/vip-showroom'
     | '/window-tint'
+    | '/blog/choosing-car-wrap-finishes'
     | '/api/public/send-booking-email'
   fileRoutesById: FileRoutesById
 }
@@ -184,6 +197,7 @@ export interface RootRouteChildren {
   ServiceAreasRoute: typeof ServiceAreasRoute
   VipShowroomRoute: typeof VipShowroomRoute
   WindowTintRoute: typeof WindowTintRoute
+  BlogChoosingCarWrapFinishesRoute: typeof BlogChoosingCarWrapFinishesRoute
   ApiPublicSendBookingEmailRoute: typeof ApiPublicSendBookingEmailRoute
 }
 
@@ -266,6 +280,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/choosing-car-wrap-finishes': {
+      id: '/blog/choosing-car-wrap-finishes'
+      path: '/blog/choosing-car-wrap-finishes'
+      fullPath: '/blog/choosing-car-wrap-finishes'
+      preLoaderRoute: typeof BlogChoosingCarWrapFinishesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/send-booking-email': {
       id: '/api/public/send-booking-email'
       path: '/api/public/send-booking-email'
@@ -288,6 +309,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServiceAreasRoute: ServiceAreasRoute,
   VipShowroomRoute: VipShowroomRoute,
   WindowTintRoute: WindowTintRoute,
+  BlogChoosingCarWrapFinishesRoute: BlogChoosingCarWrapFinishesRoute,
   ApiPublicSendBookingEmailRoute: ApiPublicSendBookingEmailRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ServicePage } from "@/components/site/ServicePage";
 import { JsonLd } from "@/components/site/JsonLd";
+import { ServiceSeo } from "@/components/site/ServiceSeo";
 import img from "@/assets/ceramic.jpg";
+
+const faqs = [
+  { q: "How long does ceramic coating last?", a: "Our professional ceramic coatings are rated 2 to 9 years depending on the package — 2-Year starts at $950, 5-Year at $1,000. Longevity depends on proper maintenance." },
+  { q: "Does ceramic coating replace waxing?", a: "Yes. A coating chemically bonds to the clear coat and replaces sealant or wax for years at a time. No more quarterly waxing." },
+  { q: "Do you correct paint before coating?", a: "Always. Every coating package includes multi-stage paint correction so swirls and defects are removed before the coating locks them in." },
+  { q: "Where are you located?", a: "Top Elite Auto is at 3 Dundar Rd, Springfield, NJ 07081, serving Union County and the surrounding NJ towns." },
+];
 
 const serviceSchema = {
   "@context": "https://schema.org",
@@ -34,6 +42,7 @@ export const Route = createFileRoute("/ceramic-coating")({
   component: () => (
     <>
       <JsonLd data={serviceSchema} />
+      <ServiceSeo name="Ceramic Coating" slug="ceramic-coating" faqs={faqs} />
       <ServicePage
         eyebrow="Ceramic Coating"
         title="A finish that earns second looks."

@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ServicePage } from "@/components/site/ServicePage";
 import { JsonLd } from "@/components/site/JsonLd";
+import { ServiceSeo } from "@/components/site/ServiceSeo";
 import img from "@/assets/wraps.jpg";
+
+const faqs = [
+  { q: "What finishes can I choose from?", a: "Hundreds of finishes: gloss, satin, matte, metallic, chrome and color-shift. We use premium cast films from 3M 2080, Avery Dennison and KPMF. See our guide on satin vs matte vs gloss for help picking." },
+  { q: "Will a wrap damage my paint?", a: "No — premium cast films are removable without paint damage when properly installed on factory paint in good condition, and they actually shield the original paint while in place." },
+  { q: "How long does a car wrap last?", a: "A quality cast vinyl wrap lasts 5–7 years on average, depending on color, sun exposure and how the vehicle is maintained." },
+  { q: "How much does a wrap cost?", a: "Wraps are quote-based and depend on coverage, vehicle size and film. Book a consult to see finishes in person and get a quote on the spot." },
+];
 
 const serviceSchema = {
   "@context": "https://schema.org",
@@ -25,6 +33,7 @@ export const Route = createFileRoute("/car-wraps")({
   component: () => (
     <>
       <JsonLd data={serviceSchema} />
+      <ServiceSeo name="Car Wraps" slug="car-wraps" faqs={faqs} />
       <ServicePage
         eyebrow="Vinyl Wraps"
         title="A new car, without the new car."
