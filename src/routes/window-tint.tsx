@@ -1,8 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ServicePage } from "@/components/site/ServicePage";
 import { JsonLd } from "@/components/site/JsonLd";
+import { ServiceSeo } from "@/components/site/ServiceSeo";
 import { CtaSection } from "@/components/site/CtaSection";
 import img from "@/assets/detailing.jpg";
+
+const faqs = [
+  { q: "What's the difference between standard, carbon and ceramic film?", a: "Standard gives the look and privacy. Carbon adds better heat rejection and won't fade purple. Ceramic gives the most heat and UV rejection, zero signal interference and is the no-compromise pick." },
+  { q: "Is window tint legal in New Jersey?", a: "NJ allows tint on rear and rear-side windows at any VLT, but front side windows and the windshield are restricted (medical exemption required). We'll guide you to a legal install." },
+  { q: "Do you charge by vehicle size?", a: "No. Window tint is flat-priced regardless of vehicle size — same price for a coupe, sedan or SUV." },
+  { q: "Is there a warranty?", a: "Yes — lifetime warranty on materials against bubbling, peeling and color shift, as long as you own the vehicle." },
+];
 
 const serviceSchema = {
   "@context": "https://schema.org",
@@ -81,6 +89,7 @@ function WindowTint() {
   return (
     <>
       <JsonLd data={serviceSchema} />
+      <ServiceSeo name="Window Tint" slug="window-tint" faqs={faqs} />
       <ServicePage
         eyebrow="Window Tint"
         title="Heat-rejecting tint, done right."

@@ -2,8 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CtaSection } from "@/components/site/CtaSection";
 import { PageHero } from "@/components/site/PageHero";
 import { JsonLd } from "@/components/site/JsonLd";
+import { ServiceSeo } from "@/components/site/ServiceSeo";
 import showroom from "@/assets/showroom.jpg";
 import { Check, ArrowRight, Clock } from "lucide-react";
+
+const faqs = [
+  { q: "How long does the VIP Detail take?", a: "Roughly four hours of multi-stage work — exterior, interior, engine bay and wheels — done by hand, panel by panel." },
+  { q: "What's included in VIP?", a: "Full decontamination, hand wash, clay bar, iron/tar removal, deep interior steam, leather conditioning, engine bay clean and dress, light paint correction, premium sealant and tire/wheel detail. No upsells." },
+  { q: "How much does the VIP Detail cost?", a: "Starting at $600 for cars and $750 for SUVs and trucks. Final pricing depends on size, condition and add-ons." },
+  { q: "Do you require a deposit?", a: "VIP slots are limited and take half a day, so we ask for a deposit at booking to secure your time. Cancellations with 24+ hours notice keep the deposit on file for rebooking." },
+];
 
 const serviceSchema = {
   "@context": "https://schema.org",
@@ -52,6 +60,7 @@ function VIP() {
   return (
     <>
       <JsonLd data={serviceSchema} />
+      <ServiceSeo name="VIP Detail" slug="vip-showroom" faqs={faqs} />
       <PageHero
         eyebrow="VIP Detail · Top Tier"
         title="The full reset."

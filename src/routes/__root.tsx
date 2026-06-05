@@ -133,6 +133,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "Top Elite Auto — Detailing & Ceramic · Springfield NJ" },
       { name: "twitter:description", content: "Springfield, NJ's premium auto detailing shop. Ceramic coating, paint protection film, wraps and showroom-grade detailing. We don't do average." },
       { property: "og:site_name", content: "Top Elite Auto" },
+      { name: "google-site-verification", content: "gdWumQvXSHoLLyWzw-cKsQ6cJgReINJ0fqieuf1jd1g" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
