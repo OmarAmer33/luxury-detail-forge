@@ -30,6 +30,7 @@ export const Route = createFileRoute("/vip-showroom")({
       { property: "og:description", content: "Top-tier multi-stage premium detail in Springfield, NJ. Starting at $600." },
       { property: "og:image", content: showroom },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/vip-showroom" }],
   }),
   component: VIP,
 });

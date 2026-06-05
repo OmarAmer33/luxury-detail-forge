@@ -14,6 +14,7 @@ export const Route = createFileRoute("/reviews")({
       { property: "og:description", content: "Reviews from real Top Elite Auto clients across New Jersey." },
       { property: "og:image", content: results },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/reviews" }],
   }),
   component: Reviews,
 });

@@ -13,6 +13,7 @@ export const Route = createFileRoute("/service-areas")({
       { property: "og:title", content: "Service Areas — Top Elite Auto" },
       { property: "og:description", content: "Premium auto detailing, ceramic coating and PPF serving Springfield, NJ and surrounding Union County towns." },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/service-areas" }],
   }),
   component: ServiceAreas,
 });

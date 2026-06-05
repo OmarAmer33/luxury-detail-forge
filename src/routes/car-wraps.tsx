@@ -20,6 +20,7 @@ export const Route = createFileRoute("/car-wraps")({
       { property: "og:description", content: "Color change, satin, matte and commercial vinyl wraps in Springfield, NJ." },
       { property: "og:image", content: img },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/car-wraps" }],
   }),
   component: () => (
     <>

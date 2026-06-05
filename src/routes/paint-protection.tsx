@@ -20,6 +20,7 @@ export const Route = createFileRoute("/paint-protection")({
       { property: "og:description", content: "Self-healing PPF for daily drivers and exotics, installed in Springfield, NJ." },
       { property: "og:image", content: img },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/paint-protection" }],
   }),
   component: () => (
     <>

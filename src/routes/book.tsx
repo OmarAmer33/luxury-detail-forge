@@ -13,6 +13,7 @@ export const Route = createFileRoute("/book")({
       { property: "og:title", content: "Book Now · Top Elite Auto" },
       { property: "og:description", content: "Book a detailing or coating appointment in Springfield, NJ." },
     ],
+    links: [{ rel: "canonical", href: "https://topeliteauto.com/book" }],
   }),
   component: Book,
 });
