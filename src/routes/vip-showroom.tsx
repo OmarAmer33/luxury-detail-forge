@@ -1,8 +1,25 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CtaSection } from "@/components/site/CtaSection";
 import { PageHero } from "@/components/site/PageHero";
+import { JsonLd } from "@/components/site/JsonLd";
 import showroom from "@/assets/showroom.jpg";
 import { Check, ArrowRight, Clock } from "lucide-react";
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "VIP Auto Detailing",
+  "provider": { "@id": "https://topeliteauto.com/#business" },
+  "areaServed": { "@type": "City", "name": "Springfield, NJ" },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "VIP Detail Pricing",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "VIP Detail — Cars" }, "price": "600", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "VIP Detail — SUVs & Trucks" }, "price": "750", "priceCurrency": "USD" },
+    ],
+  },
+};
 
 export const Route = createFileRoute("/vip-showroom")({
   head: () => ({
@@ -33,6 +50,7 @@ function VIP() {
 
   return (
     <>
+      <JsonLd data={serviceSchema} />
       <PageHero
         eyebrow="VIP Detail · Top Tier"
         title="The full reset."
