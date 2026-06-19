@@ -5,7 +5,7 @@ import { ServiceSeo } from "@/components/site/ServiceSeo";
 import img from "@/assets/ceramic.jpg";
 
 const faqs = [
-  { q: "How long does ceramic coating last?", a: "Our professional ceramic coatings are rated 2 to 9 years depending on the package — 2-Year starts at $950, 5-Year at $1,000. Longevity depends on proper maintenance." },
+  { q: "How long does ceramic coating last?", a: "Our professional ceramic coatings are rated 2 to 5 years depending on the package — 2-Year starts at $950, 5-Year at $1,200. Longevity depends on proper maintenance." },
   { q: "Does ceramic coating replace waxing?", a: "Yes. A coating chemically bonds to the clear coat and replaces sealant or wax for years at a time. No more quarterly waxing." },
   { q: "Do you correct paint before coating?", a: "Always. Every coating package includes multi-stage paint correction so swirls and defects are removed before the coating locks them in." },
   { q: "Where are you located?", a: "Top Elite Auto is at 3 Dundar Rd, Springfield, NJ 07081, serving Union County and the surrounding NJ towns." },
@@ -22,7 +22,7 @@ const serviceSchema = {
     "name": "Ceramic Coating Packages",
     "itemListElement": [
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "2-Year Ceramic" }, "price": "950", "priceCurrency": "USD" },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "5-Year Ceramic" }, "price": "1000", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "5-Year Ceramic" }, "price": "1200", "priceCurrency": "USD" },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Motorcycle Ceramic" }, "price": "350", "priceCurrency": "USD" },
     ],
   },
@@ -50,7 +50,7 @@ export const Route = createFileRoute("/ceramic-coating")({
         image={img}
         intro="A ceramic coating is only as good as the prep underneath it. We decontaminate, machine-polish, and inspect under multiple light sources before a single drop of coating goes on. The result is a finish that looks better than the day the car left the factory — and stays that way."
         features={[
-          { title: "5–9 Year Protection", body: "Professional-grade coatings rated for years of UV, chemical and contamination resistance." },
+          { title: "2–5 Year Protection", body: "Professional-grade coatings rated for multiple years of UV, chemical and contamination resistance." },
           { title: "Hydrophobic Surface", body: "Water sheets off. Bug guts, sap and bird droppings rinse away instead of etching in." },
           { title: "Show-Car Gloss", body: "A deeper, slicker, mirror-like finish you can feel with your fingertips." },
         ]}
@@ -72,7 +72,7 @@ export const Route = createFileRoute("/ceramic-coating")({
         pricing={{
           tiers: [
             { name: "2-Year Ceramic", price: "$950", note: "Starting" },
-            { name: "5-Year Ceramic", price: "$1,000", note: "Starting" },
+            { name: "5-Year Ceramic", price: "$1,200", note: "Starting" },
             { name: "Motorcycle Ceramic", price: "$350", note: "Starting" },
           ],
           footnote: "Final pricing depends on paint condition and correction needed.",

@@ -50,7 +50,7 @@ export function Footer() {
           <div className="mt-6 flex gap-3">
             {[
               { Icon: Instagram, href: "https://www.instagram.com/topeliteauto", label: "Top Elite Auto on Instagram" },
-              { Icon: Facebook, href: "https://www.facebook.com/topeliteautollc/", label: "Top Elite Auto on Facebook" },
+              { Icon: Facebook, href: "https://www.facebook.com/people/Top-Elite-Auto-LLC/61584034114671/", label: "Top Elite Auto on Facebook" },
               { Icon: Music2, href: "https://www.tiktok.com/@topeliteauto", label: "Top Elite Auto on TikTok" },
             ].map(({ Icon, href, label }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="flex h-10 w-10 items-center justify-center border border-border text-foreground/70 transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]">

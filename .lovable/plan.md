@@ -1,19 +1,47 @@
-## Problem
+# v7 — Content Edits Plan
 
-When you share the site link, the preview shows an **old screenshot** of the site (old colors). Two causes:
+Three files touched. No design system changes.
 
-1. `src/routes/__root.tsx` sets a hardcoded `og:image` / `twitter:image` pointing to an old preview PNG hosted on `pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/...`. Because the root route's head concatenates into every page match, that old image overrides every leaf route's share preview — including the homepage (which doesn't set its own).
-2. iMessage/WhatsApp/Facebook aggressively cache OG images, so even after we fix it the old preview may stick for a while until the cache refreshes.
+## 1. `src/routes/ceramic-coating.tsx` — pricing & longevity corrections
 
-## Fix
+- **FAQ entry** "How long does ceramic coating last?": update to "2 to 5 years", 5-Year starts at **$1,200**.
+- **JSON-LD offer**: 5-Year Ceramic `price` → `"1200"`.
+- **"Why it matters" pillar**: rename `5–9 Year Protection` → `2–5 Year Protection`, body adjusted to "multiple years".
+- **Pricing card**: 5-Year Ceramic price → `$1,200`.
 
-1. **`src/routes/__root.tsx`** — remove the two hardcoded `og:image` and `twitter:image` meta entries from the root `head()`. Per project rules, `og:image` belongs only on leaf routes.
-2. **`src/routes/index.tsx`** — add `og:image` and `twitter:image` to the homepage `head()`, pointing to the current hero image (`/src/assets/hero-car.jpg` → use its built URL). Use an absolute URL on `https://topeliteauto.com/...` so crawlers accept it. Also add `og:title`, `og:description`, `og:url`, `og:type: website`, and a `<link rel="canonical">`.
-3. Leave the other leaf routes alone — they already set their own `og:image` correctly and will now actually take effect once the root override is removed.
+## 2. `src/components/site/Footer.tsx` — Facebook URL
 
-## After deploy
+Replace old `facebook.com/topeliteautollc/` with canonical:
+`https://www.facebook.com/people/Top-Elite-Auto-LLC/61584034114671/`
 
-The fix is live the moment you re-publish, but social platforms cache previews. To force a refresh:
-- iMessage: long-press the link → it sometimes refetches; otherwise it can take a day or two.
-- Facebook/LinkedIn: paste the URL into their respective debuggers and click "Scrape again."
-- WhatsApp: append a `?v=2` query string to the link once to bypass its cache.
+## 3. `src/routes/faq.tsx` — full rebuild into 7 categorized sections
+
+### Data
+Replace flat `faqs` array with a `sections` array. Each section: `{ title, anchor, faqs: [{q,a}] }`.
+
+Sections (in order, anchor in parens):
+1. Services & Education (`services`) — 9 entries
+2. Washing & Maintenance (`washing`) — 5
+3. Paint & Exterior (`paint`) — 5
+4. Interior (`interior`) — 5
+5. Vehicle Specific (`vehicle`) — 4
+6. Before & After Your Appointment (`appointment`) — 4
+7. Booking & Policies (`booking`) — 4
+
+All Q&A copy is provided verbatim in the v7 prompt and will be used exactly as written.
+
+### Rendering
+- Add a top anchor-nav row: small inline list of section titles linking to `#anchor`, styled with existing muted/border tokens (no new design tokens).
+- For each section, render an `<h2 id={anchor}>` with the section title, then map its FAQs into the existing Q/A markup (same `<h3>` + `<p>` shape currently used).
+- Existing PageHero, JsonLd, "Still have questions?" CTA, and CtaSection blocks remain unchanged.
+
+### JSON-LD
+Flatten with `const allFaqs = sections.flatMap(s => s.faqs);` and build `FAQPage` schema from `allFaqs` (schema.org has no section concept).
+
+## Out of scope
+Photo gallery, badge toggle, blog route, service-areas route, any other content/design/pricing.
+
+## Files touched
+- `src/routes/ceramic-coating.tsx`
+- `src/components/site/Footer.tsx`
+- `src/routes/faq.tsx`
