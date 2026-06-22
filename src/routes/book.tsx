@@ -254,8 +254,7 @@ function Book() {
               <Mail size={18} className="mt-0.5 text-[var(--color-gold)]" />
               <div>
                 <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Email</div>
-                <a href="mailto:info@topeliteauto.com" className="text-foreground hover:text-[var(--color-gold)]">info@topeliteauto.com</a>
-                <div className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">(TBD — pending confirmation)</div>
+                <a href="mailto:topeliteauto01@gmail.com" className="text-foreground hover:text-[var(--color-gold)]">topeliteauto01@gmail.com</a>
               </div>
             </li>
             <li className="flex gap-4">
