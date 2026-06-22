@@ -77,7 +77,7 @@ const localBusinessJson = {
   "image": "https://topeliteauto.com/src/assets/hero-car.jpg",
   "url": "https://topeliteauto.com",
   "telephone": "+1-908-293-3934",
-  "email": "info@topeliteauto.com",
+  "email": "topeliteauto01@gmail.com",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "3 Dundar Rd",

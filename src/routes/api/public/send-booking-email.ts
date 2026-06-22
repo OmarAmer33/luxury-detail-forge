@@ -113,7 +113,7 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
             },
             body: JSON.stringify({
               from: "Top Elite Auto <bookings@mail.topeliteauto.com>",
-              to: ["topeliteauto01@gmail.com", "topeliteautomarketing@gmail.com"],
+              to: ["topeliteauto01@gmail.com"],
               reply_to: d.email,
               subject,
               text: textBody,
