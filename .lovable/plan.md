@@ -1,47 +1,74 @@
-# v7 — Content Edits Plan
+# v8 — Booking submissions database (additive only)
 
-Three files touched. No design system changes.
+The booking email flow stays byte-for-byte identical. This adds a database write alongside it.
 
-## 1. `src/routes/ceramic-coating.tsx` — pricing & longevity corrections
+## 0. Enable Lovable Cloud
 
-- **FAQ entry** "How long does ceramic coating last?": update to "2 to 5 years", 5-Year starts at **$1,200**.
-- **JSON-LD offer**: 5-Year Ceramic `price` → `"1200"`.
-- **"Why it matters" pillar**: rename `5–9 Year Protection` → `2–5 Year Protection`, body adjusted to "multiple years".
-- **Pricing card**: 5-Year Ceramic price → `$1,200`.
+This project has no backend connected yet. First step: enable Lovable Cloud (provisions the Postgres database). No other backend work.
 
-## 2. `src/components/site/Footer.tsx` — Facebook URL
+## 1. Table: `public.booking_submissions` (migration)
 
-Replace old `facebook.com/topeliteautollc/` with canonical:
-`https://www.facebook.com/people/Top-Elite-Auto-LLC/61584034114671/`
+```sql
+create table public.booking_submissions (
+  id            uuid primary key default gen_random_uuid(),
+  created_at    timestamptz not null default now(),
+  name          text not null,
+  phone         text not null,
+  email         text not null,
+  vehicle       text not null,
+  condition     text not null,
+  service       text not null,
+  preferred_date text not null,
+  preferred_time text not null,
+  hear_about    text,
+  notes         text,
+  status        text not null default 'new'
+                check (status in ('new','quoted','booked','closed')),
+  source        text
+);
+```
 
-## 3. `src/routes/faq.tsx` — full rebuild into 7 categorized sections
+- `status` default `'new'`, CHECK constraint limits to the four allowed values.
+- `preferred_date` / `preferred_time` are plain `text` — stored exactly as submitted, no parsing.
+- `source` nullable, left null for now.
 
-### Data
-Replace flat `faqs` array with a `sections` array. Each section: `{ title, anchor, faqs: [{q,a}] }`.
+## 2. Security (RLS + grants)
 
-Sections (in order, anchor in parens):
-1. Services & Education (`services`) — 9 entries
-2. Washing & Maintenance (`washing`) — 5
-3. Paint & Exterior (`paint`) — 5
-4. Interior (`interior`) — 5
-5. Vehicle Specific (`vehicle`) — 4
-6. Before & After Your Appointment (`appointment`) — 4
-7. Booking & Policies (`booking`) — 4
+- `alter table public.booking_submissions enable row level security;`
+- **No anon or authenticated grants at all.** The browser role never touches this table: no `GRANT ... TO anon`, no `GRANT ... TO authenticated`.
+- Only `GRANT ALL ON public.booking_submissions TO service_role;` — the server route writes with the service-role client, which bypasses RLS.
+- No SELECT/UPDATE/DELETE policies for any role. No client-side query, hook, or generated type usage in the frontend.
 
-All Q&A copy is provided verbatim in the v7 prompt and will be used exactly as written.
+## 3. Server route edit — `src/routes/api/public/send-booking-email.ts` only
 
-### Rendering
-- Add a top anchor-nav row: small inline list of section titles linking to `#anchor`, styled with existing muted/border tokens (no new design tokens).
-- For each section, render an `<h2 id={anchor}>` with the section title, then map its FAQs into the existing Q/A markup (same `<h3>` + `<p>` shape currently used).
-- Existing PageHero, JsonLd, "Still have questions?" CTA, and CtaSection blocks remain unchanged.
+Insert goes **after** the honeypot early-return block, **before** the `const apiKey = process.env.RESEND_API_KEY` lookup:
 
-### JSON-LD
-Flatten with `const allFaqs = sections.flatMap(s => s.faqs);` and build `FAQPage` schema from `allFaqs` (schema.org has no section concept).
+```text
+POST handler
+├── parse JSON (400 on failure)
+├── zod validation (400 on failure)
+├── honeypot check → silent { success: true } return   [unchanged]
+├── NEW: database insert, wrapped in its own try/catch
+│        - load supabaseAdmin via await import('@/integrations/supabase/client.server')
+│        - insert one row: name, phone, email, vehicle, condition, service,
+│          date → preferred_date, time → preferred_time,
+│          hearAbout → hear_about, notes → notes
+│        - status defaults to 'new', source omitted (null)
+│        - _hp_url_check never written
+│        - on throw: console.error(...) and continue — response unchanged
+├── RESEND_API_KEY lookup (500 if missing)               [unchanged]
+├── build text/html bodies                               [unchanged]
+├── raw fetch to api.resend.com with reply_to            [unchanged]
+└── identical status codes / JSON responses              [unchanged]
+```
+
+Non-negotiables honored: honeypot untouched and named `_hp_url_check`; `process.env.RESEND_API_KEY` stays inside the handler; raw `fetch()` to Resend (no SDK); `reply_to` unchanged; zod schema, email bodies, recipient, and all status codes unchanged; no other file modified (`book.tsx` untouched).
 
 ## Out of scope
-Photo gallery, badge toggle, blog route, service-areas route, any other content/design/pricing.
+
+- Populating `source`, any status transitions, any UI for viewing submissions, email behavior changes, RLS read policies for an admin view.
 
 ## Files touched
-- `src/routes/ceramic-coating.tsx`
-- `src/components/site/Footer.tsx`
-- `src/routes/faq.tsx`
+
+- New migration (table + grant + RLS enable)
+- `src/routes/api/public/send-booking-email.ts` (the only code edit)
