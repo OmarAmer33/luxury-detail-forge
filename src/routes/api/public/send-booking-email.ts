@@ -49,6 +49,30 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
           return Response.json({ success: true });
         }
 
+        // Record the submission. This must never block, delay, or fail the
+        // email — any error is logged and swallowed so the HTTP response is
+        // identical whether the insert succeeded or not.
+        try {
+          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const { error } = await supabaseAdmin.from("booking_submissions").insert({
+            name: d.name,
+            phone: d.phone,
+            email: d.email,
+            vehicle: d.vehicle,
+            condition: d.condition,
+            service: d.service,
+            preferred_date: d.date,
+            preferred_time: d.time,
+            hear_about: d.hearAbout || null,
+            notes: d.notes || null,
+          });
+          if (error) {
+            console.error("booking_submissions insert failed:", error.message);
+          }
+        } catch (err) {
+          console.error("booking_submissions insert threw:", err);
+        }
+
         const apiKey = process.env.RESEND_API_KEY;
         if (!apiKey) {
           return Response.json(
