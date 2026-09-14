@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check, ArrowRight } from "lucide-react";
 import { CtaSection } from "./CtaSection";
@@ -19,6 +20,7 @@ export interface ServicePageProps {
   includes: string[];
   process: { step: string; title: string; body: string }[];
   pricing?: { tiers: PricingTier[]; footnote?: string };
+  afterFeatures?: ReactNode;
 }
 
 export function ServicePage(props: ServicePageProps) {
@@ -54,6 +56,8 @@ export function ServicePage(props: ServicePageProps) {
           </div>
         </div>
       </section>
+
+      {props.afterFeatures}
 
       <section className="container-luxe grid gap-16 py-24 md:grid-cols-2">
         <div>
