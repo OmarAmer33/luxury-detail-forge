@@ -103,6 +103,11 @@ function Book() {
         setStatus("error");
         return;
       }
+      if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-10789482788/J-mTCMjO4fccEKTi6Zgo",
+        });
+      }
       setStatus("success");
       form.reset();
     } catch {
