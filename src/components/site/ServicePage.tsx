@@ -20,6 +20,7 @@ export interface ServicePageProps {
   includes: string[];
   process: { step: string; title: string; body: string }[];
   pricing?: { tiers: PricingTier[]; footnote?: string };
+  afterFeatures?: ReactNode;
 }
 
 export function ServicePage(props: ServicePageProps) {
