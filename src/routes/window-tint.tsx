@@ -191,19 +191,6 @@ function WindowTint() {
           </section>
         }
       />
-
-      <section className="border-t border-border surface-dark py-16">
-        <div className="container-luxe">
-          <Link
-            to="/book"
-            className="inline-flex items-center justify-center gap-3 bg-[var(--color-gold)] px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-primary-foreground)] transition-all hover:bg-[var(--color-gold-soft)]"
-          >
-            Book your tint
-          </Link>
-        </div>
-      </section>
-
-      <CtaSection />
     </>
   );
 }
