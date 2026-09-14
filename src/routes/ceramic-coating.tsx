@@ -28,6 +28,12 @@ const serviceSchema = {
   },
 };
 
+const ceramicTiers = [
+  { name: "2-Year Ceramic", price: "$950", note: "Starting" },
+  { name: "5-Year Ceramic", price: "$1,200", note: "Starting" },
+  { name: "Motorcycle Ceramic", price: "$350", note: "Starting" },
+];
+
 export const Route = createFileRoute("/ceramic-coating")({
   head: () => ({
     meta: [
@@ -69,14 +75,42 @@ export const Route = createFileRoute("/ceramic-coating")({
           { step: "03", title: "Coat", body: "Apply ceramic in a controlled environment, panel by panel." },
           { step: "04", title: "Cure", body: "Vehicle stays with us until the coating is fully cured and inspected." },
         ]}
-        pricing={{
-          tiers: [
-            { name: "2-Year Ceramic", price: "$950", note: "Starting" },
-            { name: "5-Year Ceramic", price: "$1,200", note: "Starting" },
-            { name: "Motorcycle Ceramic", price: "$350", note: "Starting" },
-          ],
-          footnote: "Final pricing depends on paint condition and correction needed.",
-        }}
+        afterFeatures={
+          <section className="border-t border-border surface-dark py-16 md:py-24">
+            <div className="container-luxe">
+              <div className="mb-10 max-w-2xl">
+                <div className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)]">
+                  Pricing
+                </div>
+                <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl">
+                  Pick your coating.
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                  Three tiers based on longevity. All coatings include full paint correction, decontamination, and professional application.
+                </p>
+              </div>
+              <div className="border border-border">
+                {ceramicTiers.map((tier, i) => (
+                  <div
+                    key={tier.name}
+                    className={`grid grid-cols-[1fr_auto] items-baseline gap-6 p-6 md:p-8 ${i > 0 ? "border-t border-border" : ""} ${i % 2 === 1 ? "bg-[var(--color-onyx-elevated,_#141414)]" : ""}`}
+                  >
+                    <div>
+                      <div className="text-lg font-bold text-foreground">{tier.name}</div>
+                      <div className="mt-1 text-xs uppercase tracking-[0.2em] text-muted-foreground">{tier.note}</div>
+                    </div>
+                    <div className="text-2xl font-black text-[var(--color-gold)] md:text-3xl whitespace-nowrap">
+                      {tier.price}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-6 text-xs text-muted-foreground">
+                Final pricing depends on paint condition and correction needed.
+              </p>
+            </div>
+          </section>
+        }
       />
     </>
   ),
