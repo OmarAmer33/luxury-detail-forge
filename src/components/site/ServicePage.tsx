@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check, ArrowRight } from "lucide-react";
 import { CtaSection } from "./CtaSection";
