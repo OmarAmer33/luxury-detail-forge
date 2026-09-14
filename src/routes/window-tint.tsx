@@ -3,7 +3,7 @@ import { ServicePage } from "@/components/site/ServicePage";
 import { JsonLd } from "@/components/site/JsonLd";
 import { ServiceSeo } from "@/components/site/ServiceSeo";
 import { CtaSection } from "@/components/site/CtaSection";
-import img from "@/assets/detailing.jpg";
+import img from "@/assets/window-tint.jpg";
 
 const faqs = [
   { q: "What's the difference between standard, carbon and ceramic film?", a: "Standard gives the look and privacy. Carbon adds better heat rejection and won't fade purple. Ceramic gives the most heat and UV rejection, zero signal interference and is the no-compromise pick." },
@@ -25,6 +25,12 @@ const serviceSchema = {
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Standard Film — Full Vehicle" }, "price": "300", "priceCurrency": "USD" },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Carbon Film — Full Vehicle" }, "price": "375", "priceCurrency": "USD" },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Ceramic Film — Full Vehicle" }, "price": "500", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Standard Film — Windshield" }, "price": "160", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Carbon Film — Windshield" }, "price": "190", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Ceramic Film — Windshield" }, "price": "250", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Standard Film — Front Windows Only" }, "price": "100", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Carbon Film — Front Windows Only" }, "price": "150", "priceCurrency": "USD" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Ceramic Film — Front Windows Only" }, "price": "250", "priceCurrency": "USD" },
     ],
   },
 };
@@ -43,47 +49,29 @@ export const Route = createFileRoute("/window-tint")({
   component: WindowTint,
 });
 
-const windshieldTiers = [
-  { name: "Standard Film", price: "$160" },
-  { name: "Carbon Film", price: "$190" },
-  { name: "Ceramic Film", price: "$250" },
+const pricingMatrix = [
+  {
+    service: "Full Vehicle Tint",
+    subtitle: "All windows, flat pricing regardless of size.",
+    standard: "$300",
+    carbon: "$375",
+    ceramic: "$500",
+  },
+  {
+    service: "Windshield Tint",
+    subtitle: "Front windshield only.",
+    standard: "$160",
+    carbon: "$190",
+    ceramic: "$250",
+  },
+  {
+    service: "Front Windows Only",
+    subtitle: "Two front side windows — for factory-tinted rears.",
+    standard: "$100",
+    carbon: "$150",
+    ceramic: "$250",
+  },
 ];
-
-const frontTwoTiers = [
-  { name: "Standard Film", price: "$100" },
-  { name: "Carbon Film", price: "$150" },
-  { name: "Ceramic Film", price: "$250" },
-];
-
-function PriceBlock({
-  eyebrow,
-  title,
-  note,
-  tiers,
-}: {
-  eyebrow: string;
-  title: string;
-  note?: string;
-  tiers: { name: string; price: string }[];
-}) {
-  return (
-    <section className="border-t border-border py-24">
-      <div className="container-luxe">
-        <span className="eyebrow">{eyebrow}</span>
-        <h2 className="mt-5 text-4xl md:text-5xl">{title}</h2>
-        {note && <p className="mt-5 max-w-2xl text-muted-foreground">{note}</p>}
-        <div className="mt-12 grid gap-px bg-border border border-border">
-          {tiers.map((t) => (
-            <div key={t.name} className="grid grid-cols-[1fr_auto] items-baseline gap-6 bg-background p-6 md:p-8">
-              <div className="text-lg font-bold">{t.name}</div>
-              <div className="text-xl font-black text-[var(--color-gold)] md:text-2xl whitespace-nowrap">{t.price}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function WindowTint() {
   return (
@@ -114,28 +102,94 @@ function WindowTint() {
           { step: "03", title: "Install", body: "Hand-cut, precision-installed by a certified specialist." },
           { step: "04", title: "Cure", body: "Tint cures over 1–7 days depending on weather; we'll give you aftercare instructions." },
         ]}
-        pricing={{
-          tiers: [
-            { name: "Standard Film", price: "$300", note: "Starting" },
-            { name: "Carbon Film", price: "$375", note: "Starting" },
-            { name: "Ceramic Film", price: "$500", note: "Starting" },
-          ],
-          footnote: "Full Vehicle Tint — flat pricing regardless of vehicle size.",
-        }}
       />
 
-      <PriceBlock
-        eyebrow="Windshield Tint"
-        title="Windshield only."
-        tiers={windshieldTiers}
-      />
+      <section className="border-t border-border surface-dark py-16 md:py-24">
+        <div className="container-luxe">
+          <div className="mb-10 max-w-2xl">
+            <div className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)]">
+              Pricing
+            </div>
+            <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl">
+              All tint pricing in one place.
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              Flat rates regardless of vehicle size — same price for a coupe, sedan, or SUV. Lifetime warranty on materials, every tier.
+            </p>
+          </div>
 
-      <PriceBlock
-        eyebrow="Front Windows Only"
-        title="Front two windows."
-        note="Two front side windows — for vehicles that come factory-tinted in the rear and need the fronts matched."
-        tiers={frontTwoTiers}
-      />
+          {/* Desktop table view (md and up) */}
+          <div className="hidden overflow-hidden border border-border md:block">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-[var(--color-onyx-elevated,_#1a1a1a)]">
+                  <th className="border-b border-r border-border px-6 py-5 text-left text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                    Service
+                  </th>
+                  <th className="border-b border-r border-border px-6 py-5 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                    Standard Film
+                  </th>
+                  <th className="border-b border-r border-border px-6 py-5 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                    Carbon Film
+                  </th>
+                  <th className="border-b border-border px-6 py-5 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                    Ceramic Film
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {pricingMatrix.map((row, i) => (
+                  <tr key={row.service} className={i % 2 === 1 ? "bg-[var(--color-onyx-elevated,_#141414)]" : ""}>
+                    <td className="border-r border-border px-6 py-6 align-top">
+                      <div className="font-bold text-foreground">{row.service}</div>
+                      <div className="mt-1 text-xs text-muted-foreground">{row.subtitle}</div>
+                    </td>
+                    <td className="border-r border-border px-6 py-6 text-center align-middle">
+                      <div className="text-2xl font-black text-[var(--color-gold)]">{row.standard}</div>
+                    </td>
+                    <td className="border-r border-border px-6 py-6 text-center align-middle">
+                      <div className="text-2xl font-black text-[var(--color-gold)]">{row.carbon}</div>
+                    </td>
+                    <td className="px-6 py-6 text-center align-middle">
+                      <div className="text-2xl font-black text-[var(--color-gold)]">{row.ceramic}</div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile card view (below md) */}
+          <div className="space-y-6 md:hidden">
+            {pricingMatrix.map((row) => (
+              <div key={row.service} className="border border-border p-5">
+                <div className="mb-4">
+                  <div className="font-bold text-foreground">{row.service}</div>
+                  <div className="mt-1 text-xs text-muted-foreground">{row.subtitle}</div>
+                </div>
+                <div className="grid grid-cols-3 gap-3 border-t border-border pt-4">
+                  <div className="text-center">
+                    <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">Standard</div>
+                    <div className="text-xl font-black text-[var(--color-gold)]">{row.standard}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">Carbon</div>
+                    <div className="text-xl font-black text-[var(--color-gold)]">{row.carbon}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">Ceramic</div>
+                    <div className="text-xl font-black text-[var(--color-gold)]">{row.ceramic}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-6 text-xs text-muted-foreground">
+            Prices are starting rates. Some vehicles with complex glass profiles may require an in-person quote.
+          </p>
+        </div>
+      </section>
 
       <section className="border-t border-border surface-dark py-16">
         <div className="container-luxe">
