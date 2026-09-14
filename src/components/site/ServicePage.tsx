@@ -57,6 +57,8 @@ export function ServicePage(props: ServicePageProps) {
         </div>
       </section>
 
+      {props.afterFeatures}
+
       <section className="container-luxe grid gap-16 py-24 md:grid-cols-2">
         <div>
           <span className="eyebrow">What's included</span>
