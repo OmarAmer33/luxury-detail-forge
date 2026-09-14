@@ -102,94 +102,95 @@ function WindowTint() {
           { step: "03", title: "Install", body: "Hand-cut, precision-installed by a certified specialist." },
           { step: "04", title: "Cure", body: "Tint cures over 1–7 days depending on weather; we'll give you aftercare instructions." },
         ]}
-      />
+        afterFeatures={
+          <section className="border-t border-border surface-dark py-16 md:py-24">
+            <div className="container-luxe">
+              <div className="mb-10 max-w-2xl">
+                <div className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)]">
+                  Pricing
+                </div>
+                <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl">
+                  Pick your film.
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                  Flat rates regardless of vehicle size — same price for a coupe, sedan, or SUV. Lifetime warranty on materials, every tier.
+                </p>
+              </div>
 
-      <section className="border-t border-border surface-dark py-16 md:py-24">
-        <div className="container-luxe">
-          <div className="mb-10 max-w-2xl">
-            <div className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-gold)]">
-              Pricing
-            </div>
-            <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl">
-              All tint pricing in one place.
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-              Flat rates regardless of vehicle size — same price for a coupe, sedan, or SUV. Lifetime warranty on materials, every tier.
-            </p>
-          </div>
+              {/* Desktop table view (md and up) */}
+              <div className="hidden overflow-hidden border border-border md:block">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-[var(--color-onyx-elevated,_#1a1a1a)]">
+                      <th className="border-b border-r border-border px-6 py-5 text-left text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                        Service
+                      </th>
+                      <th className="border-b border-r border-border px-6 py-5 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                        Standard Film
+                      </th>
+                      <th className="border-b border-r border-border px-6 py-5 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                        Carbon Film
+                      </th>
+                      <th className="border-b border-border px-6 py-5 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                        Ceramic Film
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pricingMatrix.map((row, i) => (
+                      <tr key={row.service} className={i % 2 === 1 ? "bg-[var(--color-onyx-elevated,_#141414)]" : ""}>
+                        <td className="border-r border-border px-6 py-6 align-top">
+                          <div className="font-bold text-foreground">{row.service}</div>
+                          <div className="mt-1 text-xs text-muted-foreground">{row.subtitle}</div>
+                        </td>
+                        <td className="border-r border-border px-6 py-6 text-center align-middle">
+                          <div className="text-2xl font-black text-[var(--color-gold)]">{row.standard}</div>
+                        </td>
+                        <td className="border-r border-border px-6 py-6 text-center align-middle">
+                          <div className="text-2xl font-black text-[var(--color-gold)]">{row.carbon}</div>
+                        </td>
+                        <td className="px-6 py-6 text-center align-middle">
+                          <div className="text-2xl font-black text-[var(--color-gold)]">{row.ceramic}</div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-          {/* Desktop table view (md and up) */}
-          <div className="hidden overflow-hidden border border-border md:block">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-[var(--color-onyx-elevated,_#1a1a1a)]">
-                  <th className="border-b border-r border-border px-6 py-5 text-left text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                    Service
-                  </th>
-                  <th className="border-b border-r border-border px-6 py-5 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                    Standard Film
-                  </th>
-                  <th className="border-b border-r border-border px-6 py-5 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                    Carbon Film
-                  </th>
-                  <th className="border-b border-border px-6 py-5 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                    Ceramic Film
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {pricingMatrix.map((row, i) => (
-                  <tr key={row.service} className={i % 2 === 1 ? "bg-[var(--color-onyx-elevated,_#141414)]" : ""}>
-                    <td className="border-r border-border px-6 py-6 align-top">
+              {/* Mobile card view (below md) */}
+              <div className="space-y-6 md:hidden">
+                {pricingMatrix.map((row) => (
+                  <div key={row.service} className="border border-border p-5">
+                    <div className="mb-4">
                       <div className="font-bold text-foreground">{row.service}</div>
                       <div className="mt-1 text-xs text-muted-foreground">{row.subtitle}</div>
-                    </td>
-                    <td className="border-r border-border px-6 py-6 text-center align-middle">
-                      <div className="text-2xl font-black text-[var(--color-gold)]">{row.standard}</div>
-                    </td>
-                    <td className="border-r border-border px-6 py-6 text-center align-middle">
-                      <div className="text-2xl font-black text-[var(--color-gold)]">{row.carbon}</div>
-                    </td>
-                    <td className="px-6 py-6 text-center align-middle">
-                      <div className="text-2xl font-black text-[var(--color-gold)]">{row.ceramic}</div>
-                    </td>
-                  </tr>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3 border-t border-border pt-4">
+                      <div className="text-center">
+                        <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">Standard</div>
+                        <div className="text-xl font-black text-[var(--color-gold)]">{row.standard}</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">Carbon</div>
+                        <div className="text-xl font-black text-[var(--color-gold)]">{row.carbon}</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">Ceramic</div>
+                        <div className="text-xl font-black text-[var(--color-gold)]">{row.ceramic}</div>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Mobile card view (below md) */}
-          <div className="space-y-6 md:hidden">
-            {pricingMatrix.map((row) => (
-              <div key={row.service} className="border border-border p-5">
-                <div className="mb-4">
-                  <div className="font-bold text-foreground">{row.service}</div>
-                  <div className="mt-1 text-xs text-muted-foreground">{row.subtitle}</div>
-                </div>
-                <div className="grid grid-cols-3 gap-3 border-t border-border pt-4">
-                  <div className="text-center">
-                    <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">Standard</div>
-                    <div className="text-xl font-black text-[var(--color-gold)]">{row.standard}</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">Carbon</div>
-                    <div className="text-xl font-black text-[var(--color-gold)]">{row.carbon}</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">Ceramic</div>
-                    <div className="text-xl font-black text-[var(--color-gold)]">{row.ceramic}</div>
-                  </div>
-                </div>
               </div>
-            ))}
-          </div>
 
-          <p className="mt-6 text-xs text-muted-foreground">
-            Prices are starting rates. Some vehicles with complex glass profiles may require an in-person quote.
-          </p>
-        </div>
-      </section>
+              <p className="mt-6 text-xs text-muted-foreground">
+                Prices are starting rates. Some vehicles with complex glass profiles may require an in-person quote.
+              </p>
+            </div>
+          </section>
+        }
+      />
 
       <section className="border-t border-border surface-dark py-16">
         <div className="container-luxe">
