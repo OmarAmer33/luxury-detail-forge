@@ -75,10 +75,6 @@ const services = [
 ];
 
 const conditions = ["Excellent", "Good", "Fair", "Heavy Use"];
-const times = [
-  "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
-  "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM",
-];
 const hearAboutOptions = [
   "Google", "Instagram", "Referral", "Drove By", "Returning Customer", "Other",
 ];
@@ -86,6 +82,21 @@ const hearAboutOptions = [
 function Book() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+
+  // Saturdays get the shorter list; Sundays are blocked by validation.
+  const day = date ? new Date(date + "T12:00:00").getDay() : -1;
+  const availableTimes = day === 6 ? saturdayTimes : weekdayTimes;
+
+  function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const next = e.target.value;
+    setDate(next);
+    const nextDay = next ? new Date(next + "T12:00:00").getDay() : -1;
+    const nextTimes = nextDay === 6 ? saturdayTimes : weekdayTimes;
+    // Clear a selection that is invalid for the newly chosen day.
+    if (time && !nextTimes.includes(time)) setTime("");
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
