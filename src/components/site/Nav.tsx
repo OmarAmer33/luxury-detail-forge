@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import logo from "@/assets/logo.png";
 import logoDark from "@/assets/logo-dark.png";
+import { trackPhoneClick } from "@/lib/tracking";
 
 const links = [
   { to: "/", label: "Home" },
@@ -62,6 +63,7 @@ export function Nav() {
         <div className="flex items-center gap-4 lg:ml-10">
           <a
             href="tel:9082933934"
+            onClick={trackPhoneClick}
             className={`hidden text-xs font-semibold uppercase tracking-[0.18em] hover:text-[var(--color-red)] md:inline ${
               scrolled ? "text-foreground/80" : "text-white/85"
             }`}
@@ -106,6 +108,7 @@ export function Nav() {
             </Link>
             <a
               href="tel:9082933934"
+              onClick={trackPhoneClick}
               className="mt-2 py-2 text-center text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-gold)]"
             >
               Call · 908.293.3934

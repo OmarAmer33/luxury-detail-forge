@@ -4,6 +4,7 @@ import { z } from "zod";
 import { PageHero } from "@/components/site/PageHero";
 import detailing from "@/assets/detailing.jpg";
 import { Phone, Mail, MapPin, Clock, Check } from "lucide-react";
+import { trackPhoneClick, trackLeadSubmit } from "@/lib/tracking";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
@@ -37,6 +38,7 @@ const schema = z.object({
   hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
   _hp_url_check: z.string().optional(),
+  gclid: z.string().optional().default(""),
 });
 
 const services = [
@@ -69,6 +71,17 @@ function Book() {
     e.preventDefault();
     const form = e.currentTarget;
     setErrors({});
+    // Carry the stored Google Ads click id, if any, into the submission.
+    const gclidInput = form.querySelector<HTMLInputElement>('input[name="gclid"]');
+    if (gclidInput) {
+      let stored = "";
+      try {
+        stored = window.sessionStorage.getItem("tea_gclid") ?? "";
+      } catch {
+        stored = "";
+      }
+      gclidInput.value = stored;
+    }
     const fd = new FormData(form);
     const data = Object.fromEntries(fd.entries());
     const parsed = schema.safeParse(data);
@@ -108,6 +121,7 @@ function Book() {
           send_to: "AW-10789482788/J-mTCMjO4fccEKTi6Zgo",
         });
       }
+      trackLeadSubmit();
       setStatus("success");
       form.reset();
     } catch {
@@ -160,6 +174,8 @@ function Book() {
                 aria-hidden="true"
                 style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
               />
+              {/* Google Ads click id, populated from sessionStorage on submit */}
+              <input type="hidden" name="gclid" defaultValue="" />
               <div className="md:col-span-2">
                 <span className="eyebrow">Booking Request</span>
                 <h2 className="mt-4 text-3xl">Your appointment, locked in.</h2>
@@ -252,7 +268,7 @@ function Book() {
               <Phone size={18} className="mt-0.5 text-[var(--color-gold)]" />
               <div>
                 <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Phone</div>
-                <a href="tel:9082933934" className="text-foreground hover:text-[var(--color-gold)]">908.293.3934</a>
+                <a href="tel:9082933934" onClick={trackPhoneClick} className="text-foreground hover:text-[var(--color-gold)]">908.293.3934</a>
               </div>
             </li>
             <li className="flex gap-4">

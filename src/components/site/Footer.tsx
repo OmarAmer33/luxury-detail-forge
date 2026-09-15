@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Music2, MapPin, Phone, Mail, Clock } from "lucide-react";
 import logo from "@/assets/logo-dark.png";
+import { trackPhoneClick } from "@/lib/tracking";
 
 export function Footer() {
   return (
@@ -41,7 +42,7 @@ export function Footer() {
         <div>
           <h4 className="text-xs font-bold uppercase tracking-[0.25em] text-foreground gold-underline">Contact</h4>
           <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
-            <li><a href="tel:9082933934" className="flex items-center gap-3 hover:text-[var(--color-gold)]" itemProp="telephone"><Phone size={16} className="text-[var(--color-gold)]" />908.293.3934</a></li>
+            <li><a href="tel:9082933934" onClick={trackPhoneClick} className="flex items-center gap-3 hover:text-[var(--color-gold)]" itemProp="telephone"><Phone size={16} className="text-[var(--color-gold)]" />908.293.3934</a></li>
             <li>
               <a href="mailto:topeliteauto01@gmail.com" className="flex items-center gap-3 hover:text-[var(--color-gold)]" itemProp="email"><Mail size={16} className="text-[var(--color-gold)]" />topeliteauto01@gmail.com</a>
             </li>

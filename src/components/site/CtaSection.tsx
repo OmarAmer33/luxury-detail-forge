@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Phone } from "lucide-react";
+import { trackPhoneClick } from "@/lib/tracking";
 
 export function CtaSection({
   eyebrow = "Book your appointment",
@@ -33,6 +34,7 @@ export function CtaSection({
           </Link>
           <a
             href="tel:9082933934"
+            onClick={trackPhoneClick}
             className="inline-flex items-center justify-center gap-3 border border-border px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-foreground transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
           >
             <Phone size={14} /> 908.293.3934

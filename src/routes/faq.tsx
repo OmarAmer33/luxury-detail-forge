@@ -4,6 +4,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { CtaSection } from "@/components/site/CtaSection";
 import { JsonLd } from "@/components/site/JsonLd";
 import detailing from "@/assets/detailing.jpg";
+import { trackPhoneClick } from "@/lib/tracking";
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
@@ -289,6 +290,7 @@ function FAQ() {
             <div className="mt-6 flex flex-wrap gap-4">
               <a
                 href="tel:9082933934"
+                onClick={trackPhoneClick}
                 className="inline-flex items-center gap-3 bg-[var(--color-gold)] px-8 py-4 text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-primary-foreground)] transition-all hover:bg-[var(--color-gold-soft)]"
               >
                 Call 908.293.3934

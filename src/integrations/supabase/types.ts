@@ -19,6 +19,7 @@ export type Database = {
           condition: string
           created_at: string
           email: string
+          gclid: string | null
           hear_about: string | null
           id: string
           name: string
@@ -35,6 +36,7 @@ export type Database = {
           condition: string
           created_at?: string
           email: string
+          gclid?: string | null
           hear_about?: string | null
           id?: string
           name: string
@@ -51,6 +53,7 @@ export type Database = {
           condition?: string
           created_at?: string
           email?: string
+          gclid?: string | null
           hear_about?: string | null
           id?: string
           name?: string
