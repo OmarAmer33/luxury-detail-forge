@@ -250,15 +250,15 @@ function Book() {
               </div>
               <div>
                 <label className={labelClass} htmlFor="date">Preferred date</label>
-                <input id="date" name="date" type="date" min={new Date().toISOString().slice(0,10)} className={fieldClass} />
+                <input id="date" name="date" type="date" min={new Date().toISOString().slice(0,10)} className={fieldClass} value={date} onChange={handleDateChange} />
                 <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">Closed Sundays.</p>
                 {errors.date && <p className="mt-1 text-xs text-destructive">{errors.date}</p>}
               </div>
               <div>
                 <label className={labelClass} htmlFor="time">Preferred time</label>
-                <select id="time" name="time" defaultValue="" className={fieldClass}>
+                <select id="time" name="time" className={fieldClass} value={time} onChange={(e) => setTime(e.target.value)}>
                   <option value="" disabled>Select a time</option>
-                  {times.map((t) => <option key={t} value={t}>{t}</option>)}
+                  {availableTimes.map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
                 {errors.time && <p className="mt-1 text-xs text-destructive">{errors.time}</p>}
               </div>
@@ -320,7 +320,7 @@ function Book() {
               <Clock size={18} className="mt-0.5 text-[var(--color-gold)]" />
               <div>
                 <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Hours</div>
-                <div className="text-foreground">Mon – Sat · 9am – 6pm</div>
+                <div className="text-foreground">Mon–Fri · 9:30am – 4:30pm<br/>Sat · 9:30am – 1pm</div>
               </div>
             </li>
           </ul>
