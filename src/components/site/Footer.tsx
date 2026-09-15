@@ -34,7 +34,7 @@ export function Footer() {
             </div>
             <div className="flex gap-3">
               <Clock size={16} className="mt-0.5 text-[var(--color-gold)] shrink-0" />
-              <span>Mon–Sat · 9am–6pm</span>
+              <span>Mon–Fri · 9:30am – 4:30pm<br/>Sat · 9:30am – 1pm</span>
             </div>
           </address>
         </div>

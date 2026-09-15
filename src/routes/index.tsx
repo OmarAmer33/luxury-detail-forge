@@ -93,7 +93,7 @@ function Home() {
             {[
               ["5.0★", "Google Rated"],
               ["Springfield, NJ", "Est. 2018"],
-              ["Mon–Sat", "9am – 6pm"],
+              ["Mon–Sat", "9:30am – 4:30pm · Sat till 1pm"],
             ].map(([k, v]) => (
               <div key={v}>
                 <div className="text-2xl font-black text-[var(--color-red)]">{k}</div>

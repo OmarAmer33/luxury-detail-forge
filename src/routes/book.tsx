@@ -19,6 +19,14 @@ export const Route = createFileRoute("/book")({
   component: Book,
 });
 
+const weekdayTimes = [
+  "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+  "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM",
+];
+const saturdayTimes = [
+  "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+];
+
 const schema = z.object({
   name: z.string().trim().min(2, "Name is required").max(100),
   phone: z.string().trim().min(7, "Phone is required").max(30),
@@ -39,6 +47,18 @@ const schema = z.object({
   notes: z.string().max(1000).optional(),
   _hp_url_check: z.string().optional(),
   gclid: z.string().optional().default(""),
+}).superRefine((data, ctx) => {
+  // Saturdays we close at 1pm — only morning slots from the Saturday list
+  // are valid, even if the dropdown is bypassed.
+  if (!data.date) return;
+  const d = new Date(data.date + "T12:00:00");
+  if (!isNaN(d.getTime()) && d.getDay() === 6 && data.time && !saturdayTimes.includes(data.time)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["time"],
+      message: "Saturdays we close at 1pm — please pick a morning slot.",
+    });
+  }
 });
 
 const services = [
