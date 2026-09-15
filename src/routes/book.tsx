@@ -19,6 +19,14 @@ export const Route = createFileRoute("/book")({
   component: Book,
 });
 
+const weekdayTimes = [
+  "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+  "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM",
+];
+const saturdayTimes = [
+  "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+];
+
 const schema = z.object({
   name: z.string().trim().min(2, "Name is required").max(100),
   phone: z.string().trim().min(7, "Phone is required").max(30),
@@ -39,6 +47,18 @@ const schema = z.object({
   notes: z.string().max(1000).optional(),
   _hp_url_check: z.string().optional(),
   gclid: z.string().optional().default(""),
+}).superRefine((data, ctx) => {
+  // Saturdays we close at 1pm — only morning slots from the Saturday list
+  // are valid, even if the dropdown is bypassed.
+  if (!data.date) return;
+  const d = new Date(data.date + "T12:00:00");
+  if (!isNaN(d.getTime()) && d.getDay() === 6 && data.time && !saturdayTimes.includes(data.time)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["time"],
+      message: "Saturdays we close at 1pm — please pick a morning slot.",
+    });
+  }
 });
 
 const services = [
@@ -55,10 +75,6 @@ const services = [
 ];
 
 const conditions = ["Excellent", "Good", "Fair", "Heavy Use"];
-const times = [
-  "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
-  "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM",
-];
 const hearAboutOptions = [
   "Google", "Instagram", "Referral", "Drove By", "Returning Customer", "Other",
 ];
@@ -66,6 +82,21 @@ const hearAboutOptions = [
 function Book() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+
+  // Saturdays get the shorter list; Sundays are blocked by validation.
+  const day = date ? new Date(date + "T12:00:00").getDay() : -1;
+  const availableTimes = day === 6 ? saturdayTimes : weekdayTimes;
+
+  function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const next = e.target.value;
+    setDate(next);
+    const nextDay = next ? new Date(next + "T12:00:00").getDay() : -1;
+    const nextTimes = nextDay === 6 ? saturdayTimes : weekdayTimes;
+    // Clear a selection that is invalid for the newly chosen day.
+    if (time && !nextTimes.includes(time)) setTime("");
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -219,15 +250,15 @@ function Book() {
               </div>
               <div>
                 <label className={labelClass} htmlFor="date">Preferred date</label>
-                <input id="date" name="date" type="date" min={new Date().toISOString().slice(0,10)} className={fieldClass} />
+                <input id="date" name="date" type="date" min={new Date().toISOString().slice(0,10)} className={fieldClass} value={date} onChange={handleDateChange} />
                 <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">Closed Sundays.</p>
                 {errors.date && <p className="mt-1 text-xs text-destructive">{errors.date}</p>}
               </div>
               <div>
                 <label className={labelClass} htmlFor="time">Preferred time</label>
-                <select id="time" name="time" defaultValue="" className={fieldClass}>
+                <select id="time" name="time" className={fieldClass} value={time} onChange={(e) => setTime(e.target.value)}>
                   <option value="" disabled>Select a time</option>
-                  {times.map((t) => <option key={t} value={t}>{t}</option>)}
+                  {availableTimes.map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
                 {errors.time && <p className="mt-1 text-xs text-destructive">{errors.time}</p>}
               </div>
@@ -289,7 +320,7 @@ function Book() {
               <Clock size={18} className="mt-0.5 text-[var(--color-gold)]" />
               <div>
                 <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Hours</div>
-                <div className="text-foreground">Mon – Sat · 9am – 6pm</div>
+                <div className="text-foreground">Mon–Fri · 9:30am – 4:30pm<br/>Sat · 9:30am – 1pm</div>
               </div>
             </li>
           </ul>
