@@ -38,6 +38,7 @@ const schema = z.object({
   hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
   _hp_url_check: z.string().optional(),
+  gclid: z.string().optional().default(""),
 });
 
 const services = [
@@ -70,6 +71,17 @@ function Book() {
     e.preventDefault();
     const form = e.currentTarget;
     setErrors({});
+    // Carry the stored Google Ads click id, if any, into the submission.
+    const gclidInput = form.querySelector<HTMLInputElement>('input[name="gclid"]');
+    if (gclidInput) {
+      let stored = "";
+      try {
+        stored = window.sessionStorage.getItem("tea_gclid") ?? "";
+      } catch {
+        stored = "";
+      }
+      gclidInput.value = stored;
+    }
     const fd = new FormData(form);
     const data = Object.fromEntries(fd.entries());
     const parsed = schema.safeParse(data);
@@ -109,6 +121,7 @@ function Book() {
           send_to: "AW-10789482788/J-mTCMjO4fccEKTi6Zgo",
         });
       }
+      trackLeadSubmit();
       setStatus("success");
       form.reset();
     } catch {
