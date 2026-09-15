@@ -1,0 +1,1 @@
+ALTER TABLE public.booking_submissions ADD COLUMN gclid text;
