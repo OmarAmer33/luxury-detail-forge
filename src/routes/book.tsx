@@ -4,6 +4,7 @@ import { z } from "zod";
 import { PageHero } from "@/components/site/PageHero";
 import detailing from "@/assets/detailing.jpg";
 import { Phone, Mail, MapPin, Clock, Check } from "lucide-react";
+import { trackPhoneClick, trackLeadSubmit } from "@/lib/tracking";
 
 export const Route = createFileRoute("/book")({
   head: () => ({

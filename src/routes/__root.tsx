@@ -1,9 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -186,6 +188,22 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const href = useRouterState({ select: (s) => s.location.href });
+
+  // Capture the Google Ads click id on arrival — a visitor may land on any
+  // page with ?gclid= and only reach /book later. Never overwrite a stored
+  // value with an empty one; sessionStorage throws in some privacy modes.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const gclid = new URLSearchParams(window.location.search).get("gclid");
+      if (gclid && gclid.trim() !== "") {
+        window.sessionStorage.setItem("tea_gclid", gclid.trim());
+      }
+    } catch {
+      /* never break the page */
+    }
+  }, [href]);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -13,6 +13,7 @@ const schema = z.object({
   hearAbout: z.string().max(50).optional().default(""),
   notes: z.string().max(1000).optional().default(""),
   _hp_url_check: z.string().optional().default(""),
+  gclid: z.string().max(200).optional().default(""),
 });
 
 function escapeHtml(s: string) {
@@ -65,6 +66,8 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
             preferred_time: d.time,
             hear_about: d.hearAbout || null,
             notes: d.notes || null,
+            gclid: d.gclid || null,
+            source: d.gclid ? "google-ads" : null,
           });
           if (error) {
             console.error("booking_submissions insert failed:", error.message);

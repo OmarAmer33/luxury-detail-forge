@@ -4,6 +4,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { CtaSection } from "@/components/site/CtaSection";
 import { JsonLd } from "@/components/site/JsonLd";
 import detailing from "@/assets/detailing.jpg";
+import { trackPhoneClick } from "@/lib/tracking";
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
