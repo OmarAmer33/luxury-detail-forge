@@ -64,6 +64,6 @@ with:
 The other two stat entries, layout, styling, and three-column grid are unchanged.
 
 ## Verification
+- No form submission on any URL, preview or production — the form writes to the live lead database and fires real Google Ads/Analytics conversions. The user will test the form manually.
 - `bun run build` passes.
-- Playwright on `/book`: select a Sunday → time dropdown shows only the placeholder; submit with a Sunday → error appears; change date to a Saturday → date error and red border clear immediately; clear and re-trigger errors on name/phone/email → each clears on first keystroke; valid submission still succeeds.
-- Homepage hero shows "4.9★ / 193 Google Reviews".
+- Code inspection only: confirm the Sunday empty-list guard, the `clearError` wiring on every validated field, and the updated homepage stat.
