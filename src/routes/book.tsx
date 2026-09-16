@@ -227,27 +227,27 @@ function Book() {
 
               <div>
                 <label className={labelClass} htmlFor="name">Full name</label>
-                <input id="name" name="name" type="text" maxLength={100} className={fieldClass} placeholder="John Doe" />
+                <input id="name" name="name" type="text" maxLength={100} className={fieldClass} placeholder="John Doe" onChange={() => clearError("name")} />
                 {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
               </div>
               <div>
                 <label className={labelClass} htmlFor="phone">Phone</label>
-                <input id="phone" name="phone" type="tel" maxLength={30} className={fieldClass} placeholder="(908) 555-0100" />
+                <input id="phone" name="phone" type="tel" maxLength={30} className={fieldClass} placeholder="(908) 555-0100" onChange={() => clearError("phone")} />
                 {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone}</p>}
               </div>
               <div className="md:col-span-2">
                 <label className={labelClass} htmlFor="email">Email</label>
-                <input id="email" name="email" type="email" maxLength={255} className={fieldClass} placeholder="you@email.com" />
+                <input id="email" name="email" type="email" maxLength={255} className={fieldClass} placeholder="you@email.com" onChange={() => clearError("email")} />
                 {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
               </div>
               <div className="md:col-span-2">
                 <label className={labelClass} htmlFor="vehicle">Vehicle (year / make / model)</label>
-                <input id="vehicle" name="vehicle" type="text" maxLength={120} className={fieldClass} placeholder="2023 Porsche 911 GT3" />
+                <input id="vehicle" name="vehicle" type="text" maxLength={120} className={fieldClass} placeholder="2023 Porsche 911 GT3" onChange={() => clearError("vehicle")} />
                 {errors.vehicle && <p className="mt-1 text-xs text-destructive">{errors.vehicle}</p>}
               </div>
               <div>
                 <label className={labelClass} htmlFor="condition">Vehicle condition</label>
-                <select id="condition" name="condition" defaultValue="" className={fieldClass}>
+                <select id="condition" name="condition" defaultValue="" className={fieldClass} onChange={() => clearError("condition")}>
                   <option value="" disabled>Select condition</option>
                   {conditions.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
@@ -255,7 +255,7 @@ function Book() {
               </div>
               <div>
                 <label className={labelClass} htmlFor="service">Service of interest</label>
-                <select id="service" name="service" defaultValue="" className={fieldClass}>
+                <select id="service" name="service" defaultValue="" className={fieldClass} onChange={() => clearError("service")}>
                   <option value="" disabled>Select a service</option>
                   {services.map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
@@ -269,7 +269,7 @@ function Book() {
               </div>
               <div>
                 <label className={labelClass} htmlFor="time">Preferred time</label>
-                <select id="time" name="time" className={fieldClass} value={time} onChange={(e) => setTime(e.target.value)}>
+                <select id="time" name="time" className={fieldClass} value={time} onChange={(e) => { setTime(e.target.value); clearError("time"); }}>
                   <option value="" disabled>Select a time</option>
                   {availableTimes.map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
@@ -284,7 +284,7 @@ function Book() {
               </div>
               <div className="md:col-span-2">
                 <label className={labelClass} htmlFor="notes">Notes</label>
-                <textarea id="notes" name="notes" maxLength={1000} rows={4} className={fieldClass} placeholder="Tell us about the condition of the car, any concerns, or what you're hoping for." />
+                <textarea id="notes" name="notes" maxLength={1000} rows={4} className={fieldClass} placeholder="Tell us about the condition of the car, any concerns, or what you're hoping for." onChange={() => clearError("notes")} />
               </div>
               <div className="md:col-span-2">
                 <button
