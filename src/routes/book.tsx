@@ -155,6 +155,8 @@ function Book() {
       trackLeadSubmit();
       setStatus("success");
       form.reset();
+      setDate("");
+      setTime("");
     } catch {
       setStatus("error");
     }
