@@ -85,15 +85,26 @@ function Book() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  // Saturdays get the shorter list; Sundays are blocked by validation.
+  // Saturdays get the shorter list; Sundays get none (validation blocks them too).
   const day = date ? new Date(date + "T12:00:00").getDay() : -1;
-  const availableTimes = day === 6 ? saturdayTimes : weekdayTimes;
+  const availableTimes = day === 0 ? [] : day === 6 ? saturdayTimes : weekdayTimes;
+
+  // Dismiss a field's validation error as soon as the visitor edits it.
+  function clearError(field: string) {
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  }
 
   function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+    clearError("date");
     const next = e.target.value;
     setDate(next);
     const nextDay = next ? new Date(next + "T12:00:00").getDay() : -1;
-    const nextTimes = nextDay === 6 ? saturdayTimes : weekdayTimes;
+    const nextTimes = nextDay === 0 ? [] : nextDay === 6 ? saturdayTimes : weekdayTimes;
     // Clear a selection that is invalid for the newly chosen day.
     if (time && !nextTimes.includes(time)) setTime("");
   }
