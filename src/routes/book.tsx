@@ -42,17 +42,29 @@ const schema = z.object({
       const d = new Date(v + "T12:00:00");
       return !isNaN(d.getTime()) && d.getDay() !== 0;
     }, "We're closed Sundays — please pick another day."),
-  time: z.string().min(1, "Pick a time"),
+  time: z.string().optional().default(""),
   hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
   _hp_url_check: z.string().optional(),
   gclid: z.string().optional().default(""),
 }).superRefine((data, ctx) => {
-  // Saturdays we close at 1pm — only morning slots from the Saturday list
-  // are valid, even if the dropdown is bypassed.
   if (!data.date) return;
   const d = new Date(data.date + "T12:00:00");
-  if (!isNaN(d.getTime()) && d.getDay() === 6 && data.time && !saturdayTimes.includes(data.time)) {
+  if (isNaN(d.getTime())) return;
+  const day = d.getDay();
+
+  // Time is required except on Sundays, where the date error is the real message.
+  if (day !== 0 && !data.time) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["time"],
+      message: "Pick a time",
+    });
+  }
+
+  // Saturdays we close at 1pm — only morning slots from the Saturday list
+  // are valid, even if the dropdown is bypassed.
+  if (day === 6 && data.time && !saturdayTimes.includes(data.time)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["time"],
@@ -174,7 +186,7 @@ function Book() {
   }
 
   const fieldClass =
-    "w-full bg-transparent border border-border px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-[var(--color-gold)] focus:outline-none transition-colors";
+    "w-full bg-transparent border border-border px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-foreground/40 focus:outline-none focus:ring-1 focus:ring-foreground/10 transition-colors";
   const labelClass = "block text-[11px] font-bold uppercase tracking-[0.2em] text-foreground/80 mb-2";
 
   return (
