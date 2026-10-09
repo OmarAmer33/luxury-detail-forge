@@ -42,10 +42,18 @@ export const DateChips = forwardRef<HTMLDivElement, Props>(function DateChips(
                 onClick={() => onChange(d)}
                 className={cn(
                   "flex min-h-14 flex-col items-center justify-center border px-2 py-2 transition-colors",
-                  selected
-                    ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-primary-foreground)]"
-                    : "border-border bg-transparent text-foreground hover:border-foreground/40",
+                  !selected && "border-border bg-transparent text-foreground hover:border-foreground/40",
                 )}
+                // Inline style so the selected state can't be dropped by the CSS build.
+                style={
+                  selected
+                    ? {
+                        backgroundColor: "var(--color-gold)",
+                        borderColor: "var(--color-gold)",
+                        color: "var(--color-primary-foreground)",
+                      }
+                    : undefined
+                }
               >
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80">
                   {WD[weekdayOf(d)]}
