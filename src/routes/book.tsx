@@ -5,6 +5,8 @@ import { PageHero } from "@/components/site/PageHero";
 import detailing from "@/assets/detailing.jpg";
 import { Phone, Mail, MapPin, Clock, Check } from "lucide-react";
 import { trackPhoneClick, trackLeadSubmit } from "@/lib/tracking";
+import { DateChips } from "@/components/site/DateChips";
+import { dateTimeIssues, timesForDay, weekdayOf } from "@/lib/booking-rules";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
@@ -19,14 +21,6 @@ export const Route = createFileRoute("/book")({
   component: Book,
 });
 
-const weekdayTimes = [
-  "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
-  "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM",
-];
-const saturdayTimes = [
-  "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
-];
-
 const schema = z.object({
   name: z.string().trim().min(2, "Name is required").max(100),
   phone: z.string().trim().min(7, "Phone is required").max(30),
@@ -34,42 +28,16 @@ const schema = z.object({
   vehicle: z.string().trim().min(2, "Vehicle info required").max(120),
   condition: z.string().min(1, "Pick a condition"),
   service: z.string().min(1, "Pick a service"),
-  date: z
-    .string()
-    .min(1, "Pick a date")
-    .refine((v) => {
-      if (!v) return true;
-      const d = new Date(v + "T12:00:00");
-      return !isNaN(d.getTime()) && d.getDay() !== 0;
-    }, "We're closed Sundays — please pick another day."),
-  time: z.string().optional().default(""),
+  date: z.string().max(20).default(""),
+  time: z.string().max(20).default(""),
   hearAbout: z.string().optional(),
   notes: z.string().max(1000).optional(),
   _hp_url_check: z.string().optional(),
   gclid: z.string().optional().default(""),
 }).superRefine((data, ctx) => {
-  if (!data.date) return;
-  const d = new Date(data.date + "T12:00:00");
-  if (isNaN(d.getTime())) return;
-  const day = d.getDay();
-
-  // Time is required except on Sundays, where the date error is the real message.
-  if (day !== 0 && !data.time) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["time"],
-      message: "Pick a time",
-    });
-  }
-
-  // Saturdays we close at 1pm — only morning slots from the Saturday list
-  // are valid, even if the dropdown is bypassed.
-  if (day === 6 && data.time && !saturdayTimes.includes(data.time)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["time"],
-      message: "Saturdays we close at 1pm — please pick a morning slot.",
-    });
+  // Shared with the server route — identical date/time rules on both sides.
+  for (const issue of dateTimeIssues(data.date, data.time)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: [issue.path], message: issue.message });
   }
 });
 
@@ -98,8 +66,7 @@ function Book() {
   const [time, setTime] = useState("");
 
   // Saturdays get the shorter list; Sundays get none (validation blocks them too).
-  const day = date ? new Date(date + "T12:00:00").getDay() : -1;
-  const availableTimes = day === 0 ? [] : day === 6 ? saturdayTimes : weekdayTimes;
+  const availableTimes = timesForDay(date ? weekdayOf(date) : -1);
 
   // Dismiss a field's validation error as soon as the visitor edits it.
   function clearError(field: string) {
@@ -111,12 +78,10 @@ function Book() {
     });
   }
 
-  function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleDateChange(next: string) {
     clearError("date");
-    const next = e.target.value;
     setDate(next);
-    const nextDay = next ? new Date(next + "T12:00:00").getDay() : -1;
-    const nextTimes = nextDay === 0 ? [] : nextDay === 6 ? saturdayTimes : weekdayTimes;
+    const nextTimes = timesForDay(next ? weekdayOf(next) : -1);
     // Clear a selection that is invalid for the newly chosen day.
     if (time && !nextTimes.includes(time)) setTime("");
   }
@@ -150,7 +115,10 @@ function Book() {
       // sees the validation message instead of perceiving a silent failure.
       const firstKey = Object.keys(errs)[0];
       if (firstKey) {
-        const el = form.querySelector<HTMLElement>(`[name="${firstKey}"]`);
+        const el =
+          firstKey === "date"
+            ? form.querySelector<HTMLElement>("#date")
+            : form.querySelector<HTMLElement>(`[name="${firstKey}"]`);
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "center" });
           setTimeout(() => el.focus({ preventScroll: true }), 250);
@@ -273,10 +241,11 @@ function Book() {
                 </select>
                 {errors.service && <p className="mt-1 text-xs text-destructive">{errors.service}</p>}
               </div>
-              <div>
-                <label className={labelClass} htmlFor="date">Preferred date</label>
-                <input id="date" name="date" type="date" min={new Date().toISOString().slice(0,10)} className={fieldClass} value={date} onChange={handleDateChange} />
-                <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">Closed Sundays.</p>
+              <div className="md:col-span-2">
+                <span className={labelClass} id="date-label">Preferred date</span>
+                <input type="hidden" name="date" value={date} />
+                <DateChips value={date} onChange={handleDateChange} invalid={!!errors.date} />
+                <p className="mt-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">Closed Sundays · showing the next 3 weeks</p>
                 {errors.date && <p className="mt-1 text-xs text-destructive">{errors.date}</p>}
               </div>
               <div>
