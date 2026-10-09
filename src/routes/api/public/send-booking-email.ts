@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { dateTimeIssues } from "@/lib/booking-rules";
 
 const schema = z.object({
   name: z.string().trim().min(2).max(100),
@@ -8,12 +9,17 @@ const schema = z.object({
   vehicle: z.string().trim().min(2).max(120),
   condition: z.string().min(1).max(50),
   service: z.string().min(1).max(100),
-  date: z.string().min(1).max(20),
-  time: z.string().min(1).max(20),
+  date: z.string().max(20).default(""),
+  time: z.string().max(20).default(""),
   hearAbout: z.string().max(50).optional().default(""),
   notes: z.string().max(1000).optional().default(""),
   _hp_url_check: z.string().optional().default(""),
   gclid: z.string().max(200).optional().default(""),
+}).superRefine((data, ctx) => {
+  // Same date/time rules as the /book form (shared module).
+  for (const issue of dateTimeIssues(data.date, data.time)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: [issue.path], message: issue.message });
+  }
 });
 
 function escapeHtml(s: string) {
