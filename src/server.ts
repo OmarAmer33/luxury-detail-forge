@@ -66,9 +66,23 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
+// Legacy WordPress URLs still crawled by Google — permanent server-side redirects.
+const LEGACY_REDIRECTS: Record<string, string> = {
+  "/in-shop-services": "/detailing",
+  "/vip-showroom-service": "/vip-showroom",
+};
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const url = new URL(request.url);
+      const target = LEGACY_REDIRECTS[url.pathname.replace(/\/+$/, "")];
+      if (target) {
+        return new Response(null, {
+          status: 301,
+          headers: { Location: new URL(target, url.origin).toString() },
+        });
+      }
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

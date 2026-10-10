@@ -41,7 +41,7 @@ export const DateChips = forwardRef<HTMLDivElement, Props>(function DateChips(
                 aria-pressed={selected}
                 onClick={() => onChange(d)}
                 className={cn(
-                  "flex min-h-14 flex-col items-center justify-center border px-2 py-2 transition-colors",
+                  "flex min-h-14 flex-col items-center justify-center border px-2 py-2",
                   !selected && "border-border bg-transparent text-foreground hover:border-foreground/40",
                 )}
                 // Inline style so the selected state can't be dropped by the CSS build.
