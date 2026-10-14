@@ -151,47 +151,80 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
 
         // GoHighLevel contact sync. Same never-block pattern as the insert:
         // every error is logged and swallowed; the response and email are
-        // unaffected whether the CRM succeeds or not.
+        // unaffected whether the CRM succeeds, fails, or hangs. Each fetch
+        // is capped at 4s and the whole block at an 8s budget, so the Resend
+        // send always starts within 8 seconds even if the CRM is slow.
         try {
           const ghlToken = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
           if (!ghlToken) {
             console.error("GHL sync skipped: GHL_PRIVATE_INTEGRATION_TOKEN not set");
           } else {
+            const ghlDeadline = Date.now() + 8000;
+            const budgetLeft = () => ghlDeadline - Date.now();
+            const isTimeout = (err: unknown) =>
+              err instanceof Error && (err.name === "TimeoutError" || err.name === "AbortError");
             const headers = {
               Authorization: `Bearer ${ghlToken}`,
               Version: GHL_API_VERSION,
               "Content-Type": "application/json",
               Accept: "application/json",
             };
-            const upsertRes = await fetch(`${GHL_BASE_URL}/contacts/upsert`, {
-              method: "POST",
-              headers,
-              body: JSON.stringify(buildGhlUpsertBody(d)),
-            });
-            const upsertJson = (await upsertRes.json().catch(() => null)) as
-              | { contact?: { id?: string } }
-              | null;
-            const contactId = upsertJson?.contact?.id;
-            if (!upsertRes.ok || !contactId) {
-              console.error("GHL upsert failed:", upsertRes.status, JSON.stringify(upsertJson));
-            } else {
-              const tagBody = JSON.stringify({ tags: [GHL_BOOKING_TAG] });
-              try {
-                await fetch(`${GHL_BASE_URL}/contacts/${contactId}/tags`, {
-                  method: "DELETE",
-                  headers,
-                  body: tagBody,
-                });
-              } catch {
-                /* expected to no-op for first-time contacts */
-              }
-              const addRes = await fetch(`${GHL_BASE_URL}/contacts/${contactId}/tags`, {
+            // Single fetch helper so every GHL call honours both the 4s
+            // per-call cap and the shared 8s block budget.
+            const ghlFetch = (url: string, init: RequestInit) => {
+              const left = budgetLeft();
+              if (left <= 0) throw new Error("GHL budget exceeded");
+              return fetch(url, { ...init, signal: AbortSignal.timeout(Math.min(4000, left)) });
+            };
+
+            let contactId: string | undefined;
+            try {
+              const upsertRes = await ghlFetch(`${GHL_BASE_URL}/contacts/upsert`, {
                 method: "POST",
                 headers,
-                body: tagBody,
+                body: JSON.stringify(buildGhlUpsertBody(d)),
               });
-              if (!addRes.ok) {
-                console.error("GHL tag add failed:", addRes.status, await addRes.text().catch(() => ""));
+              const upsertJson = (await upsertRes.json().catch(() => null)) as
+                | { contact?: { id?: string } }
+                | null;
+              contactId = upsertJson?.contact?.id;
+              if (!upsertRes.ok || !contactId) {
+                console.error("GHL upsert failed:", upsertRes.status, JSON.stringify(upsertJson));
+                contactId = undefined;
+              }
+            } catch (err) {
+              contactId = undefined;
+              console.error(isTimeout(err) ? "GHL upsert timed out:" : "GHL upsert threw:", err);
+            }
+
+            if (contactId) {
+              if (budgetLeft() <= 0) {
+                console.error("GHL budget exceeded; skipping tag calls");
+              } else {
+                const tagBody = JSON.stringify({ tags: [GHL_BOOKING_TAG] });
+                try {
+                  await ghlFetch(`${GHL_BASE_URL}/contacts/${contactId}/tags`, {
+                    method: "DELETE",
+                    headers,
+                    body: tagBody,
+                  });
+                } catch (err) {
+                  // Expected to no-op for first-time contacts; timeouts are
+                  // still logged so they show up in the logs, not silently.
+                  if (isTimeout(err)) console.error("GHL tag cleanup timed out:", err);
+                }
+                try {
+                  const addRes = await ghlFetch(`${GHL_BASE_URL}/contacts/${contactId}/tags`, {
+                    method: "POST",
+                    headers,
+                    body: tagBody,
+                  });
+                  if (!addRes.ok) {
+                    console.error("GHL tag add failed:", addRes.status, await addRes.text().catch(() => ""));
+                  }
+                } catch (err) {
+                  console.error(isTimeout(err) ? "GHL tag add timed out:" : "GHL tag add threw:", err);
+                }
               }
             }
           }
