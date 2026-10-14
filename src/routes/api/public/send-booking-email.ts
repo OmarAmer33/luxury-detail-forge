@@ -49,10 +49,10 @@ type BookingData = {
 
 // Single place to correct the CRM custom-field mapping.
 const GHL_CUSTOM_FIELDS: { key: string; value: (d: BookingData) => string }[] = [
-  { key: "contact.vehicle", value: (d) => d.vehicle },
-  { key: "contact.service_requested", value: (d) => d.service },
-  { key: "contact.requested_date", value: (d) => formatLongDate(d.date) },
-  { key: "contact.requested_time", value: (d) => d.time },
+  { key: "vehicle", value: (d) => d.vehicle },
+  { key: "service_requested", value: (d) => d.service },
+  { key: "requested_date", value: (d) => formatLongDate(d.date) },
+  { key: "requested_time", value: (d) => d.time },
 ];
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
