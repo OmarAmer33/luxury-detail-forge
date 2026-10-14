@@ -31,6 +31,73 @@ function escapeHtml(s: string) {
     .replace(/'/g, "&#39;");
 }
 
+// ---- GoHighLevel CRM sync -------------------------------------------------
+const GHL_BASE_URL = "https://services.leadconnectorhq.com";
+const GHL_API_VERSION = "2021-07-28";
+const GHL_LOCATION_ID = "JSUxqKsmjxVTSBVYfxDc";
+const GHL_BOOKING_TAG = "website-booking";
+
+type BookingData = {
+  name: string;
+  email: string;
+  phone: string;
+  vehicle: string;
+  service: string;
+  date: string;
+  time: string;
+};
+
+// Single place to correct the CRM custom-field mapping.
+const GHL_CUSTOM_FIELDS: { key: string; value: (d: BookingData) => string }[] = [
+  { key: "contact.vehicle", value: (d) => d.vehicle },
+  { key: "contact.service_requested", value: (d) => d.service },
+  { key: "contact.requested_date", value: (d) => formatLongDate(d.date) },
+  { key: "contact.requested_time", value: (d) => d.time },
+];
+
+const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+// "2026-10-16" -> "Friday, October 16". Built from parts (UTC math) so it
+// never shifts a day due to local-time parsing.
+function formatLongDate(s: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s ?? "");
+  if (!m) return "";
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const day = Number(m[3]);
+  if (mo < 1 || mo > 12 || day < 1 || day > 31) return "";
+  const wd = new Date(Date.UTC(y, mo - 1, day)).getUTCDay();
+  return `${WEEKDAYS[wd]}, ${MONTHS[mo - 1]} ${day}`;
+}
+
+function toE164(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 10) return `+1${digits}`;
+  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+  return phone;
+}
+
+function buildGhlUpsertBody(d: BookingData) {
+  const name = d.name.trim();
+  const ws = /\s+/.exec(name);
+  const firstName = ws ? name.slice(0, ws.index) : name;
+  const lastName = ws ? name.slice(ws.index + ws[0].length) : "";
+  return {
+    locationId: GHL_LOCATION_ID,
+    firstName,
+    ...(lastName ? { lastName } : {}),
+    email: d.email,
+    phone: toE164(d.phone),
+    source: "Website booking form",
+    customFields: GHL_CUSTOM_FIELDS.map((f) => ({ key: f.key, field_value: f.value(d) })),
+  };
+}
+
+
 export const Route = createFileRoute("/api/public/send-booking-email")({
   server: {
     handlers: {
@@ -80,6 +147,56 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
           }
         } catch (err) {
           console.error("booking_submissions insert threw:", err);
+        }
+
+        // GoHighLevel contact sync. Same never-block pattern as the insert:
+        // every error is logged and swallowed; the response and email are
+        // unaffected whether the CRM succeeds or not.
+        try {
+          const ghlToken = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
+          if (!ghlToken) {
+            console.error("GHL sync skipped: GHL_PRIVATE_INTEGRATION_TOKEN not set");
+          } else {
+            const headers = {
+              Authorization: `Bearer ${ghlToken}`,
+              Version: GHL_API_VERSION,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            };
+            const upsertRes = await fetch(`${GHL_BASE_URL}/contacts/upsert`, {
+              method: "POST",
+              headers,
+              body: JSON.stringify(buildGhlUpsertBody(d)),
+            });
+            const upsertJson = (await upsertRes.json().catch(() => null)) as
+              | { contact?: { id?: string } }
+              | null;
+            const contactId = upsertJson?.contact?.id;
+            if (!upsertRes.ok || !contactId) {
+              console.error("GHL upsert failed:", upsertRes.status, JSON.stringify(upsertJson));
+            } else {
+              const tagBody = JSON.stringify({ tags: [GHL_BOOKING_TAG] });
+              try {
+                await fetch(`${GHL_BASE_URL}/contacts/${contactId}/tags`, {
+                  method: "DELETE",
+                  headers,
+                  body: tagBody,
+                });
+              } catch {
+                /* expected to no-op for first-time contacts */
+              }
+              const addRes = await fetch(`${GHL_BASE_URL}/contacts/${contactId}/tags`, {
+                method: "POST",
+                headers,
+                body: tagBody,
+              });
+              if (!addRes.ok) {
+                console.error("GHL tag add failed:", addRes.status, await addRes.text().catch(() => ""));
+              }
+            }
+          }
+        } catch (err) {
+          console.error("GHL sync threw:", err);
         }
 
         const apiKey = process.env.RESEND_API_KEY;
