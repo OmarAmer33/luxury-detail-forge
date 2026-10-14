@@ -91,7 +91,7 @@ function Home() {
 
           <div className="mt-16 grid max-w-3xl grid-cols-1 gap-10 border-t border-white/15 pt-8 sm:grid-cols-3">
             {[
-              ["4.9★", "193 Google Reviews"],
+              ["5.0★", "194 Google Reviews"],
               ["Springfield, NJ", "Est. 2017"],
               ["Mon–Sat", "9:30am – 4:30pm · Sat till 1pm"],
             ].map(([k, v]) => (
