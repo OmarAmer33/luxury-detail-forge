@@ -275,6 +275,9 @@ function Book() {
                 >
                   {status === "submitting" ? "Sending…" : "Send Request"}
                 </button>
+                <p className="mt-4 max-w-xl text-xs leading-relaxed text-muted-foreground">
+                  By submitting, you agree to receive texts and emails from Top Elite Auto about your booking. Message and data rates may apply. Reply STOP to opt out.
+                </p>
                 {status === "error" && (
                   <p className="mt-3 text-sm text-destructive">Something went wrong. Please call us at 908.293.3934.</p>
                 )}
