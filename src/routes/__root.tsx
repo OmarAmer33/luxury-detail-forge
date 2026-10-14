@@ -81,6 +81,7 @@ const localBusinessJson = {
   "url": "https://topeliteauto.com",
   "telephone": "+1-908-293-3934",
   "email": "topeliteauto01@gmail.com",
+  "foundingDate": "2017-12",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "3 Dundar Rd",
