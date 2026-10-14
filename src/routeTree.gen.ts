@@ -9,63 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WindowTintRouteImport } from './routes/window-tint'
-import { Route as VipShowroomRouteImport } from './routes/vip-showroom'
-import { Route as ServiceAreasRouteImport } from './routes/service-areas'
-import { Route as ReviewsRouteImport } from './routes/reviews'
-import { Route as PaintProtectionRouteImport } from './routes/paint-protection'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as DetailingRouteImport } from './routes/detailing'
-import { Route as CeramicCoatingRouteImport } from './routes/ceramic-coating'
-import { Route as CarWrapsRouteImport } from './routes/car-wraps'
-import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BookRouteImport } from './routes/book'
+import { Route as CarWrapsRouteImport } from './routes/car-wraps'
+import { Route as CeramicCoatingRouteImport } from './routes/ceramic-coating'
+import { Route as DetailingRouteImport } from './routes/detailing'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as PaintProtectionRouteImport } from './routes/paint-protection'
+import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as ServiceAreasRouteImport } from './routes/service-areas'
+import { Route as VipShowroomRouteImport } from './routes/vip-showroom'
+import { Route as WindowTintRouteImport } from './routes/window-tint'
 import { Route as BlogChoosingCarWrapFinishesRouteImport } from './routes/blog.choosing-car-wrap-finishes'
 import { Route as ApiPublicSendBookingEmailRouteImport } from './routes/api/public/send-booking-email'
 
-const WindowTintRoute = WindowTintRouteImport.update({
-  id: '/window-tint',
-  path: '/window-tint',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VipShowroomRoute = VipShowroomRouteImport.update({
-  id: '/vip-showroom',
-  path: '/vip-showroom',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServiceAreasRoute = ServiceAreasRouteImport.update({
-  id: '/service-areas',
-  path: '/service-areas',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReviewsRoute = ReviewsRouteImport.update({
-  id: '/reviews',
-  path: '/reviews',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PaintProtectionRoute = PaintProtectionRouteImport.update({
-  id: '/paint-protection',
-  path: '/paint-protection',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DetailingRoute = DetailingRouteImport.update({
-  id: '/detailing',
-  path: '/detailing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CeramicCoatingRoute = CeramicCoatingRouteImport.update({
-  id: '/ceramic-coating',
-  path: '/ceramic-coating',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CarWrapsRoute = CarWrapsRouteImport.update({
-  id: '/car-wraps',
-  path: '/car-wraps',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookRoute = BookRouteImport.update({
@@ -73,9 +33,49 @@ const BookRoute = BookRouteImport.update({
   path: '/book',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CarWrapsRoute = CarWrapsRouteImport.update({
+  id: '/car-wraps',
+  path: '/car-wraps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CeramicCoatingRoute = CeramicCoatingRouteImport.update({
+  id: '/ceramic-coating',
+  path: '/ceramic-coating',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DetailingRoute = DetailingRouteImport.update({
+  id: '/detailing',
+  path: '/detailing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaintProtectionRoute = PaintProtectionRouteImport.update({
+  id: '/paint-protection',
+  path: '/paint-protection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiceAreasRoute = ServiceAreasRouteImport.update({
+  id: '/service-areas',
+  path: '/service-areas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VipShowroomRoute = VipShowroomRouteImport.update({
+  id: '/vip-showroom',
+  path: '/vip-showroom',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WindowTintRoute = WindowTintRouteImport.update({
+  id: '/window-tint',
+  path: '/window-tint',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogChoosingCarWrapFinishesRoute =
@@ -203,67 +203,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/window-tint': {
-      id: '/window-tint'
-      path: '/window-tint'
-      fullPath: '/window-tint'
-      preLoaderRoute: typeof WindowTintRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/vip-showroom': {
-      id: '/vip-showroom'
-      path: '/vip-showroom'
-      fullPath: '/vip-showroom'
-      preLoaderRoute: typeof VipShowroomRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/service-areas': {
-      id: '/service-areas'
-      path: '/service-areas'
-      fullPath: '/service-areas'
-      preLoaderRoute: typeof ServiceAreasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reviews': {
-      id: '/reviews'
-      path: '/reviews'
-      fullPath: '/reviews'
-      preLoaderRoute: typeof ReviewsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/paint-protection': {
-      id: '/paint-protection'
-      path: '/paint-protection'
-      fullPath: '/paint-protection'
-      preLoaderRoute: typeof PaintProtectionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/detailing': {
-      id: '/detailing'
-      path: '/detailing'
-      fullPath: '/detailing'
-      preLoaderRoute: typeof DetailingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ceramic-coating': {
-      id: '/ceramic-coating'
-      path: '/ceramic-coating'
-      fullPath: '/ceramic-coating'
-      preLoaderRoute: typeof CeramicCoatingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/car-wraps': {
-      id: '/car-wraps'
-      path: '/car-wraps'
-      fullPath: '/car-wraps'
-      preLoaderRoute: typeof CarWrapsRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book': {
@@ -273,11 +217,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/car-wraps': {
+      id: '/car-wraps'
+      path: '/car-wraps'
+      fullPath: '/car-wraps'
+      preLoaderRoute: typeof CarWrapsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ceramic-coating': {
+      id: '/ceramic-coating'
+      path: '/ceramic-coating'
+      fullPath: '/ceramic-coating'
+      preLoaderRoute: typeof CeramicCoatingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/detailing': {
+      id: '/detailing'
+      path: '/detailing'
+      fullPath: '/detailing'
+      preLoaderRoute: typeof DetailingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paint-protection': {
+      id: '/paint-protection'
+      path: '/paint-protection'
+      fullPath: '/paint-protection'
+      preLoaderRoute: typeof PaintProtectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/service-areas': {
+      id: '/service-areas'
+      path: '/service-areas'
+      fullPath: '/service-areas'
+      preLoaderRoute: typeof ServiceAreasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vip-showroom': {
+      id: '/vip-showroom'
+      path: '/vip-showroom'
+      fullPath: '/vip-showroom'
+      preLoaderRoute: typeof VipShowroomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/window-tint': {
+      id: '/window-tint'
+      path: '/window-tint'
+      fullPath: '/window-tint'
+      preLoaderRoute: typeof WindowTintRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/choosing-car-wrap-finishes': {
