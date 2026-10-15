@@ -16,6 +16,7 @@ const schema = z.object({
   _hp_url_check: z.string().optional().default(""),
   gclid: z.string().max(200).optional().default(""),
   marketingConsent: z.boolean().optional().default(false),
+  transactionalConsent: z.boolean().optional().default(false),
 }).superRefine((data, ctx) => {
   // Same date/time rules as the /book form (shared module).
   for (const issue of dateTimeIssues(data.date, data.time)) {
@@ -143,6 +144,7 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
             gclid: d.gclid || null,
             source: d.gclid ? "google-ads" : null,
             marketing_consent: d.marketingConsent,
+            transactional_consent: d.transactionalConsent,
           });
           if (error) {
             console.error("booking_submissions insert failed:", error.message);

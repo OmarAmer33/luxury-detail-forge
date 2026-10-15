@@ -1,0 +1,1 @@
+ALTER TABLE public.booking_submissions ADD COLUMN transactional_consent boolean;
