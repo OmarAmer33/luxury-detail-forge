@@ -274,10 +274,18 @@ function Book() {
                 <label className="flex cursor-pointer select-none items-start gap-2.5 text-xs leading-relaxed text-muted-foreground">
                   <input
                     type="checkbox"
+                    name="transactionalConsent"
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-[var(--color-gold)]"
+                  />
+                  <span>Text me about my booking — confirmations, scheduling and updates.</span>
+                </label>
+                <label className="flex cursor-pointer select-none items-start gap-2.5 text-xs leading-relaxed text-muted-foreground">
+                  <input
+                    type="checkbox"
                     name="marketingConsent"
                     className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-[var(--color-gold)]"
                   />
-                  <span>Text me occasional service reminders and offers. Optional — you can book without this, and you can reply STOP any time.</span>
+                  <span>Text me occasional service reminders and offers.</span>
                 </label>
                 <button
                   type="submit"
