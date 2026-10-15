@@ -34,6 +34,7 @@ export type Database = {
           status: string
           status_updated_at: string | null
           status_updated_by: string | null
+          transactional_consent: boolean | null
           vehicle: string
         }
         Insert: {
@@ -55,6 +56,7 @@ export type Database = {
           status?: string
           status_updated_at?: string | null
           status_updated_by?: string | null
+          transactional_consent?: boolean | null
           vehicle: string
         }
         Update: {
@@ -76,6 +78,7 @@ export type Database = {
           status?: string
           status_updated_at?: string | null
           status_updated_by?: string | null
+          transactional_consent?: boolean | null
           vehicle?: string
         }
         Relationships: []
