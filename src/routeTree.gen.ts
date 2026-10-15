@@ -16,8 +16,10 @@ import { Route as CeramicCoatingRouteImport } from './routes/ceramic-coating'
 import { Route as DetailingRouteImport } from './routes/detailing'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as PaintProtectionRouteImport } from './routes/paint-protection'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as ServiceAreasRouteImport } from './routes/service-areas'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as VipShowroomRouteImport } from './routes/vip-showroom'
 import { Route as WindowTintRouteImport } from './routes/window-tint'
 import { Route as BlogChoosingCarWrapFinishesRouteImport } from './routes/blog.choosing-car-wrap-finishes'
@@ -58,6 +60,11 @@ const PaintProtectionRoute = PaintProtectionRouteImport.update({
   path: '/paint-protection',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewsRoute = ReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
@@ -66,6 +73,11 @@ const ReviewsRoute = ReviewsRouteImport.update({
 const ServiceAreasRoute = ServiceAreasRouteImport.update({
   id: '/service-areas',
   path: '/service-areas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VipShowroomRoute = VipShowroomRouteImport.update({
@@ -99,8 +111,10 @@ export interface FileRoutesByFullPath {
   '/detailing': typeof DetailingRoute
   '/faq': typeof FaqRoute
   '/paint-protection': typeof PaintProtectionRoute
+  '/privacy': typeof PrivacyRoute
   '/reviews': typeof ReviewsRoute
   '/service-areas': typeof ServiceAreasRoute
+  '/terms': typeof TermsRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
   '/blog/choosing-car-wrap-finishes': typeof BlogChoosingCarWrapFinishesRoute
@@ -114,8 +128,10 @@ export interface FileRoutesByTo {
   '/detailing': typeof DetailingRoute
   '/faq': typeof FaqRoute
   '/paint-protection': typeof PaintProtectionRoute
+  '/privacy': typeof PrivacyRoute
   '/reviews': typeof ReviewsRoute
   '/service-areas': typeof ServiceAreasRoute
+  '/terms': typeof TermsRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
   '/blog/choosing-car-wrap-finishes': typeof BlogChoosingCarWrapFinishesRoute
@@ -130,8 +146,10 @@ export interface FileRoutesById {
   '/detailing': typeof DetailingRoute
   '/faq': typeof FaqRoute
   '/paint-protection': typeof PaintProtectionRoute
+  '/privacy': typeof PrivacyRoute
   '/reviews': typeof ReviewsRoute
   '/service-areas': typeof ServiceAreasRoute
+  '/terms': typeof TermsRoute
   '/vip-showroom': typeof VipShowroomRoute
   '/window-tint': typeof WindowTintRoute
   '/blog/choosing-car-wrap-finishes': typeof BlogChoosingCarWrapFinishesRoute
@@ -147,8 +165,10 @@ export interface FileRouteTypes {
     | '/detailing'
     | '/faq'
     | '/paint-protection'
+    | '/privacy'
     | '/reviews'
     | '/service-areas'
+    | '/terms'
     | '/vip-showroom'
     | '/window-tint'
     | '/blog/choosing-car-wrap-finishes'
@@ -162,8 +182,10 @@ export interface FileRouteTypes {
     | '/detailing'
     | '/faq'
     | '/paint-protection'
+    | '/privacy'
     | '/reviews'
     | '/service-areas'
+    | '/terms'
     | '/vip-showroom'
     | '/window-tint'
     | '/blog/choosing-car-wrap-finishes'
@@ -177,8 +199,10 @@ export interface FileRouteTypes {
     | '/detailing'
     | '/faq'
     | '/paint-protection'
+    | '/privacy'
     | '/reviews'
     | '/service-areas'
+    | '/terms'
     | '/vip-showroom'
     | '/window-tint'
     | '/blog/choosing-car-wrap-finishes'
@@ -193,8 +217,10 @@ export interface RootRouteChildren {
   DetailingRoute: typeof DetailingRoute
   FaqRoute: typeof FaqRoute
   PaintProtectionRoute: typeof PaintProtectionRoute
+  PrivacyRoute: typeof PrivacyRoute
   ReviewsRoute: typeof ReviewsRoute
   ServiceAreasRoute: typeof ServiceAreasRoute
+  TermsRoute: typeof TermsRoute
   VipShowroomRoute: typeof VipShowroomRoute
   WindowTintRoute: typeof WindowTintRoute
   BlogChoosingCarWrapFinishesRoute: typeof BlogChoosingCarWrapFinishesRoute
@@ -252,6 +278,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaintProtectionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reviews': {
       id: '/reviews'
       path: '/reviews'
@@ -264,6 +297,13 @@ declare module '@tanstack/react-router' {
       path: '/service-areas'
       fullPath: '/service-areas'
       preLoaderRoute: typeof ServiceAreasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/vip-showroom': {
@@ -305,8 +345,10 @@ const rootRouteChildren: RootRouteChildren = {
   DetailingRoute: DetailingRoute,
   FaqRoute: FaqRoute,
   PaintProtectionRoute: PaintProtectionRoute,
+  PrivacyRoute: PrivacyRoute,
   ReviewsRoute: ReviewsRoute,
   ServiceAreasRoute: ServiceAreasRoute,
+  TermsRoute: TermsRoute,
   VipShowroomRoute: VipShowroomRoute,
   WindowTintRoute: WindowTintRoute,
   BlogChoosingCarWrapFinishesRoute: BlogChoosingCarWrapFinishesRoute,

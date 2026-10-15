@@ -83,7 +83,11 @@ export function Footer() {
       <div className="border-t border-border">
         <div className="container-luxe flex flex-col items-center justify-between gap-3 py-6 text-xs uppercase tracking-[0.2em] text-muted-foreground md:flex-row">
           <span>© {new Date().getFullYear()} Top Elite Auto. All rights reserved.</span>
-          <span>Built in Springfield, NJ</span>
+          <div className="flex items-center gap-6">
+            <Link to="/privacy" className="transition-colors hover:text-[var(--color-gold)]">Privacy Policy</Link>
+            <Link to="/terms" className="transition-colors hover:text-[var(--color-gold)]">Terms &amp; Conditions</Link>
+            <span>Built in Springfield, NJ</span>
+          </div>
         </div>
       </div>
     </footer>
