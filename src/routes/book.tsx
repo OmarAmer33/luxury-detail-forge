@@ -34,9 +34,10 @@ const schema = z.object({
   notes: z.string().max(1000).optional(),
   _hp_url_check: z.string().optional(),
   gclid: z.string().optional().default(""),
-  // Optional marketing-texts checkbox. FormData gives "on" when checked and
-  // omits the key when unchecked; converted to a boolean in the payload.
+  // Optional consent checkboxes. FormData gives "on" when checked and
+  // omits the key when unchecked; converted to booleans in the payload.
   marketingConsent: z.string().optional(),
+  transactionalConsent: z.string().optional(),
 }).superRefine((data, ctx) => {
   // Shared with the server route — identical date/time rules on both sides.
   for (const issue of dateTimeIssues(data.date, data.time)) {
@@ -134,7 +135,7 @@ function Book() {
       const res = await fetch("/api/public/send-booking-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...parsed.data, marketingConsent: parsed.data.marketingConsent === "on" }),
+        body: JSON.stringify({ ...parsed.data, marketingConsent: parsed.data.marketingConsent === "on", transactionalConsent: parsed.data.transactionalConsent === "on" }),
       });
       const json = (await res.json().catch(() => ({}))) as { success?: boolean };
       if (!res.ok || !json.success) {
@@ -295,7 +296,7 @@ function Book() {
                   {status === "submitting" ? "Sending…" : "Send Request"}
                 </button>
                 <p className="mt-4 max-w-xl text-xs leading-relaxed text-muted-foreground">
-                  By submitting, you agree to receive texts and emails from Top Elite Auto about your booking. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our <Link to="/privacy" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Privacy Policy</Link> and <Link to="/terms" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Terms</Link>.
+                  Both boxes are optional and you can book without either one. Top Elite Auto is a trade name of Magnum Details LLC. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our <Link to="/privacy" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Privacy Policy</Link> and <Link to="/terms" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Terms</Link>.
                 </p>
                 {status === "error" && (
                   <p className="mt-3 text-sm text-destructive">Something went wrong. Please call us at 908.293.3934.</p>
