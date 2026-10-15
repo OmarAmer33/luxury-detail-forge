@@ -23,6 +23,7 @@ export type Database = {
           gclid: string | null
           hear_about: string | null
           id: string
+          marketing_consent: boolean | null
           name: string
           notes: string | null
           phone: string
@@ -43,6 +44,7 @@ export type Database = {
           gclid?: string | null
           hear_about?: string | null
           id?: string
+          marketing_consent?: boolean | null
           name: string
           notes?: string | null
           phone: string
@@ -63,6 +65,7 @@ export type Database = {
           gclid?: string | null
           hear_about?: string | null
           id?: string
+          marketing_consent?: boolean | null
           name?: string
           notes?: string | null
           phone?: string
