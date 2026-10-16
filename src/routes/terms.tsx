@@ -98,7 +98,8 @@ function TermsPage() {
           <H2>7. Text messages</H2>
           <P>
             If you submit a booking request, you agree to receive texts and
-            emails from us about that booking. Marketing texts are optional
+            emails from us about that booking. You must be 18 years of age or
+            older to use this SMS service. Marketing texts are optional
             and separate: you receive them only if you tick the optional box
             on the booking form. Consent to marketing messages is not a
             condition of purchasing any service from us. Message frequency
