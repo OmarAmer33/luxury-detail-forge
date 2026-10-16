@@ -278,7 +278,10 @@ function Book() {
                     name="transactionalConsent"
                     className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-[var(--color-gold)]"
                   />
-                  <span>Text me about my booking — confirmations, scheduling and updates.</span>
+                  <span className="flex flex-col gap-1">
+                    <span>Text me about my booking — confirmations, scheduling and updates.</span>
+                    <span className="text-[10px] leading-relaxed text-muted-foreground/80">Texts from Top Elite Auto (MAGNUM DETAILS LLC). Message frequency may vary. Message & data rates may apply. Reply STOP to unsubscribe or HELP for help.</span>
+                  </span>
                 </label>
                 <label className="flex cursor-pointer select-none items-start gap-2.5 text-xs leading-relaxed text-muted-foreground">
                   <input
@@ -286,7 +289,10 @@ function Book() {
                     name="marketingConsent"
                     className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-[var(--color-gold)]"
                   />
-                  <span>Text me occasional service reminders and offers.</span>
+                  <span className="flex flex-col gap-1">
+                    <span>Text me occasional service reminders and offers.</span>
+                    <span className="text-[10px] leading-relaxed text-muted-foreground/80">Texts from Top Elite Auto (MAGNUM DETAILS LLC). Message frequency may vary. Message & data rates may apply. Reply STOP to unsubscribe or HELP for help.</span>
+                  </span>
                 </label>
                 <button
                   type="submit"
@@ -296,7 +302,7 @@ function Book() {
                   {status === "submitting" ? "Sending…" : "Send Request"}
                 </button>
                 <p className="mt-4 max-w-xl text-xs leading-relaxed text-muted-foreground">
-                  Both boxes are optional and you can book without either one. Top Elite Auto is a trade name of MAGNUM DETAILS LLC. Message frequency may vary. Message & data rates may apply. Reply STOP to unsubscribe or HELP for help. See our <Link to="/privacy" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Privacy Policy</Link> and <Link to="/terms" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Terms</Link>.
+                  Both boxes are optional and you can book without either one. Top Elite Auto is a trade name of MAGNUM DETAILS LLC. See our <Link to="/privacy" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Privacy Policy</Link> and <Link to="/terms" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Terms</Link>.
                 </p>
                 {status === "error" && (
                   <p className="mt-3 text-sm text-destructive">Something went wrong. Please call us at 908.293.3934.</p>
