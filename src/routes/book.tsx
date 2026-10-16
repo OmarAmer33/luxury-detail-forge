@@ -296,7 +296,7 @@ function Book() {
                   {status === "submitting" ? "Sending…" : "Send Request"}
                 </button>
                 <p className="mt-4 max-w-xl text-xs leading-relaxed text-muted-foreground">
-                  Both boxes are optional and you can book without either one. Top Elite Auto is a trade name of Magnum Details LLC. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our <Link to="/privacy" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Privacy Policy</Link> and <Link to="/terms" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Terms</Link>.
+                  Both boxes are optional and you can book without either one. Top Elite Auto is a trade name of MAGNUM DETAILS LLC. Message frequency may vary. Message & data rates may apply. Reply STOP to unsubscribe or HELP for help. See our <Link to="/privacy" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Privacy Policy</Link> and <Link to="/terms" className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">Terms</Link>.
                 </p>
                 {status === "error" && (
                   <p className="mt-3 text-sm text-destructive">Something went wrong. Please call us at 908.293.3934.</p>
