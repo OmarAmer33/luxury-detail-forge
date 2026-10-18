@@ -47,6 +47,12 @@ const GHL_API_VERSION = "2021-07-28";
 const GHL_LOCATION_ID = "JSUxqKsmjxVTSBVYfxDc";
 const GHL_BOOKING_TAG = "website-booking";
 const GHL_CONFLICT_TAG = "booking-conflict";
+// Calendar id: character 16 is a lowercase i ("...DoZIiMR7j"). The look-alike
+// lowercase-L spelling ("...DoZIlMR7j") does not exist. The free-slots
+// endpoint returns 404 for it, but the appointment endpoint returns a 400
+// "Calendar is inactive", which is misleading, and because it's a 400 the
+// bypass retry below fires pointlessly against an id that will never exist.
+// Copy this id from a request or text, never retype it from a screenshot.
 const GHL_CALENDAR_ID = "kvdrEOu2P9nDoZIiMR7j";
 /** Skip a further CRM call when less than this much budget remains. */
 const GHL_MIN_CALL_MS = 1500;
