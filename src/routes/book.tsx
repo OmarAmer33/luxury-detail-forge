@@ -1,12 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { PageHero } from "@/components/site/PageHero";
 import detailing from "@/assets/detailing.jpg";
 import { Phone, Mail, MapPin, Clock, Check } from "lucide-react";
 import { trackPhoneClick, trackLeadSubmit } from "@/lib/tracking";
 import { DateChips } from "@/components/site/DateChips";
-import { dateTimeIssues, timesForDay, weekdayOf } from "@/lib/booking-rules";
+import { dateTimeIssues, timesFor } from "@/lib/booking-rules";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
@@ -69,8 +69,23 @@ function Book() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  // Saturdays get the shorter list; Sundays get none (validation blocks them too).
-  const availableTimes = timesForDay(date ? weekdayOf(date) : -1);
+  // "now" exists only after hydration so server and first client render match
+  // (both see an empty list). Refreshed every minute so slots age out.
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => {
+    setNow(new Date());
+    const id = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Saturdays get the shorter list; Sundays none; today only slots 4+ hours out.
+  const availableTimes = now && date ? timesFor(date, now) : [];
+
+  // Clear a selection that has aged out of the notice window.
+  useEffect(() => {
+    if (now && time && !availableTimes.includes(time)) setTime("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [now, date]);
 
   // Dismiss a field's validation error as soon as the visitor edits it.
   function clearError(field: string) {
@@ -85,7 +100,7 @@ function Book() {
   function handleDateChange(next: string) {
     clearError("date");
     setDate(next);
-    const nextTimes = timesForDay(next ? weekdayOf(next) : -1);
+    const nextTimes = next ? timesFor(next, new Date()) : [];
     // Clear a selection that is invalid for the newly chosen day.
     if (time && !nextTimes.includes(time)) setTime("");
   }
