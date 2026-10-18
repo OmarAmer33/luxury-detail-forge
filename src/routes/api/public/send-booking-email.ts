@@ -47,7 +47,7 @@ const GHL_API_VERSION = "2021-07-28";
 const GHL_LOCATION_ID = "JSUxqKsmjxVTSBVYfxDc";
 const GHL_BOOKING_TAG = "website-booking";
 const GHL_CONFLICT_TAG = "booking-conflict";
-const GHL_CALENDAR_ID = "kvdrEOu2P9nDoZIlMR7j";
+const GHL_CALENDAR_ID = "kvdrEOu2P9nDoZIiMR7j";
 /** Skip a further CRM call when less than this much budget remains. */
 const GHL_MIN_CALL_MS = 1500;
 
