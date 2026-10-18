@@ -135,18 +135,30 @@ export function dateTimeIssues(
 }
 
 // ---- Appointment length ----------------------------------------------------
-/** Published durations from the shop's pricing sheet. Only these four are known. */
+/**
+ * Published durations from the shop's pricing sheet. Only these four are known.
+ * These feed the appointment TITLE only ("approx. 3 hrs"). They do NOT set the
+ * calendar block length: the CRM calendar allows at most three duration
+ * options and has one (30 min), so every appointment is created at
+ * CALENDAR_BLOCK_MINUTES and the shop resizes it when confirming.
+ */
 export const SERVICE_DURATION_MINUTES: Record<string, number> = {
   "Full Detail": 180,
   "Interior Detail": 90,
   "Exterior Detail": 90,
   "VIP Detail (Top Tier)": 240,
 };
-/**
- * Placeholder for services with no published duration (coating, PPF, wrap,
- * correction, tint, "not sure"). The shop resizes the block when confirming.
- */
+/** Fallback for services with no published duration; titled "(duration TBD)". */
 export const DEFAULT_DURATION_MINUTES = 30;
+/** Every CRM appointment is this long, whatever the service (calendar's only option). */
+export const CALENDAR_BLOCK_MINUTES = 30;
+
+/** "Website request — Full Detail (approx. 3 hrs) — Jane Smith" */
+export function appointmentTitle(service: string, name: string): string {
+  const m = SERVICE_DURATION_MINUTES[service];
+  const len = m ? `approx. ${m / 60} hrs` : "duration TBD";
+  return `Website request — ${service} (${len}) — ${name}`;
+}
 
 export function durationFor(service: string): { minutes: number; known: boolean } {
   const m = SERVICE_DURATION_MINUTES[service];
