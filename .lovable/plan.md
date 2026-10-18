@@ -1,48 +1,85 @@
-# Booking form: in-page date picker, local "today", matching time rules
+# Booking flow: CRM appointment + time-aware slots
 
-## Files that change
-- `src/lib/booking-rules.ts` (new): one shared set of rules imported by both the form and the server route. Contains the time slot lists, the "today in America/New_York" helper, the weekday-from-`YYYY-MM-DD` helper, and the date/time validation rules.
-- `src/components/site/DateChips.tsx` (new): the date picker.
-- `src/routes/book.tsx`: use the shared rules and the new picker.
-- `src/routes/api/public/send-booking-email.ts`: change only the Zod `date`/`time` rules. The honeypot, insert, gclid/source, Resend call, recipient, reply_to and email body stay as they are.
+Two files change for logic (`src/lib/booking-rules.ts`, `src/routes/api/public/send-booking-email.ts`), one for wiring (`src/routes/book.tsx`), plus one small test file for the rules. No packages, no schema change, no change to honeypot, gclid, Supabase insert, Resend call, email body, or the Ads conversion.
 
-No new npm dependency.
+## Problem 2 first (the appointment depends on it)
 
-## 1. Date picker (I agree with the chip approach)
-- Shows the next 21 open days starting from today in New York. Sundays are left out, so you get about 18 chips.
-- Each chip has two lines: "THU" in the small uppercase tracking style the form already uses, and "Oct 16" below it. Chips are at least 48px tall with square corners, a `border-border` border and a transparent background, like the other fields.
-- The selected chip uses a gold fill with `--color-primary-foreground` text, matching the Send button. It also gets `aria-pressed="true"`.
-- Layout is a wrapped grid: 3 columns on mobile, 6 from `md`. I chose wrapping over a horizontal scroller because sideways scrolling inside the Instagram browser often fights with its swipe-back gesture, and some chips would be hidden off screen.
-- Chips are `<button type="button">` elements inside a `role="group"` labelled "Preferred date". Using `type="button"` means a tap can never submit the form.
-- The value is posted through `<input type="hidden" name="date" value={date}>` in the same `YYYY-MM-DD` format. `FormData`, both Zod schemas and the database stay the same.
-- I'll drop the "Closed Sundays." helper text and use "Closed Sundays · showing the next 3 weeks" instead. That also tells visitors why they can't see dates further out. Anyone wanting a later date can say so in Notes or call.
-- The chips are generated on the client after the page loads. Until then the area shows a quiet placeholder that is the same height. This stops the server's clock or timezone from deciding what "today" is, and it prevents a mismatch between the server-built page and the phone's version around midnight.
+### Shared rules in `booking-rules.ts`
+- `MIN_NOTICE_MINUTES = 240` (client) and `SERVER_GRACE_MINUTES = 15`. The server accepts a slot 225+ minutes away.
+- `slotMinutes("2:30 PM") -> 870`, a small parser for the existing slot strings.
+- `timesFor(date, now, noticeMin)`: the weekday list as today, minus slots on today's date (shop tz) that start less than `noticeMin` from now. Past dates return `[]`.
+- `openDays()` drops a day when `timesFor` is empty for it. This replaces the current last-start check, so today disappears once nothing 4+ hours out remains.
+- `dateTimeIssues(date, time, now = new Date(), noticeMin = MIN_NOTICE_MINUTES)` adds, in order after the existing Sunday check:
+  - past date: "That date has passed — please pick another day."
+  - slot inside the window: "That time is less than 4 hours away — please pick a later time or another day."
+  - The existing Sunday, Saturday and "Pick a time" messages stay as they are.
+- The server calls `dateTimeIssues(..., new Date(), MIN_NOTICE_MINUTES - SERVER_GRACE_MINUTES)`. The client uses the full 240.
 
-## 2. Local-time "today"
-- `todayInNY()` uses `Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" })`, which returns `YYYY-MM-DD` directly. Workers and every target browser support it.
-- The weekday is worked out from the `YYYY-MM-DD` parts using UTC. This replaces `new Date(v + "T12:00:00").getDay()`, which depends on the phone's own timezone. The result is the same on the client and the server everywhere.
-- The `min=` attribute and its `toISOString()` call are removed completely. No other place in the form or route works out a current date.
-- **Decision for you: same-day booking.** On a weekday after 2:30 PM New York time, or a Saturday after 11:30 AM, "today" has no start times left. I suggest leaving today out of the chips at that point. As written, the plan does **not** remove individual past slots from today's time list. That would change your slot logic, so tell me if you want it.
+**Why 15 minutes of grace and not more:** the CRM itself enforces 4 hours. Any grace we allow is a window where the server accepts a request the CRM will reject. That request still lands, through the fallback and flagged `booking-conflict`. 15 minutes covers a normal form fill and keeps those flagged requests rare. 30 minutes would also work if you'd rather never bounce a slow visitor.
 
-## 3. One time requirement on both sides
-These shared rules apply in both schemas:
-- `date`: must match `^\d{4}-\d{2}-\d{2}$`, must be a real calendar date, and must not be a Sunday (same message as now).
-- `time`: required ("Pick a time") whenever the date is valid and not a Sunday.
-- On Saturdays, `time` must be in `saturdayTimes`. On weekdays it must be in `weekdayTimes`.
+### Hydration safety in `book.tsx`
+- Add `const [now, setNow] = useState<Date | null>(null)`. Set it in `useEffect` on mount and refresh it every 60 seconds.
+- `availableTimes = now && date ? timesFor(date, now, MIN_NOTICE_MINUTES) : []`. The server render and the first client render both see `[]` (`date` is also empty then), so they match.
+- When a refresh removes the selected time, clear it, as the date-change handler already does.
+- The submit-time schema check uses a fresh `new Date()`.
 
-The server keeps `time: z.string().max(20)` and applies the same `superRefine`. A Sunday date fails on the date alone, so neither side ever shows a second time error. On the server, any failure is still a 400, but valid input from the new form can no longer produce one. The client message behaviour stays exactly as it is now.
+## Problem 1: appointment creation
 
-## Gaps I found in the brief
-- **Why Android fails.** On Android WebView, including the Instagram and Facebook in-app browsers, the native date dialog only works if the app hosting the browser supports it. Many in-app browsers don't, so tapping the field does nothing and you just see "mm/dd/yyyy". Your reading is correct, and the chips avoid the problem completely.
-- **Another source of trouble.** `min` was set on the server using the server's own UTC clock, so the server-built page and the phone could disagree. Removing it fixes that too.
-- **Jump-to-error would break.** On a failed submit, the form scrolls to `[name="date"]`. A hidden input can't be scrolled to or focused, so I'll make the date error point at the chip group instead (with `tabIndex=-1`).
-- **Stale choices.** If someone leaves the page open past midnight, a chip they picked could be in the past. The server rule doesn't reject past dates, to avoid failing real leads, so this is harmless. Tell me if you'd rather reject them.
-- **Two forms for date and time.** Picking a chip clears the date error and clears a time that doesn't fit the new day, as `handleDateChange` does now. "Submit another" already resets the date with `setDate("")`.
+### Order inside the existing CRM block
+```text
+upsert -> (contactId?) -> tag DELETE -> tag POST "website-booking"
+       -> appointment (validation ON)
+            rejected as a slot/validation error -> retry with bypass flags
+                                                   -> tag POST "booking-conflict"
+-> [block ends] -> Resend email -> response
+```
+The appointment goes **after** the website-booking tag on purpose. The tag starts the shop's workflow, so it stays the higher-priority call if time runs short. Tell me if your workflow reads appointment data and needs it to exist first.
 
-## Effect on attribution and conversion tracking
-None expected. The gclid hidden input and its sessionStorage read, the honeypot, `gtag` conversion `AW-10789482788/J-mTCMjO4fccEKTi6Zgo`, `trackLeadSubmit()`, the success flow, the insert and the Resend call are all untouched. The only server change is stricter checking of `date`/`time`, and the new form always meets it.
+### The call
+`POST /calendars/events/appointment` with:
+- `calendarId` `kvdrEOu2P9nDoZIlMR7j`, `locationId`, `contactId`
+- `startTime` / `endTime` as ISO with the real offset
+- `appointmentStatus: "new"`, `toNotify: false`
+- title "Website request — {service} — {name}"
 
-## Checking the work (no form submission)
-- Read the code and confirm the build passes.
-- Unit-test `booking-rules.ts` with `bunx vitest`: today in NY at 23:30 UTC vs 01:00 UTC, weekday from a date string, Sunday rejected, Saturday afternoon slot rejected, empty time rejected on a weekday.
-- A Playwright visit to /book with an Android user agent and a 390px screen: take a screenshot, tap a chip, and check the hidden input value and the time list. **Never press Send** and make no POST requests. The script will block `/api/public/send-booking-email` at the network level as a safeguard.
+On the retry, add `ignoreFreeSlotValidation: true` and `ignoreDateRange: true`.
+
+### (a) Slot validation: agree, with one refinement
+Retry **only** when the first attempt returns a 4xx that isn't 401/403. Do not retry on a timeout, a 5xx or an auth error. Bypassing validation won't fix those, and a timed-out first call may actually have created the event, which would give you a duplicate. Auth and scope errors get their own log line so a missing calendar scope is obvious.
+
+### (b) Duration: agree
+`SERVICE_DURATION_MINUTES` lives in `booking-rules.ts` with only the four known values: Full Detail 180, Interior 90, Exterior 90, VIP 240. A documented `DEFAULT_DURATION_MINUTES = 30` placeholder covers everything else. When the default is used, the appointment title gets the suffix " (duration TBD)" so the shop can see the block is a placeholder. That is a label, not an invented number.
+
+### (c) Offset without a library
+`Intl.DateTimeFormat("en-US", { timeZone: SHOP_TZ, timeZoneName: "longOffset" })` gives "GMT-04:00" or "GMT-05:00" for a specific instant:
+1. Guess the instant as the wall time plus 5 hours, in UTC.
+2. Read the zone's offset at that instant.
+3. Rebuild the instant with that offset and read the offset again.
+4. Use the confirmed offset.
+
+The second read handles the November 1 changeover. This works in Cloudflare Workers and modern browsers. If the format isn't supported, a fallback works out the offset by formatting the instant into its parts and comparing with UTC. Tests cover Oct 31 (-04:00), Nov 2 (-05:00) and Mar 9, 2027 (-04:00).
+
+### (d) Time budget
+Raise the overall CRM budget from 8 to **10 seconds** and keep the 4-second cap per call.
+
+Before each appointment call, skip it if less than 1.5 seconds remain. The conflict tag is skipped the same way. Every skip is logged ("GHL appointment skipped: budget").
+
+Worst case, the email starts within about 10 seconds. The usual case adds roughly 0.5–1 second.
+
+## Verification (nothing goes through the live form)
+- Unit tests for `booking-rules`: notice filter at 2:00 PM, today dropped, past date rejected, grace boundary (224 vs 225 minutes), the DST offsets, and duration lookup. These assume the project's test runner is available; nothing will be installed. If it's missing, the same checks run as a one-off script instead.
+- Browser check at 390px with the booking endpoint blocked:
+  - before the cutoff, today shows only slots 4+ hours away
+  - after the cutoff, today has no chip
+  - no hydration warnings
+- Type check and build.
+- **Live CRM check needs your approval first.** One appointment call, directly to the CRM (not through the site), for the existing test contact "ZZ API Shape Test":
+  - a far-future date, `toNotify: false`, status `new`
+  - then delete it with `DELETE /calendars/events/{id}`
+  - this confirms the field names and that the token has calendar write scope
+
+## Assumptions to confirm
+1. The CRM field names (`appointmentStatus`, `toNotify`, `ignoreFreeSlotValidation`, `ignoreDateRange`) come from the public v2 API and aren't yet verified against your account. The live check above confirms them.
+2. The private integration token may need the calendars/events write scope added. If it lacks it, the appointment fails quietly and the email is unaffected.
+3. The 3-per-day cap and the 4-hour notice are both "slot" rejections, so the fallback covers them.
+4. Appointment titles and the "(duration TBD)" suffix are my wording. Change them freely.
