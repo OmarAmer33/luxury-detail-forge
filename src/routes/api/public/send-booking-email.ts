@@ -55,6 +55,14 @@ const GHL_CONFLICT_TAG = "booking-conflict";
 // bypass retry below fires pointlessly against an id that will never exist.
 // Copy this id from a request or text, never retype it from a screenshot.
 const GHL_CALENDAR_ID = "kvdrEOu2P9nDoZIiMR7j";
+/**
+ * Team member for the bypass retry ONLY. Observed in a live appointment response
+ * on 18 Oct 2026. The first attempt omits it so the CRM resolves the calendar's
+ * team member itself (keeps working if the calendar is reassigned). With the
+ * bypass flags on, the CRM demands an assignedUserId (422). If the calendar's
+ * team member changes, this goes stale and the retry fails again with that 422.
+ */
+const GHL_ASSIGNED_USER_ID = "G6ttznE3iWPWGtSzIDID";
 /** Skip a further CRM call when less than this much budget remains. */
 const GHL_MIN_CALL_MS = 1500;
 
@@ -256,7 +264,7 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
                 // not timeouts/5xx — a timed-out call may already have created it).
                 // Learned live: with the bypass flags on, the CRM demands an
                 // assignedUserId that the normal path resolves from the calendar
-                // itself, so this retry is a long shot, not a reliable rescue.
+                // itself; the retry therefore sends GHL_ASSIGNED_USER_ID explicitly.
                 const startMin = slotMinutes(d.time);
                 if (Number.isNaN(startMin)) {
                   console.error("GHL appointment skipped: unparseable time", d.time);
@@ -304,7 +312,7 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
                         const res = await ghlFetch(apptUrl, {
                           method: "POST",
                           headers,
-                          body: JSON.stringify({ ...apptBody, ignoreFreeSlotValidation: true, ignoreDateRange: true }),
+                          body: JSON.stringify({ ...apptBody, assignedUserId: GHL_ASSIGNED_USER_ID, ignoreFreeSlotValidation: true, ignoreDateRange: true }),
                         });
                         created = res.ok;
                         if (!res.ok) {
