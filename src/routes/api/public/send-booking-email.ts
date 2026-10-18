@@ -245,7 +245,7 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
                 // ---- Calendar appointment (unconfirmed request) ----------
                 // status "new" + toNotify:false: the shop confirms later and the
                 // site's own email is the only notification. Retry with slot
-                // validation bypassed only on a 4xx rejection (not 401/403,
+                // validation bypassed only on a 4xx rejection (not 401/403/404,
                 // not timeouts/5xx — a timed-out call may already have created it).
                 const startMin = slotMinutes(d.time);
                 if (Number.isNaN(startMin)) {
@@ -264,7 +264,7 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
                     appointmentStatus: "new",
                     toNotify: false,
                   };
-                  const apptUrl = `${GHL_BASE_URL}/calendars/events/appointment`;
+                  const apptUrl = `${GHL_BASE_URL}/calendars/events/appointments`;
                   let retry = false;
                   try {
                     const res = await ghlFetch(apptUrl, { method: "POST", headers, body: JSON.stringify(apptBody) });
@@ -272,6 +272,9 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
                       const txt = await res.text().catch(() => "");
                       if (res.status === 401 || res.status === 403) {
                         console.error("GHL appointment auth/scope error:", res.status, txt);
+                      } else if (res.status === 404) {
+                        // Bypass flags can't fix a missing path or calendar.
+                        console.error("GHL appointment not found (path/calendar):", res.status, txt);
                       } else if (res.status >= 400 && res.status < 500) {
                         console.error("GHL appointment rejected, retrying with bypass:", res.status, txt);
                         retry = true;
