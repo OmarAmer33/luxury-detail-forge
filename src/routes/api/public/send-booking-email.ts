@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { dateTimeIssues } from "@/lib/booking-rules";
+import {
+  dateTimeIssues,
+  durationFor,
+  MIN_NOTICE_MINUTES,
+  SERVER_GRACE_MINUTES,
+  shopIso,
+  slotMinutes,
+} from "@/lib/booking-rules";
 
 const schema = z.object({
   name: z.string().trim().min(2).max(100),
@@ -19,7 +26,8 @@ const schema = z.object({
   transactionalConsent: z.boolean().optional().default(false),
 }).superRefine((data, ctx) => {
   // Same date/time rules as the /book form (shared module).
-  for (const issue of dateTimeIssues(data.date, data.time)) {
+  // Server allows slightly less notice than the form offers (grace for slow fills).
+  for (const issue of dateTimeIssues(data.date, data.time, new Date(), MIN_NOTICE_MINUTES - SERVER_GRACE_MINUTES)) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: [issue.path], message: issue.message });
   }
 });
@@ -38,6 +46,10 @@ const GHL_BASE_URL = "https://services.leadconnectorhq.com";
 const GHL_API_VERSION = "2021-07-28";
 const GHL_LOCATION_ID = "JSUxqKsmjxVTSBVYfxDc";
 const GHL_BOOKING_TAG = "website-booking";
+const GHL_CONFLICT_TAG = "booking-conflict";
+const GHL_CALENDAR_ID = "kvdrEOu2P9nDoZIlMR7j";
+/** Skip a further CRM call when less than this much budget remains. */
+const GHL_MIN_CALL_MS = 1500;
 
 type BookingData = {
   name: string;
@@ -156,14 +168,14 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
         // GoHighLevel contact sync. Same never-block pattern as the insert:
         // every error is logged and swallowed; the response and email are
         // unaffected whether the CRM succeeds, fails, or hangs. Each fetch
-        // is capped at 4s and the whole block at an 8s budget, so the Resend
-        // send always starts within 8 seconds even if the CRM is slow.
+        // is capped at 4s and the whole block at a 10s budget, so the Resend
+        // send always starts within 10 seconds even if the CRM is slow.
         try {
           const ghlToken = process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
           if (!ghlToken) {
             console.error("GHL sync skipped: GHL_PRIVATE_INTEGRATION_TOKEN not set");
           } else {
-            const ghlDeadline = Date.now() + 8000;
+            const ghlDeadline = Date.now() + 10000;
             const budgetLeft = () => ghlDeadline - Date.now();
             const isTimeout = (err: unknown) =>
               err instanceof Error && (err.name === "TimeoutError" || err.name === "AbortError");
@@ -228,6 +240,85 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
                   }
                 } catch (err) {
                   console.error(isTimeout(err) ? "GHL tag add timed out:" : "GHL tag add threw:", err);
+                }
+
+                // ---- Calendar appointment (unconfirmed request) ----------
+                // status "new" + toNotify:false: the shop confirms later and the
+                // site's own email is the only notification. Retry with slot
+                // validation bypassed only on a 4xx rejection (not 401/403,
+                // not timeouts/5xx — a timed-out call may already have created it).
+                const startMin = slotMinutes(d.time);
+                if (Number.isNaN(startMin)) {
+                  console.error("GHL appointment skipped: unparseable time", d.time);
+                } else if (budgetLeft() < GHL_MIN_CALL_MS) {
+                  console.error("GHL appointment skipped: budget");
+                } else {
+                  const dur = durationFor(d.service);
+                  const apptBody = {
+                    calendarId: GHL_CALENDAR_ID,
+                    locationId: GHL_LOCATION_ID,
+                    contactId,
+                    startTime: shopIso(d.date, startMin),
+                    endTime: shopIso(d.date, startMin + dur.minutes),
+                    title: `Website request — ${d.service} — ${d.name}${dur.known ? "" : " (duration TBD)"}`,
+                    appointmentStatus: "new",
+                    toNotify: false,
+                  };
+                  const apptUrl = `${GHL_BASE_URL}/calendars/events/appointment`;
+                  let retry = false;
+                  try {
+                    const res = await ghlFetch(apptUrl, { method: "POST", headers, body: JSON.stringify(apptBody) });
+                    if (!res.ok) {
+                      const txt = await res.text().catch(() => "");
+                      if (res.status === 401 || res.status === 403) {
+                        console.error("GHL appointment auth/scope error:", res.status, txt);
+                      } else if (res.status >= 400 && res.status < 500) {
+                        console.error("GHL appointment rejected, retrying with bypass:", res.status, txt);
+                        retry = true;
+                      } else {
+                        console.error("GHL appointment failed:", res.status, txt);
+                      }
+                    }
+                  } catch (err) {
+                    console.error(isTimeout(err) ? "GHL appointment timed out:" : "GHL appointment threw:", err);
+                  }
+
+                  if (retry) {
+                    if (budgetLeft() < GHL_MIN_CALL_MS) {
+                      console.error("GHL appointment retry skipped: budget");
+                    } else {
+                      let created = false;
+                      try {
+                        const res = await ghlFetch(apptUrl, {
+                          method: "POST",
+                          headers,
+                          body: JSON.stringify({ ...apptBody, ignoreFreeSlotValidation: true, ignoreDateRange: true }),
+                        });
+                        created = res.ok;
+                        if (!res.ok) {
+                          console.error("GHL appointment retry failed:", res.status, await res.text().catch(() => ""));
+                        }
+                      } catch (err) {
+                        console.error(isTimeout(err) ? "GHL appointment retry timed out:" : "GHL appointment retry threw:", err);
+                      }
+                      if (created) {
+                        if (budgetLeft() < GHL_MIN_CALL_MS) {
+                          console.error("GHL conflict tag skipped: budget");
+                        } else {
+                          try {
+                            const res = await ghlFetch(`${GHL_BASE_URL}/contacts/${contactId}/tags`, {
+                              method: "POST",
+                              headers,
+                              body: JSON.stringify({ tags: [GHL_CONFLICT_TAG] }),
+                            });
+                            if (!res.ok) console.error("GHL conflict tag failed:", res.status, await res.text().catch(() => ""));
+                          } catch (err) {
+                            console.error(isTimeout(err) ? "GHL conflict tag timed out:" : "GHL conflict tag threw:", err);
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
