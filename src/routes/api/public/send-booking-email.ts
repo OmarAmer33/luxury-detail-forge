@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import {
   dateTimeIssues,
-  durationFor,
+  appointmentTitle,
+  CALENDAR_BLOCK_MINUTES,
   MIN_NOTICE_MINUTES,
   SERVER_GRACE_MINUTES,
   shopIso,
@@ -253,20 +254,22 @@ export const Route = createFileRoute("/api/public/send-booking-email")({
                 // site's own email is the only notification. Retry with slot
                 // validation bypassed only on a 4xx rejection (not 401/403/404,
                 // not timeouts/5xx — a timed-out call may already have created it).
+                // Learned live: with the bypass flags on, the CRM demands an
+                // assignedUserId that the normal path resolves from the calendar
+                // itself, so this retry is a long shot, not a reliable rescue.
                 const startMin = slotMinutes(d.time);
                 if (Number.isNaN(startMin)) {
                   console.error("GHL appointment skipped: unparseable time", d.time);
                 } else if (budgetLeft() < GHL_MIN_CALL_MS) {
                   console.error("GHL appointment skipped: budget");
                 } else {
-                  const dur = durationFor(d.service);
                   const apptBody = {
                     calendarId: GHL_CALENDAR_ID,
                     locationId: GHL_LOCATION_ID,
                     contactId,
                     startTime: shopIso(d.date, startMin),
-                    endTime: shopIso(d.date, startMin + dur.minutes),
-                    title: `Website request — ${d.service} — ${d.name}${dur.known ? "" : " (duration TBD)"}`,
+                    endTime: shopIso(d.date, startMin + CALENDAR_BLOCK_MINUTES),
+                    title: appointmentTitle(d.service, d.name),
                     appointmentStatus: "new",
                     toNotify: false,
                   };
