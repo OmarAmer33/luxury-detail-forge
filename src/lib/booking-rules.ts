@@ -154,10 +154,17 @@ export const DEFAULT_DURATION_MINUTES = 30;
 export const CALENDAR_BLOCK_MINUTES = 30;
 
 /** "Website request — Full Detail (approx. 3 hrs) — Jane Smith" */
+/** Shorter calendar-title wording for a few form labels (form text is unchanged). */
+const TITLE_SERVICE_NAMES: Record<string, string> = {
+  "Paint Protection Film (PPF)": "Paint Protection Film",
+  "Not sure — recommend something": "Not sure yet",
+};
+
 export function appointmentTitle(service: string, name: string): string {
   const m = SERVICE_DURATION_MINUTES[service];
+  const label = TITLE_SERVICE_NAMES[service] ?? service;
   const len = m ? `approx. ${m / 60} hrs` : "duration TBD";
-  return `Website request — ${service} (${len}) — ${name}`;
+  return `Website request — ${label} (${len}) — ${name}`;
 }
 
 export function durationFor(service: string): { minutes: number; known: boolean } {
